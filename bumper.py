@@ -1,11 +1,5 @@
-from __future__ import print_function
-import threading 
-
+import threading
 from robolab_turtlebot import Turtlebot, Rate, get_time
-
-# Names bumpers and events
-bumper_names = ['LEFT', 'CENTER', 'RIGHT']
-state_names = ['RELEASED', 'PRESSED']
 
 StateofBumper = 0
 
@@ -29,22 +23,13 @@ def bumper_cb(msg):
 
 def main():
     # Initialize turtlebot class
-    turtle = Turtlebot(rgb=True, depth=True, pc=True)
+    #turtle = Turtlebot(rgb=True, depth=True, pc=True)
 
     rate = Rate(10)
     turtle.register_bumper_event_cb(bumper_cb)
     t = get_time()
     
     while ((get_time() - t) < 20) and (StateofBumper == 0):
-            
-        # turtle.get_rgb_image()
-        # turtle.get_depth_image()
         turtle.register_bumper_event_cb(bumper_cb)
-        turtle.cmd_velocity(linear=0.1)
         rate.sleep()
 
-
-
-
-if __name__ == '__main__':
-    main()
