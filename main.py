@@ -27,16 +27,32 @@ def bumper_cb(msg):
     print('{} bumper {}'.format(bumper, state))
 
 
+def bumper(turtle):
+    while StateofBumper == 0:
+        turtle.register_bumper_event_cb(bumper_cb)
+
+def pohyb(turtle):
+    while True:
+        if StateofBumper == 0:
+            turtle.cmd_velocity(linear=0.5)
+        else:
+            turtle.cmd_velocity(linear=0)
+            break
+
+def obraz(turtle):
+    while turtle.is_shutting_down(self) == 0:
+        print("obraz")
+
 def main():
     # Initialize turtlebot class
-    turtle = Turtlebot(rgb=True, depth=True, pc=True)
+    turtle = Turtlebot(rgb=True, depth=True)
 
     rate = Rate(10)
     t = get_time()
-    t1 = threading.Thread(target=bumper, args=(turtle))
-    t2 = threading.Thread(target=obraz, args=(turtle))
-    t3 = threading.Thread(target=pohyb, args=(turtle))
-    arr = [t1,t2,t3]
+    t1 = threading.Thread(target=bumper, args=(turtle,))
+    # t2 = threading.Thread(target=obraz, args=(turtle,))
+    t3 = threading.Thread(target=pohyb, args=(turtle,))
+    arr = [t1,t3]
     for i in arr:
         i.start()
     for i in arr:
@@ -45,19 +61,6 @@ def main():
 
 
         
-
-
-def bumper(turtle):
-    while StateofBumper == 0:
-        turtle.register_bumper_event_cb(bumper_cb)
-
-def pohyb(turtle):
-    while True: turtle.cmd_velocity(linear=0.05)
-
-
 if __name__ == '__main__':
     main()
 
-
-if __name__ == '__main__':
-    main()
