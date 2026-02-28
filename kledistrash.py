@@ -3,7 +3,7 @@ import threading, time, sys
 import numpy as np
 from robolab_turtlebot import Turtlebot, Rate, get_time
 
-from magic import get_ball_position_and_radius, detect_two_largest_rectangles
+from pepa import get_ball_position_and_radius, detect_two_largest_rectangles
 from imageio import imwrite 
 
 StateofBumper = threading.Event()
@@ -39,7 +39,7 @@ def bumper(turtle):
 
 def pohyb(turtle):
     lin_speed = 0
-    ang_speed = pi/6
+    ang_speed = pi/12
 
     # Go 
     while not StateofBumper.is_set() :
@@ -48,7 +48,7 @@ def pohyb(turtle):
 
         if not garage_stage.is_set():
             lin_speed = 0
-            ang_speed = pi/6
+            ang_speed = pi/12
 
         elif not outgarage_stage.is_set():
             lin_speed = 0.05
@@ -66,20 +66,15 @@ def pohyb(turtle):
     turtle.cmd_velocity(linear=0, angular=0)
 
 def obraz(turtle):
-    (x,y) = (0,0)
+    pos = (0,0)
     radius = 0
     while not StateofBumper.is_set():
         turtle.wait_for_rgb_image()
         rgb = turtle.get_rgb_image()
+        
+        pos, radius = get_ball_position_and_radius(rgb,[100,128,64])
+        print(f'position: {pos} radius {radius}')
 
-        #temporary fix 
-        # filename = "image.png"
-        # print(f'Image saved as {filename}')
-        # imwrite(filename,rgb)
-
-        (x, y), radius = get_ball_position_and_radius(rgb,[100,86,134])
-        if 280 > x > 320:
-            pass
 
 def main():
     # Initialize turtlebot class

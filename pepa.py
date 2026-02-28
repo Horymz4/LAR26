@@ -105,5 +105,5 @@ def detect_two_largest_rectangles(array, ref_bgr, min_area=100):
 
 
 
-ball_pos, ball_radius = get_ball_position_and_radius(array, [100, 128, 63])
-rectangles = detect_two_largest_rectangles(array, [100, 86, 134])
+# ball_pos, ball_radius = get_ball_position_and_radius(array, [100, 128, 63])
+# rectangles = detect_two_largest_rectangles(array, [100, 86, 134])

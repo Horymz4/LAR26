@@ -4,11 +4,10 @@ import cv2
 
 from robolab_turtlebot import Turtlebot, detector
 
-WINDOW = 'markers'
 
+def okno():
 
-def main():
-
+    WINDOW = 'markers'
     turtle = Turtlebot(rgb=True)
     cv2.namedWindow(WINDOW)
 
