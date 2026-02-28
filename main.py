@@ -1,5 +1,5 @@
 from __future__ import print_function
-import threading 
+import threading
 
 from robolab_turtlebot import Turtlebot, Rate, get_time
 
@@ -32,18 +32,31 @@ def main():
     turtle = Turtlebot(rgb=True, depth=True, pc=True)
 
     rate = Rate(10)
-    turtle.register_bumper_event_cb(bumper_cb)
     t = get_time()
-    
-    while ((get_time() - t) < 20) and (StateofBumper == 0):
-            
-        # turtle.get_rgb_image()
-        # turtle.get_depth_image()
+    t1 = threading.Thread(target=bumper, args=(turtle))
+    t2 = threading.Thread(target=obraz, args=(turtle))
+    t3 = threading.Thread(target=pohyb, args=(turtle))
+    arr = [t1,t2,t3]
+    for i in arr:
+        i.start()
+    for i in arr:
+        i.join()
+    print("All threads completed")
+
+
+        
+
+
+def bumper(turtle):
+    while StateofBumper == 0:
         turtle.register_bumper_event_cb(bumper_cb)
-        turtle.cmd_velocity(linear=0.1)
-        rate.sleep()
+
+def pohyb(turtle):
+    while True: turtle.cmd_velocity(linear=0.05)
 
 
+if __name__ == '__main__':
+    main()
 
 
 if __name__ == '__main__':
