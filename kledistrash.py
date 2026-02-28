@@ -1,7 +1,6 @@
 from __future__ import print_function
-import threading
-import time
-
+import threading, time
+import numpy as np
 from robolab_turtlebot import Turtlebot, Rate, get_time
 StateofBumper = threading.Event()
 # Names bumpers and events
@@ -33,16 +32,16 @@ def bumper(turtle):
 def pohyb(turtle):
     # Move forward until bumper pressed
     while not StateofBumper.is_set():
-        turtle.cmd_velocity(linear=0.5)
+        turtle.cmd_velocity(linear=0.2,angular= 1.5)
         time.sleep(0.05)   # small delay to reduce CPU usage
 
     # Stop robot
     turtle.cmd_velocity(linear=0)
 
 def obraz(turtle):
-    while turtle.is_shutting_down(self) == 0:
-        print("obraz")
-
+    while not StateofBumper.is_set():
+        turtle.get_rgb_image()
+        turtle.wait_for_rgb_image()
 def main():
     # Initialize turtlebot class
     turtle = Turtlebot(rgb=True, depth=True)
@@ -50,9 +49,9 @@ def main():
     rate = Rate(10)
     t = get_time()
     t1 = threading.Thread(target=bumper, args=(turtle,))
-    # t2 = threading.Thread(target=obraz, args=(turtle,))
+    t2 = threading.Thread(target=obraz, args=(turtle,))
     t3 = threading.Thread(target=pohyb, args=(turtle,))
-    arr = [t1,t3]
+    arr = [t1,t2,t3]
     for i in arr:
         i.start()
     for i in arr:
