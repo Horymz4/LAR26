@@ -1,7 +1,10 @@
 from __future__ import print_function
-import threading, time
+import threading, time, sys
 import numpy as np
 from robolab_turtlebot import Turtlebot, Rate, get_time
+
+from imageio import imwrite 
+
 StateofBumper = threading.Event()
 # Names bumpers and events
 bumper_names = ['LEFT', 'CENTER', 'RIGHT']
@@ -32,22 +35,27 @@ def bumper(turtle):
 def pohyb(turtle):
     # Move forward until bumper pressed
     while not StateofBumper.is_set():
-        turtle.cmd_velocity(linear=0.2,angular= 1.5)
+        turtle.cmd_velocity(linear=0.1)
         time.sleep(0.05)   # small delay to reduce CPU usage
 
     # Stop robot
     turtle.cmd_velocity(linear=0)
 
 def obraz(turtle):
+    i = 0
     while not StateofBumper.is_set():
-        turtle.get_rgb_image()
         turtle.wait_for_rgb_image()
+        rgb = turtle.get_rgb_image()
+        filename = "image" + str(i) + ".png"
+        i += 1 
+        print(f'Image saved as {filename}')
+        imwrite(filename, rgb)
 def main():
     # Initialize turtlebot class
-    turtle = Turtlebot(rgb=True, depth=True)
+    turtle = Turtlebot(rgb=True)
 
     rate = Rate(10)
-    t = get_time()
+    # t = get_time()
     t1 = threading.Thread(target=bumper, args=(turtle,))
     t2 = threading.Thread(target=obraz, args=(turtle,))
     t3 = threading.Thread(target=pohyb, args=(turtle,))
