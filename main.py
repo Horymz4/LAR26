@@ -20,21 +20,19 @@ def bumper_cb(msg):
     state = state_names[msg.state]
 
     # Print the event
-    return state
+    print('{} bumper {}'.format(bumper, state))
+
 
 def main():
     # Initialize turtlebot class
-    turtle = Turtlebot()
+    turtle = Turtlebot(rgb=True, depth=True, )
 
-    # Register bumper callback
     press = turtle.register_bumper_event_cb(bumper_cb)
-
     t = get_time()
-    # Do something, the program would end otherwise
-    rate = Rate(1)
-    while ((get_time - t) < 20) and press != "PRESSED":
+    
+    rate = Rate(10)
+    while ((get_time() - t) < 20) and turtle.register_bumper_event_cb(bumper_cb != "PRESSED"):
          
-        press = turtle.register_bumper_event_cb(bumper_cb)
         turtle.cmd_velocity(linear=0.1)
         rate.sleep()
 
