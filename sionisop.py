@@ -46,8 +46,7 @@ def reasoning(turtle,pos,radius):
     elif (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 45:
         outgarage_stage.set()
         print("Ball close")
-def make_square(turtle):
-    pass
+
 def pohyb(turtle):
     lin_speed = 0
     ang_speed = pi/24
