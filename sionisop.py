@@ -3,7 +3,7 @@ import threading, time, sys
 import numpy as np
 from robolab_turtlebot import Turtlebot, Rate, get_time
 
-from pepa import get_ball_position_and_radius, detect_two_largest_rectangles
+from hsv_seg import find_ball, find_rectangle
 from imageio import imwrite 
 
 StateofBumper = threading.Event()
@@ -39,12 +39,9 @@ def bumper(turtle):
     StateofBumper.wait()
 
 def reasoning(turtle,pos,radius):
-    if 10 > radius > 150:
-        garage_stage.is_set()
+    if radius is not None and pos is not None and 10 > radius > 150 and 250 > and 250 > 
+        garage_stage.set()
         
-
-
-
 
 def pohyb(turtle):
     lin_speed = 0
@@ -63,7 +60,7 @@ def pohyb(turtle):
                 processing_image.wait()
 
         elif not outgarage_stage.is_set():
-            lin_speed = 0.05
+            lin_speed = 0.1
             ang_speed = 0
 
         elif not ball_stage.is_set():
@@ -84,7 +81,7 @@ def obraz(turtle):
             turtle.wait_for_rgb_image()
             rgb = turtle.get_rgb_image()
             
-            pos, radius = get_ball_position_and_radius(rgb,[100,128,64])
+            pos, radius = find_ball(rgb,[100,128,64])
             processing_image.set()
             print(f'position: {pos} radius {radius}')
         
