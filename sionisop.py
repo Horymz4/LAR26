@@ -19,8 +19,6 @@ pi = np.pi
 bumper_names = ['LEFT', 'CENTER', 'RIGHT']
 state_names = ['RELEASED', 'PRESSED']
 
-StateofBumper = threading.Event()   
-
 def bumper_cb(msg):
     """Bumber callback."""
     # msg.bumper stores the id of bumper 0:LEFT, 1:CENTER, 2:RIGHT
