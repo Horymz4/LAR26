@@ -52,7 +52,7 @@ def reasoning(turtle,pos,radius):
 
 def pohyb(turtle):
     lin_speed = 0
-    ang_speed = pi/6
+    ang_speed = 0
     print("start pohyb")
     rate = Rate(10)
     while not StateofBumper.is_set() :
