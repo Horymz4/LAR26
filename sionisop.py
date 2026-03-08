@@ -8,6 +8,7 @@ from robolab_turtlebot import Turtlebot, Rate, get_time
 # from pepa import get_ball_position_and_radius
 from hsv_seg import find_ball, find_rectangles
 from ezisop import go_to_origin
+from kledisbest import make_square
 from imageio import imwrite 
 
 StateofBumper = threading.Event()
@@ -23,16 +24,12 @@ pi = np.pi
 bumper_names = ['LEFT', 'CENTER', 'RIGHT']
 state_names = ['RELEASED', 'PRESSED']
 
+# coppied from the example script
 def bumper_cb(msg):
-    """Bumber callback."""
-    # msg.bumper stores the id of bumper 0:LEFT, 1:CENTER, 2:RIGHT
     bumper = bumper_names[msg.bumper]
-    # msg.state stores the event 0:RELEASED, 1:PRESSED
     state = state_names[msg.state]
     if msg.state == 1:
         StateofBumper.set()
-
-    # Print the event
     print(f'{bumper} bumper {state}')
 
 
@@ -51,7 +48,6 @@ def pohyb(turtle):
     lin_speed = 0
     ang_speed = pi/24
 
-    # Go 
     while not StateofBumper.is_set() :
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
 
@@ -85,10 +81,10 @@ def obraz(turtle):
             turtle.wait_for_rgb_image()
             rgb = turtle.get_rgb_image()
             
-            # cv.imshow("asdad",rgb)
             print(np.unique(rgb.reshape(-1,3), axis=0)[:20])
+
             sanitycheck = rgb.copy() 
-            # print(sanitycheck)
+
             pos, radius = find_ball(sanitycheck,[100,149,100])
             processing_image.set()
             print(f'position: {pos} radius {radius}\n')
@@ -96,11 +92,9 @@ def obraz(turtle):
             reasoning(turtle,pos,radius) 
 
 def main():
-    # Initialize turtlebot class
     turtle = Turtlebot(rgb=True, depth=True)
 
     rate = Rate(10)
-    # t = get_time()
     t1 = threading.Thread(target=bumper, args=(turtle,))
     t2 = threading.Thread(target=obraz, args=(turtle,))
     t3 = threading.Thread(target=pohyb, args=(turtle,))
@@ -111,7 +105,5 @@ def main():
         i.join()
     print("All threads completed")
 
-
-        
 if __name__ == '__main__':
     main()
