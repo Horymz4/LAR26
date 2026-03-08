@@ -7,6 +7,7 @@ from robolab_turtlebot import Turtlebot, Rate, get_time
 
 # from pepa import get_ball_position_and_radius
 from hsv_seg import find_ball, find_rectangles
+from ezisop import go_to_origin
 from imageio import imwrite 
 
 StateofBumper = threading.Event()
@@ -45,7 +46,8 @@ def reasoning(turtle,pos,radius):
     elif (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 45:
         outgarage_stage.set()
         print("Ball close")
-
+def make_square(turtle):
+    pass
 def pohyb(turtle):
     lin_speed = 0
     ang_speed = pi/24
@@ -69,9 +71,7 @@ def pohyb(turtle):
                 processing_image.wait()
 
         elif not ball_stage.is_set():
-            lin_speed = 0.05
-            ang_speed = pi/12
-
+            make_square(turtle)
         elif not ending_stage.is_set():
             lin_speed = 0.05
             ang_speed = 0
@@ -86,8 +86,8 @@ def obraz(turtle):
             turtle.wait_for_rgb_image()
             rgb = turtle.get_rgb_image()
             
-            cv.imshow("asdad",rgb)
-
+            # cv.imshow("asdad",rgb)
+            print(np.unique(rgb.reshape(-1,3), axis=0)[:20])
             sanitycheck = rgb.copy() 
             # print(sanitycheck)
             pos, radius = find_ball(sanitycheck,[100,149,100])

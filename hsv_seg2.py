@@ -11,8 +11,8 @@ def HSV_mask(image, ref_color):
     if isinstance(image, str):
         img = cv.imread(image)
     else:
-        image = np.array(image,dtype=np.uint8)
-        img = image.astype(np.uint8)
+        imagee = cv.cvtColor(image, cv.COLOR_YUV2BGR)
+        img = imagee.astype(np.uint8)
 
     img_hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     H, S, V = cv.split(img_hsv)
