@@ -38,9 +38,17 @@ def bumper(turtle):
     turtle.register_bumper_event_cb(bumper_cb)
     StateofBumper.wait()
 
+def reasoning(turtle,pos,radius):
+    if 10 > radius > 150:
+        garage_stage.is_set()
+        
+
+
+
+
 def pohyb(turtle):
     lin_speed = 0
-    ang_speed = pi/12
+    ang_speed = pi/24
 
     # Go 
     while not StateofBumper.is_set() :
@@ -50,7 +58,7 @@ def pohyb(turtle):
         if not garage_stage.is_set():
             if  processing_image.is_set():
                 lin_speed = 0
-                ang_speed = pi/12
+                ang_speed = pi/24
                 processing_image.clear()
                 processing_image.wait()
 
@@ -65,7 +73,6 @@ def pohyb(turtle):
         elif not ending_stage.is_set():
             lin_speed = 0.05
             ang_speed = 0
-        
     # Stop robot
     turtle.cmd_velocity(linear=0, angular=0)
 
@@ -80,9 +87,8 @@ def obraz(turtle):
             pos, radius = get_ball_position_and_radius(rgb,[100,128,64])
             processing_image.set()
             print(f'position: {pos} radius {radius}')
-        else: print(processing_image)
         
-
+        reasoning(turtle,pos,radius) 
 
 def main():
     # Initialize turtlebot class
