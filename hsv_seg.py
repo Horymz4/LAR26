@@ -8,10 +8,7 @@ def hue_distance(H, H_ref):
 
 def HSV_mask(image, ref_color):
 
-    if isinstance(image, str):
-        img = cv.imread(image)
-    else:
-        img = image
+    img = image.astype(np.uint8)
 
     img_hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     H, S, V = cv.split(img_hsv)
@@ -28,6 +25,14 @@ def HSV_mask(image, ref_color):
     mask = (hue_distance(H, H_ref) < H_par) & (S > S_par) & (V > V_par)
     mask = mask.astype(np.uint8) * 255
 
+
+    # cv.imshow("S",S)
+    # cv.imshow("V",V)
+    #
+    cv.imshow("Orig",img)
+    cv.imshow("Mask",mask)
+    cv.waitKey(0)
+    
     return mask
 
 def show_labels_color(labels):
