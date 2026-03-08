@@ -4,27 +4,49 @@ import math
 turtle = Turtlebot()
 rate = Rate(10)
 
-# Constants
-LIN_SPEED = 0.2   # meters per second
-ANG_SPEED = 0.5   # radians per second
-SIDE_TIME = 2.0   # seconds to drive straight
-# 90 degrees is pi/2 radians. Time = distance / speed
-TURN_TIME = (math.pi / 2) / ANG_SPEED 
-
-def move(linear, angular, duration):
-    # Resetting the time to track this specific movement
-    start_time = turtle.get_time()
-    while turtle.get_time() - start_time < duration:
-        turtle.cmd_velocity(linear=linear, angular=angular)
+def turn_90_degrees(direction):
+    """Turns exactly 90 degrees using sensor feedback."""
+    # 1. Reset odometry so the current heading is 0
+    turtle.reset_odometry()
+    
+    # Define target angle (90 deg = pi/2 rad)
+    target = math.pi / 2
+    speed = 0.2 if direction == "left" else -0.2
+    
+    # 2. Loop until the sensor 'a' value matches the target
+    while not turtle.is_shutting_down():
+        _, _, current_angle = turtle.get_odometry()
+        
+        # Check if we've reached the absolute value of 1.57 radians
+        if abs(current_angle) >= target:
+            break
+            
+        turtle.cmd_velocity(linear=0, angular=speed)
         rate.sleep()
-    # Stop briefly after every action
+    
+    # 3. Stop movement
     turtle.cmd_velocity(0, 0)
-    rate.sleep()
 
-# 1. Initial +90 degree turn (Counter-Clockwise)
-move(0, ANG_SPEED, TURN_TIME)
+def drive_straight(distance):
+    """Drives a specific distance using x,y odometry."""
+    turtle.reset_odometry()
+    while not turtle.is_shutting_down():
+        x, y, _ = turtle.get_odometry()
+        # Calculate current distance from origin using Pythagoras
+        current_dist = math.sqrt(x**2 + y**2)
+        
+        if current_dist >= distance:
+            break
+            
+        turtle.cmd_velocity(linear=0.2, angular=0)
+        rate.sleep()
+    turtle.cmd_velocity(0, 0)
 
-# 2. The four sides of the square with -90 degree turns (Clockwise)
+# --- EXECUTION ---
+# First, the +90 turn you requested
+turn_90_degrees("left")
+turn_90_degrees("left")
+# Then, the 4 sides of the square with -90 (right) turns
 for _ in range(4):
-    move(LIN_SPEED, 0, SIDE_TIME)  # Go linear
-    move(0, -ANG_SPEED, TURN_TIME) # Turn -90 degrees
+    drive_straight(1) # Move 0.5 meters
+    turn_90_degrees("right")
