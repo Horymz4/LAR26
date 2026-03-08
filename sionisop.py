@@ -42,7 +42,9 @@ def bumper(turtle):
     StateofBumper.wait()
 
 def reasoning(turtle,pos,radius):
-    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and 350 > pos[0] > 250:
+    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and 312.5 > pos[0] > 287.5:
+        turtle.cmd_velocity(linear = 0, angular = 0)
+        time.sleep(0.1)
         garage_stage.set()
     elif (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 45:
         outgarage_stage.set()
@@ -50,22 +52,26 @@ def reasoning(turtle,pos,radius):
 
 def pohyb(turtle):
     lin_speed = 0
-    ang_speed = pi/24
-
+    ang_speed = pi/6
+    print("start pohyb")
+    rate = Rate(10)
     while not StateofBumper.is_set() :
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-
+        rate.sleep()
         if not garage_stage.is_set():
-            if  processing_image.is_set():
+            if processing_image.is_set():
                 lin_speed = 0
-                ang_speed = pi/24
+                ang_speed = -pi/24 
+                print("set angspeed pi/24")
                 processing_image.clear()
                 processing_image.wait()
 
         elif not outgarage_stage.is_set():
-            if  processing_image.is_set():
+            if processing_image.is_set():
                 lin_speed = 0.1
+                print("set angspeed 0")
                 ang_speed = 0
+
                 processing_image.clear()
                 processing_image.wait()
 
