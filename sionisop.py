@@ -1,8 +1,11 @@
 from __future__ import print_function
 import threading, time, sys
 import numpy as np
+import cv2 as cv
 from robolab_turtlebot import Turtlebot, Rate, get_time
 
+
+# from pepa import get_ball_position_and_radius
 from hsv_seg import find_ball, find_rectangles
 from imageio import imwrite 
 
@@ -50,7 +53,6 @@ def pohyb(turtle):
     # Go 
     while not StateofBumper.is_set() :
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        time.sleep(0.05)
 
         if not garage_stage.is_set():
             if  processing_image.is_set():
@@ -84,13 +86,13 @@ def obraz(turtle):
             turtle.wait_for_rgb_image()
             rgb = turtle.get_rgb_image()
             
-            # print(rgb)
-            # np.savetxt("rgb.txt", rgb.reshape(-1, rgb.shape[-1]))
+            cv.imshow("asdad",rgb)
+
             sanitycheck = rgb.copy() 
-            print(sanitycheck)
-            pos, radius = find_ball(sanitycheck,[100,128,64])
+            # print(sanitycheck)
+            pos, radius = find_ball(sanitycheck,[100,149,100])
             processing_image.set()
-            print(f'position: {pos} radius {radius}')
+            print(f'position: {pos} radius {radius}\n')
         
             reasoning(turtle,pos,radius) 
 
