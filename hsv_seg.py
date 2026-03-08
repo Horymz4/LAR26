@@ -105,7 +105,9 @@ def find_two_largest_rectangles_in_mask(mask):
 
         if(cv.contourArea(c) / (w*h) > 0.8):
             rectangles.append((cx, cy, w, h, angle))
-    
+    if len(rectangles) == 1:
+        rectangles.append(None)
+
     if len(rectangles) == 0:
         return None
 
