@@ -39,7 +39,7 @@ def bumper(turtle):
     StateofBumper.wait()
 
 def reasoning(turtle,pos,radius):
-    if (not garage_stage.is_set()) and radius is not None and pos is not None and 15 > radius > 150 and 250 > pos[0] > 350:
+    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and 350 > pos[0] > 250:
         garage_stage.set()
     elif (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 45:
         outgarage_stage.set()
