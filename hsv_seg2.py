@@ -11,7 +11,8 @@ def HSV_mask(image, ref_color):
     if isinstance(image, str):
         img = cv.imread(image)
     else:
-        img = image.astype(np.uint8)
+        imagee = cv.cvtColor(image, cv.COLOR_YUV2BGR)
+        img = imagee.astype(np.uint8)
 
     img_hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     H, S, V = cv.split(img_hsv)
@@ -27,9 +28,6 @@ def HSV_mask(image, ref_color):
 
     mask = (hue_distance(H, H_ref) < H_par) & (S > S_par) & (V > V_par)
     mask = mask.astype(np.uint8) * 255
-
-    cv.imshow("Mask", mask)
-    cv.waitKey(0)
 
     return mask
     
@@ -117,7 +115,7 @@ def find_rectangles(image, ref_colour):
     maska = HSV_mask(image, ref_colour) 
     return find_two_largest_rectangles_in_mask(maska)
 
-pos, radius = find_ball("image13.png", [100, 128, 63])
-rectangles = find_rectangles("image13.png", [100, 86, 134])
-print(pos, radius)
-print(rectangles)
+# pos, radius = find_ball("image13.png", [100, 128, 63])
+# rectangles = find_rectangles("image13.png", [100, 86, 134])
+# print(pos, radius)
+# print(rectangles)
