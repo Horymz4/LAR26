@@ -178,7 +178,11 @@ def find_green_ball(image):
 
 def get_green_ball_average_color_bgr(image_path):
     # načteme obrázek JEDNOU
-    img = cv.imread(image_path)
+    if isinstance(image_path, str):
+        img = cv.imread(image_path)
+    else:
+        img = image_path.astype(np.uint8)
+
 
     # 1) vytvoříme masku zeleného míčku
     mask = HSV_green_mask(img)
@@ -200,8 +204,8 @@ def get_green_ball_average_color_bgr(image_path):
     # 4) převedeme průměrnou barvu z HSV → BGR
     avg_hsv_img = np.uint8([[[avg_hsv[0], avg_hsv[1], avg_hsv[2]]]])
     avg_bgr = cv.cvtColor(avg_hsv_img, cv.COLOR_HSV2BGR)[0,0]
-
+    print(avg_bgr)
     return tuple(int(x) for x in avg_bgr)
 
-color_bgr = get_green_ball_average_color_bgr("input.jpeg")
-print("Průměrná barva míčku (BGR):", color_bgr)
+# color_bgr = get_green_ball_average_color_bgr("input.jpeg")
+# print("Průměrná barva míčku (BGR):", color_bgr)

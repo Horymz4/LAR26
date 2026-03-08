@@ -4,13 +4,12 @@ import numpy as np
 import cv2 as cv
 from robolab_turtlebot import Turtlebot, Rate, get_time
 
-
-# from pepa import get_ball_position_and_radius
 from hsv_seg import find_ball, find_rectangles
-from ezisop import go_to_origin
+from calibrate import get_green_ball_average_color_bgr
+# from ezisop import go_to_origin
 #from kledisbest import make_square
 from imageio import imwrite 
-
+Button_press = threading.Event()
 StateofBumper = threading.Event()
 garage_stage = threading.Event()
 outgarage_stage = threading.Event()
@@ -23,7 +22,7 @@ pi = np.pi
 # Names bumpers and events
 bumper_names = ['LEFT', 'CENTER', 'RIGHT']
 state_names = ['RELEASED', 'PRESSED']
-
+button_states = ["pressed","not pressed"]
 # coppied from the example script
 def bumper_cb(msg):
     bumper = bumper_names[msg.bumper]
@@ -32,6 +31,11 @@ def bumper_cb(msg):
         StateofBumper.set()
     print(f'{bumper} bumper {state}')
 
+def button_cb(msg):
+    state = button_states[msg.state]
+    if msg.state == 1:
+        Button_press.set()
+    print(f'{state}')
 
 def bumper(turtle):
     turtle.register_bumper_event_cb(bumper_cb)
@@ -74,7 +78,7 @@ def pohyb(turtle):
     # Stop robot
     turtle.cmd_velocity(linear=0, angular=0)
 
-def obraz(turtle):
+def obraz(turtle,ref_img):
     pos = (0,0)
     radius = 0
     while not StateofBumper.is_set():
@@ -84,18 +88,31 @@ def obraz(turtle):
             
             sanitycheck = rgb.copy() 
 
-            pos, radius = find_ball(sanitycheck,[90, 146, 49])
+            pos, radius = find_ball(sanitycheck,ref_img)
             processing_image.set()
             print(f'position: {pos} radius {radius}\n')
         
             reasoning(turtle,pos,radius) 
 
+def calibrate(turtle):
+    turtle.register_button_event_cb(button_cb)
+    Button_press.wait()
+    turtle.wait_for_rgb_image()
+    rgb = turtle.get_rgb_image()
+    ref_image = get_green_ball_average_color_bgr(rgb)
+    time.sleep(5)
+
+    return ref_image
+
+
 def main():
     turtle = Turtlebot(rgb=True, depth=True)
 
+    ref = calibrate(turtle)
+    print("Starting t hreads")
     rate = Rate(10)
     t1 = threading.Thread(target=bumper, args=(turtle,))
-    t2 = threading.Thread(target=obraz, args=(turtle,))
+    t2 = threading.Thread(target=obraz, args=(turtle,ref))
     t3 = threading.Thread(target=pohyb, args=(turtle,))
     arr = [t1,t2,t3]
     for i in arr:

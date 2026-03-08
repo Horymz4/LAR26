@@ -13,6 +13,8 @@ def HSV_mask(image, ref_color):
     else:
         img = image.astype(np.uint8)
 
+    img = img[100:, :]
+
     img_hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     H, S, V = cv.split(img_hsv)
     hsv_ref = cv.cvtColor(np.uint8([[ref_color]]), cv.COLOR_BGR2HSV)
@@ -21,13 +23,14 @@ def HSV_mask(image, ref_color):
     S_ref = hsv_ref[0,0,1]
     V_ref = hsv_ref[0,0,2]
 
-    H_par = 20 # barevnej rozdíl
-    S_par = 30
-    V_par = 30
+    H_par = 40 # barevnej rozdÃ­l
+    S_par = 40
+    V_par = 40
 
     mask = (hue_distance(H, H_ref) < H_par) & (S > S_par) & (V > V_par)
     mask = mask.astype(np.uint8) * 255
     cv.imshow("V", V)
+    cv.imshow("H", H)
 
     cv.imshow("Mask", mask)
     cv.waitKey(1)
@@ -49,7 +52,7 @@ def find_ball_in_mask(mask):
         perimeter = cv.arcLength(approx, True)
         area = cv.contourArea(approx)
         circularity = 4 * 3.141 * area / (perimeter * perimeter)
-        if circularity < 0.8:
+        if circularity < 0.7:
             continue
 
         score = area * circularity
@@ -60,7 +63,6 @@ def find_ball_in_mask(mask):
     
     if circle is None:
         return None, None
-    
     (x, y), r = cv.minEnclosingCircle(circle)
 
     return (x, y), r
@@ -117,4 +119,3 @@ def find_ball(image, ref_colour):
 def find_rectangles(image, ref_colour):
     maska = HSV_mask(image, ref_colour) 
     return find_two_largest_rectangles_in_mask(maska)
-
