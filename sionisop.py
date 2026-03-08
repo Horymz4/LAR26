@@ -3,7 +3,7 @@ import threading, time, sys
 import numpy as np
 from robolab_turtlebot import Turtlebot, Rate, get_time
 
-from hsv_seg import find_ball, find_rectangle
+from hsv_seg import find_ball, find_rectangles
 from imageio import imwrite 
 
 StateofBumper = threading.Event()
@@ -39,7 +39,7 @@ def bumper(turtle):
     StateofBumper.wait()
 
 def reasoning(turtle,pos,radius):
-    if radius is not None and pos is not None and 10 > radius > 150 and 250 > and 250 > 
+    if radius is not None and pos is not None and 15 > radius > 150 and 250 > pos[0] > 450:
         garage_stage.set()
         
 

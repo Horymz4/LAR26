@@ -21,7 +21,7 @@ def HSV_mask(image, ref_color):
     S_ref = hsv_ref[0,0,1]
     V_ref = hsv_ref[0,0,2]
 
-    H_par = 15 # barevnej rozdíl
+    H_par = 20 # barevnej rozdíl
     S_par = S_ref/3
     V_par = V_ref/3
 
@@ -121,7 +121,7 @@ def find_rectangles(image, ref_colour):
     maska = HSV_mask(image, ref_colour) 
     return find_two_largest_rectangles_in_mask(maska)
 
-pos, radius = find_ball(area, [100, 128, 63])
-rectangles = find_rectangles("image13.png", [100, 86, 134])
-print(pos, radius)
-print(rectangles)
+# pos, radius = find_ball(area, [100, 128, 63])
+# rectangles = find_rectangles("image13.png", [100, 86, 134])
+# print(pos, radius)
+# print(rectangles)
