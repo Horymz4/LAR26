@@ -39,9 +39,11 @@ def bumper(turtle):
     StateofBumper.wait()
 
 def reasoning(turtle,pos,radius):
-    if radius is not None and pos is not None and 15 > radius > 150 and 250 > pos[0] > 450:
+    if (not garage_stage.is_set()) and radius is not None and pos is not None and 15 > radius > 150 and 250 > pos[0] > 350:
         garage_stage.set()
-        
+    elif (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 45:
+        outgarage_stage.set()
+        print("Ball close")
 
 def pohyb(turtle):
     lin_speed = 0
@@ -60,8 +62,11 @@ def pohyb(turtle):
                 processing_image.wait()
 
         elif not outgarage_stage.is_set():
-            lin_speed = 0.1
-            ang_speed = 0
+            if  processing_image.is_set():
+                lin_speed = 0.1
+                ang_speed = 0
+                processing_image.clear()
+                processing_image.wait()
 
         elif not ball_stage.is_set():
             lin_speed = 0.05
@@ -85,7 +90,7 @@ def obraz(turtle):
             processing_image.set()
             print(f'position: {pos} radius {radius}')
         
-        reasoning(turtle,pos,radius) 
+            reasoning(turtle,pos,radius) 
 
 def main():
     # Initialize turtlebot class
