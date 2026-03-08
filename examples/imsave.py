@@ -1,19 +1,20 @@
 from __future__ import print_function
 
 import sys
-
+import string
 from robolab_turtlebot import Turtlebot
 
 from imageio import imwrite
 
 turtle = Turtlebot(rgb=True)
-turtle.wait_for_rgb_image()
-rgb = turtle.get_rgb_image()
-
-if len(sys.argv) > 1:
-    filename = sys.argv[1]
-else:
-    filename = 'capture_rgb.png'
-
-print('Image saved as {}'.format(filename))
-imwrite(filename, rgb)
+i = 0
+while(True):
+    turtle.wait_for_rgb_image()
+    input()
+    rgb = turtle.get_rgb_image()
+    
+    filename = f'image + {i} + .png'
+    i += 1
+    
+    print(f'Image saved as {filename}')
+    imwrite(filename, rgb)
