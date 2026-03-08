@@ -84,7 +84,11 @@ def obraz(turtle):
             turtle.wait_for_rgb_image()
             rgb = turtle.get_rgb_image()
             
-            pos, radius = find_ball(rgb,[100,128,64])
+            # print(rgb)
+            # np.savetxt("rgb.txt", rgb.reshape(-1, rgb.shape[-1]))
+            sanitycheck = rgb.copy() 
+            print(sanitycheck)
+            pos, radius = find_ball(sanitycheck,[100,128,64])
             processing_image.set()
             print(f'position: {pos} radius {radius}')
         
