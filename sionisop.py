@@ -62,14 +62,12 @@ def pohyb(turtle):
             if processing_image.is_set():
                 lin_speed = 0
                 ang_speed = -pi/24 
-                print("set angspeed pi/24")
                 processing_image.clear()
                 processing_image.wait()
 
         elif not outgarage_stage.is_set():
             if processing_image.is_set():
                 lin_speed = 0.1
-                print("set angspeed 0")
                 ang_speed = 0
 
                 processing_image.clear()
