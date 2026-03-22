@@ -51,34 +51,40 @@ def reasoning(turtle,pos,radius):
         print("Ball close")
 
 def pohyb(turtle):
-    lin_speed = 0
-    ang_speed = 0
     print("start pohyb")
     rate = Rate(10)
-    while not StateofBumper.is_set() :
+
+    #garage
+    lin_speed = 0
+    ang_speed = -pi/24
+    while not StateofBumper.is_set() and not garage_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
-        if not garage_stage.is_set():
-            if processing_image.is_set():
-                lin_speed = 0
-                ang_speed = -pi/24 
-                processing_image.clear()
-                processing_image.wait()
+        
+        if processing_image.is_set():
+            processing_image.clear()
+            processing_image.wait()   
+    turtle.cmd_velocity(linear=0, angular=0)
 
-        elif not outgarage_stage.is_set():
-            if processing_image.is_set():
-                lin_speed = 0.1
-                ang_speed = 0
+    #outgarage_stage
+    lin_speed = 0.1
+    ang_speed = 0
+    while not StateofBumper.is_set() and not outgarage_stage.is_set():
+        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+        rate.sleep()
+        
+        if processing_image.is_set():
+            processing_image.clear()
+            processing_image.wait()
+    
+    turtle.cmd_velocity(linear=0, angular=0)
 
-                processing_image.clear()
-                processing_image.wait()
-
-        elif not ball_stage.is_set():
-            print("HEHE")
-            #make_square(turtle)
-        elif not ending_stage.is_set():
-            lin_speed = 0.05
-            ang_speed = 0
+        # elif not ball_stage.is_set():
+        #     print("HEHE")
+        #     #make_square(turtle)
+        # elif not ending_stage.is_set():
+        #     lin_speed = 0.05
+        #     ang_speed = 0
     # Stop robot
     turtle.cmd_velocity(linear=0, angular=0)
 
@@ -104,7 +110,9 @@ def calibrate(turtle):
     turtle.wait_for_rgb_image()
     rgb = turtle.get_rgb_image()
     ref_image = get_green_ball_average_color_bgr(rgb)
-    time.sleep(5)
+    
+    turtle.register_button_event_cb(button_cb)
+    Button_press.wait()
 
     return ref_image
 
@@ -114,7 +122,7 @@ def main():
 
     ref = calibrate(turtle)
     print("Starting t hreads")
-    rate = Rate(10)
+    # rate = Rate(10)
     t1 = threading.Thread(target=bumper, args=(turtle,))
     t2 = threading.Thread(target=obraz, args=(turtle,ref))
     t3 = threading.Thread(target=pohyb, args=(turtle,))
