@@ -4,7 +4,7 @@ import numpy as np
 import cv2 as cv
 from robolab_turtlebot import Turtlebot, Rate, get_time
 
-from hsv_seg import find_ball, find_garage_center, find_rectangles
+from hsv_seg import find_ball, find_garage_center
 from calibrate import get_green_ball_average_color_bgr
 from beep_beep import ParkController
 # from ezisop import go_to_origin
@@ -20,9 +20,9 @@ ending_stage = threading.Event()
 processing_image = threading.Event()
 
 pi = np.pi
-IMG_CENTER_X = 320
+IMG_CENTER_X = 334
 
-vision_data = {"pos":None, "radius":None}
+vision_data = {"pos":None, "radius":None, "avg_x":None, "dist":None}
 vision_lock = threading.Lock()
 # Names bumpers and events
 bumper_names = ['LEFT', 'CENTER', 'RIGHT']
@@ -47,16 +47,18 @@ def bumper(turtle):
     StateofBumper.wait()
 
 
-def reasoning(turtle,pos,radius,avg_x):
-    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and 350 > pos[0] > 290:
-        time.sleep(0.1)
+def reasoning(turtle,pos,radius,avg_x,dist):
+    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and IMG_CENTER_X+30 > pos[0] > IMG_CENTER_X-30:
         garage_stage.set()
     if (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 55:
         outgarage_stage.set()
         print("Ball close")
-    if (not see_garage.is_set()) and avg_x is not None and 350 > avg_x > 290:
+    if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X+30 > avg_x > IMG_CENTER_X-30:
         see_garage.set()
         print("garage seen")
+    if (not ending_stage.is_set()) and dist is not None and see_garage.is_set() and dist < 2:
+        ending_stage.set()
+        print("parking!")
 
 def pohyb(turtle):
     print("Start pohybového vlákna")
@@ -104,16 +106,16 @@ def pohyb(turtle):
     print("Odometry reseted")
     turtle.reset_odometry()
 
-    #ball_stage
+    # ball_stage
     t = get_time()
     lin_speed = 0
     ang_speed = -pi/8
     while get_time() - t < 8:
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
     min = 0.4
-    back_0 = 0.1
-    lin_speed = 0.15      
-    ang_speed = 0.50 
+    back_0 = 0.2
+    lin_speed = 0.14      
+    ang_speed = 0.4 
     left_origin = False
 
     while not StateofBumper.is_set():
@@ -128,15 +130,16 @@ def pohyb(turtle):
         if not left_origin and dist > min:
             left_origin = True
             print(f"Left origin zone (dist={dist:.2f} m), watching for return")
- 
+
         if left_origin and dist < back_0:
             print(f"Returned to origin (dist={dist:.3f} m), circle done")
             break
 
 
     #ending_stage
+    print("looking for garage!")
     lin_speed = 0
-    ang_speed = -pi/24
+    ang_speed = -pi/12
     while not StateofBumper.is_set() and not see_garage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()   
@@ -147,10 +150,28 @@ def pohyb(turtle):
     
     turtle.cmd_velocity(linear = 0, angular = 0)
     time.sleep(1)
+    
+    ang_speed = 0
+    lin_speed = 0.08
+    while not StateofBumper.is_set() and not ending_stage.is_set():
+        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+        rate.sleep()
+        with vision_lock:
+            if vision_data["avg_x"] is not None:
+                avg_x = vision_data["avg_x"]
+                error_x = avg_x - IMG_CENTER_X
+            else: error_x = 0
+        print(f'errorP: {error_x}')
 
+        ang_speed = -error_x / IMG_CENTER_X * 1.2 
+        if processing_image.is_set():
+            processing_image.clear()
+            processing_image.wait()
+
+        
     park = ParkController(stop_dist=0.47, sound=True)
 
-    while True:
+    while not StateofBumper.is_set():
         done = park.step(turtle)
 
         if done:
@@ -167,6 +188,8 @@ def obraz(turtle,ref_img):
 
     pos = (0,0)
     radius = 0
+    avg_x = 0
+    dist = 0
     while not StateofBumper.is_set():
         if not processing_image.is_set():
             turtle.wait_for_rgb_image()
@@ -177,12 +200,16 @@ def obraz(turtle,ref_img):
                 with vision_lock:
                     vision_data["pos"] = pos
                     vision_data["radius"] = radius
+                print(f'position: {pos} radius {radius}\n')
             else:
-                avg_x = find_garage_center(rgb, [100,86,134])
+                avg_x, dist = find_garage_center(rgb, [100,86,134], turtle)
+                with vision_lock:
+                    vision_data["avg_x"] = avg_x
+                    vision_data["dist"] = dist
             processing_image.set()
-            print(f'position: {pos} radius {radius}\n')
+            
         
-            reasoning(turtle,pos,radius,avg_x) 
+            reasoning(turtle,pos,radius,avg_x,dist) 
 
 def calibrate(turtle):
     print("Start kalibrace")
@@ -206,7 +233,7 @@ def main():
     turtle = Turtlebot(rgb=True, depth=True, pc = True)
 
     # ref = calibrate(turtle)
-    ref = [67, 128, 105]
+    ref = [38, 120, 76]
     print("Starting threads")
     # rate = Rate(10)
     t1 = threading.Thread(target=bumper, args=(turtle,))

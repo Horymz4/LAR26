@@ -10,6 +10,7 @@ turtle = Turtlebot(rgb=True)
 i = 0
 while(True):
     turtle.wait_for_rgb_image()
+    print(turtle.get_rgb_K())
     input()
     rgb = turtle.get_rgb_image()
     

@@ -31,7 +31,7 @@ def HSV_mask(image, ref_color):
     mask = mask.astype(np.uint8) * 255
     # cv.imshow("V", V)
     # cv.imshow("H", H)
-    #
+    # 
     # cv.imshow("Mask", mask)
     cv.waitKey(1)
 
@@ -102,7 +102,7 @@ def find_two_largest_rectangles_in_mask(mask):
         box = cv.boxPoints(rect)
         box = box.astype(int)
 
-        if(cv.contourArea(c) / (w*h) > 0.8):
+        if(cv.contourArea(c) / (w*h) > 0.6):
             rectangles.append((cx, cy, w, h, angle))
     if len(rectangles) == 1:
         rectangles.append(None)
@@ -120,24 +120,51 @@ def find_rectangles(image, ref_colour):
     maska = HSV_mask(image, ref_colour) 
     return find_two_largest_rectangles_in_mask(maska)
 
-def find_garage_center(image, ref_colour):
+def get_distance_at_pixel(turtle, x, y):
+    pc = turtle.get_point_cloud()
+    if pc is None:
+        print("Point cloud není smuloch")
+        return None
+
+    x = int(x)
+    y = int(y)
+
+    h, w, _ = pc.shape
+
+    if not (0 <= x < w and 0 <= y < h):
+        print("Pixel je mimo obraz")
+        return None
+    z = pc[y, x, 2]
+
+    if not np.isfinite(z):
+        print("Sus hloubka v tomto pixelu")
+        return None
+
+    print(f"DistG: {z:.2f}")
+    return float(z)
+
+def find_garage_center(image, ref_colour, turtle):
     rects = find_rectangles(image, ref_colour)
 
     # žádný obdélník
     if rects is None:
         print("Nevidím žádný obdélník")
-        return None
+        return None, None
 
     # jeden obdélník
     if rects[1] is None:
         print("Vidím jeden obdélník")
-        return None
+        return None, None
 
     # dva obdélníky → spočítáme průměr X souřadnic
     x1 = rects[0][0]
     x2 = rects[1][0]
+    y = rects[0][1]
+
 
     avg_x = (x1 + x2) / 2.0
+    dist = get_distance_at_pixel(turtle, avg_x, y)
+
     print(f"X = {avg_x:.2f}")
 
-    return avg_x
+    return avg_x, dist
