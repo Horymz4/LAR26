@@ -46,7 +46,7 @@ def bumper(turtle):
 
 def reasoning(pos,radius,avg_x,dist):
     IMG_CENTER_X = 334
-    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and IMG_CENTER_X + 30 > pos[0] > IMG_CENTER_X - 30:
+    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 5 and IMG_CENTER_X + 30 > pos[0] > IMG_CENTER_X - 30:
         garage_stage.set()
         print("SEE BALL")
     if (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 55:
