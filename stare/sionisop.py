@@ -65,7 +65,6 @@ def pohyb(turtle):
     while not StateofBumper.is_set() and not garage_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
-        
         if processing_image.is_set():
             processing_image.clear()
             processing_image.wait()   
@@ -101,6 +100,7 @@ def obraz(turtle,ref_img):
     radius = 0
     while not StateofBumper.is_set():
         if not processing_image.is_set():
+            processing_image.set()
             turtle.wait_for_rgb_image()
             rgb = turtle.get_rgb_image()
             
@@ -109,7 +109,7 @@ def obraz(turtle,ref_img):
             pos, radius = find_ball(sanitycheck,ref_img)
             vision_data["pos"] = pos
             vision_data["radius"] = radius
-            processing_image.set()
+            # processing_image.set()
             print(f'position: {pos} radius {radius}\n')
         
             reasoning(turtle,pos,radius) 
