@@ -18,11 +18,10 @@ processing_image = threading.Event()
 
 vision_data = {"pos":None, "radius":None, "avg_x":None, "dist":None}
 vision_lock = threading.Lock()
-bumper_names = ['LEFT', 'CENTER', 'RIGHT']
-state_names = ['RELEASED', 'PRESSED']
-button_states = ["pressed","not pressed"]
 
 def bumper_cb(msg):
+    bumper_names = ['LEFT', 'CENTER', 'RIGHT']
+    state_names = ['RELEASED', 'PRESSED']
     bumper = bumper_names[msg.bumper]
     state = state_names[msg.state]
     if msg.state == 1:
@@ -30,6 +29,7 @@ def bumper_cb(msg):
     print(f'{bumper} bumper {state}')
 
 def button_cb(msg):
+    button_states = ["pressed","not pressed"]
     state = button_states[msg.state]
     if msg.state == 1:
         Button_press.set()
