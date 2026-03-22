@@ -9,6 +9,7 @@ from calibrate import get_green_ball_average_color_bgr
 # from ezisop import go_to_origin
 #from kledisbest import make_square
 from imageio import imwrite 
+
 Button_press = threading.Event()
 StateofBumper = threading.Event()
 garage_stage = threading.Event()
@@ -18,6 +19,9 @@ ending_stage = threading.Event()
 processing_image = threading.Event()
 
 pi = np.pi
+IMG_CENTER_X = 300
+
+vision_data = {"pos":None, "radius":None}
 
 # Names bumpers and events
 bumper_names = ['LEFT', 'CENTER', 'RIGHT']
@@ -49,6 +53,7 @@ def reasoning(turtle,pos,radius):
     elif (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 45:
         outgarage_stage.set()
         print("Ball close")
+        turtle.cmd_velocity(linear=0, angular=0)
 
 def pohyb(turtle):
     print("start pohyb")
@@ -56,7 +61,7 @@ def pohyb(turtle):
 
     #garage
     lin_speed = 0
-    ang_speed = -pi/24
+    ang_speed = -pi/20
     while not StateofBumper.is_set() and not garage_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
@@ -64,20 +69,23 @@ def pohyb(turtle):
         if processing_image.is_set():
             processing_image.clear()
             processing_image.wait()   
-    turtle.cmd_velocity(linear=0, angular=0)
 
     #outgarage_stage
-    lin_speed = 0.1
     ang_speed = 0
+    lin_speed = 0.05
     while not StateofBumper.is_set() and not outgarage_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         
+        error_x = vision_data["pos"][0] - IMG_CENTER_X
+        print(f'errorP: {error_x}')
+        ang_speed = -error_x / IMG_CENTER_X * 0.8    # max ≈ 0.8 rad/s
         if processing_image.is_set():
             processing_image.clear()
             processing_image.wait()
     
-    turtle.cmd_velocity(linear=0, angular=0)
+
+
 
         # elif not ball_stage.is_set():
         #     print("HEHE")
@@ -99,6 +107,8 @@ def obraz(turtle,ref_img):
             sanitycheck = rgb.copy() 
 
             pos, radius = find_ball(sanitycheck,ref_img)
+            vision_data["pos"] = pos
+            vision_data["radius"] = radius
             processing_image.set()
             print(f'position: {pos} radius {radius}\n')
         
@@ -107,6 +117,8 @@ def obraz(turtle,ref_img):
 def calibrate(turtle):
     turtle.register_button_event_cb(button_cb)
     Button_press.wait()
+    Button_press.clear()
+
     turtle.wait_for_rgb_image()
     rgb = turtle.get_rgb_image()
     ref_image = get_green_ball_average_color_bgr(rgb)
@@ -121,7 +133,7 @@ def main():
     turtle = Turtlebot(rgb=True, depth=True)
 
     ref = calibrate(turtle)
-    print("Starting t hreads")
+    print("Starting threads")
     # rate = Rate(10)
     t1 = threading.Thread(target=bumper, args=(turtle,))
     t2 = threading.Thread(target=obraz, args=(turtle,ref))

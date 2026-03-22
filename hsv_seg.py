@@ -29,10 +29,10 @@ def HSV_mask(image, ref_color):
 
     mask = (hue_distance(H, H_ref) < H_par) & (S > S_par) & (V > V_par)
     mask = mask.astype(np.uint8) * 255
-    cv.imshow("V", V)
-    cv.imshow("H", H)
-
-    cv.imshow("Mask", mask)
+    # cv.imshow("V", V)
+    # cv.imshow("H", H)
+    #
+    # cv.imshow("Mask", mask)
     cv.waitKey(1)
 
     return mask
