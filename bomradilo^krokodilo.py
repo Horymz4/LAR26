@@ -14,12 +14,12 @@ Button_press = threading.Event()
 StateofBumper = threading.Event()
 garage_stage = threading.Event()
 outgarage_stage = threading.Event()
-ball_stage = threading.Event()
+see_garage = threading.Event()
 ending_stage = threading.Event()
 processing_image = threading.Event()
 
 pi = np.pi
-IMG_CENTER_X = 300
+IMG_CENTER_X = 320
 
 vision_data = {"pos":None, "radius":None}
 vision_lock = threading.Lock()
@@ -45,13 +45,17 @@ def bumper(turtle):
     turtle.register_bumper_event_cb(bumper_cb)
     StateofBumper.wait()
 
-def reasoning(turtle,pos,radius):
-    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and 350 > pos[0] > 250:
+
+def reasoning(turtle,pos,radius,avg_x):
+    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and 350 > pos[0] > 290:
         time.sleep(0.1)
         garage_stage.set()
-    elif (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 45:
+    if (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 55:
         outgarage_stage.set()
         print("Ball close")
+    if (not see_garage.is_set()) and avg_x is not None and 350 > avg_x > 290:
+        see_garage.set()
+        print("garage seen")
 
 def pohyb(turtle):
     print("Start pohybového vlákna")
@@ -59,7 +63,7 @@ def pohyb(turtle):
 
     #garage
     lin_speed = 0
-    ang_speed = -pi/15
+    ang_speed = -pi/20
     while not StateofBumper.is_set() and not garage_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
@@ -69,13 +73,15 @@ def pohyb(turtle):
             processing_image.wait()   
     turtle.cmd_velocity(linear = 0, angular = 0)
     print("Ball centred")
-    time.sleep(2)
+    time.sleep(1)
+
     #outgarage_stage
     ang_speed = 0
-    lin_speed = 0.1
+    lin_speed = 0.08
     while not StateofBumper.is_set() and not outgarage_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
+        radius = pos = None
         with vision_lock:
             if vision_data["pos"] is not None:
                 pos = vision_data["pos"][0]
@@ -85,46 +91,54 @@ def pohyb(turtle):
         else: error_x = 0
         print(f'errorP: {error_x}')
 
-        ang_speed = -error_x / IMG_CENTER_X * 1.2    # max ≈ 0.8 rad/s
+        ang_speed = -error_x / IMG_CENTER_X * 0.8    # max ≈ 0.8 rad/s
         if processing_image.is_set():
             processing_image.clear()
             processing_image.wait()
 
     turtle.cmd_velocity(linear = 0, angular = 0)
     time.sleep(2)
+
     print("Odometry reseted")
     turtle.reset_odometry()
 
-    min = 0.8
+    #ball_stage
+    t = get_time()
+    lin_speed = 0
+    ang_speed = -pi/8
+    while get_time() - t < 8:
+        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+    min = 0.4
     back_0 = 0.1
     lin_speed = 0.15      
-    ang_speed = 0.30 
+    ang_speed = 0.50 
     left_origin = False
 
-    while not StateofBumper.is_set() and not ball_stage.is_set():
+    while not StateofBumper.is_set():
+        odometry = turtle.get_odometry() 
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
-        odometry = turtle.get_odometry()
-        print(odometry)
+
         x, y = odometry[0], odometry[1]
         dist = np.sqrt(x**2 + y**2)
- 
+        print(odometry,dist,left_origin)
+
         if not left_origin and dist > min:
             left_origin = True
-            print(f"[Phase 3] Left origin zone (dist={dist:.2f} m), watching for return …")
+            print(f"Left origin zone (dist={dist:.2f} m), watching for return")
  
         if left_origin and dist < back_0:
-            print(f"[Phase 3] Returned to origin (dist={dist:.3f} m) → circle done")
+            print(f"Returned to origin (dist={dist:.3f} m), circle done")
             break
 
 
+    #ending_stage
+    lin_speed = 0
+    ang_speed = -pi/24
+    while not StateofBumper.is_set() and not see_garage.is_set():
+        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+        rate.sleep()   
 
-        # elif not ball_stage.is_set():
-        #      print("HEHE")
-        #      #make_square(turtle)
-        #  elif not ending_stage.is_set():
-        #      lin_speed = 0.05
-        #      ang_speed = 0
     # Stop robot
     turtle.cmd_velocity(linear=0, angular=0)
 
@@ -138,14 +152,17 @@ def obraz(turtle,ref_img):
             turtle.wait_for_rgb_image()
             rgb = turtle.get_rgb_image()
             
-            pos, radius = find_ball(rgb,ref_img)
-            with vision_lock:
-                vision_data["pos"] = pos
-                vision_data["radius"] = radius
+            if not outgarage_stage.is_set():
+                pos, radius = find_ball(rgb,ref_img)
+                with vision_lock:
+                    vision_data["pos"] = pos
+                    vision_data["radius"] = radius
+            else:
+                avg_x = 
             processing_image.set()
             print(f'position: {pos} radius {radius}\n')
         
-            reasoning(turtle,pos,radius) 
+            reasoning(turtle,pos,radius,avg_x) 
 
 def calibrate(turtle):
     print("Start kalibrace")

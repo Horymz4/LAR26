@@ -119,3 +119,26 @@ def find_ball(image, ref_colour):
 def find_rectangles(image, ref_colour):
     maska = HSV_mask(image, ref_colour) 
     return find_two_largest_rectangles_in_mask(maska)
+
+def analyze_rectangles(mask):
+    rects = find_two_largest_rectangles_in_mask(mask)
+
+    # žádný obdélník
+    if rects is None:
+        print("Nevidím žádný obdélník")
+        return None
+
+    # jeden obdélník
+    if rects[1] is None:
+        print("Vidím jeden obdélník")
+        return None
+
+    # dva obdélníky → spočítáme průměr X souřadnic
+    (cx1, cy1, w1, h1, a1) = rects[0]
+    (cx2, cy2, w2, h2, a2) = rects[1]
+
+    avg_x = (cx1 + cx2) / 2.0
+    print(f"Vidím dva obdélníky, průměrné X = {avg_x:.2f}")
+
+    return avg_x
+
