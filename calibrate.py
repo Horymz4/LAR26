@@ -64,7 +64,7 @@ def find_green_ball(image):
             continue
 
         circularity = 4 * np.pi * area / (perimeter * perimeter)
-        if circularity < 0.6:
+        if circularity < 0.5:
             continue
 
         (x, y), r = cv.minEnclosingCircle(c)

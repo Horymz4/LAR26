@@ -46,7 +46,7 @@ def bumper(turtle):
     StateofBumper.wait()
 
 def reasoning(turtle,pos,radius):
-    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and 312.5 > pos[0] > 287.5:
+    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and 350 > pos[0] > 250:
         time.sleep(0.1)
         garage_stage.set()
     elif (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 45:
@@ -59,7 +59,7 @@ def pohyb(turtle):
 
     #garage
     lin_speed = 0
-    ang_speed = -pi/20
+    ang_speed = -pi/15
     while not StateofBumper.is_set() and not garage_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
@@ -72,19 +72,20 @@ def pohyb(turtle):
     time.sleep(2)
     #outgarage_stage
     ang_speed = 0
-    lin_speed = 0.05
+    lin_speed = 0.1
     while not StateofBumper.is_set() and not outgarage_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         with vision_lock:
-            pos = vision_data["pos"][0]
-            radius = vision_data["radius"]
+            if vision_data["pos"] is not None:
+                pos = vision_data["pos"][0]
+                radius = vision_data["radius"]
         if radius is not None and pos is not None:
             error_x = pos - IMG_CENTER_X
         else: error_x = 0
         print(f'errorP: {error_x}')
 
-        ang_speed = -error_x / IMG_CENTER_X * 0.8    # max ≈ 0.8 rad/s
+        ang_speed = -error_x / IMG_CENTER_X * 1.2    # max ≈ 0.8 rad/s
         if processing_image.is_set():
             processing_image.clear()
             processing_image.wait()
@@ -98,11 +99,13 @@ def pohyb(turtle):
     back_0 = 0.1
     lin_speed = 0.15      
     ang_speed = 0.30 
+    left_origin = False
 
     while not StateofBumper.is_set() and not ball_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         odometry = turtle.get_odometry()
+        print(odometry)
         x, y = odometry[0], odometry[1]
         dist = np.sqrt(x**2 + y**2)
  
@@ -116,15 +119,12 @@ def pohyb(turtle):
 
 
 
-
-
-
-        elif not ball_stage.is_set():
-             print("HEHE")
-             #make_square(turtle)
-         elif not ending_stage.is_set():
-             lin_speed = 0.05
-             ang_speed = 0
+        # elif not ball_stage.is_set():
+        #      print("HEHE")
+        #      #make_square(turtle)
+        #  elif not ending_stage.is_set():
+        #      lin_speed = 0.05
+        #      ang_speed = 0
     # Stop robot
     turtle.cmd_velocity(linear=0, angular=0)
 
@@ -168,7 +168,8 @@ def calibrate(turtle):
 def main():
     turtle = Turtlebot(rgb=True, depth=True)
 
-    ref = calibrate(turtle)
+    # ref = calibrate(turtle)
+    ref = [67, 128, 105]
     print("Starting threads")
     # rate = Rate(10)
     t1 = threading.Thread(target=bumper, args=(turtle,))
