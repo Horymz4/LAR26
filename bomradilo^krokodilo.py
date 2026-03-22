@@ -48,7 +48,7 @@ def bumper(turtle):
 
 
 def reasoning(turtle,pos,radius,avg_x,dist):
-    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 15 and IMG_CENTER_X+30 > pos[0] > IMG_CENTER_X-30:
+    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 5 and IMG_CENTER_X+30 > pos[0] > IMG_CENTER_X-30:
         garage_stage.set()
     if (not outgarage_stage.is_set()) and radius is not None and pos is not None and 70 > radius > 55:
         outgarage_stage.set()
@@ -56,7 +56,7 @@ def reasoning(turtle,pos,radius,avg_x,dist):
     if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X+30 > avg_x > IMG_CENTER_X-30:
         see_garage.set()
         print("garage seen")
-    if (not ending_stage.is_set()) and dist is not None and see_garage.is_set() and dist < 2:
+    if (not ending_stage.is_set()) and dist is not None and see_garage.is_set() and dist < 1:
         ending_stage.set()
         print("parking!")
 
@@ -90,12 +90,12 @@ def pohyb(turtle):
             if vision_data["pos"] is not None:
                 pos = vision_data["pos"][0]
                 radius = vision_data["radius"]
-        if radius is not None and pos is not None:
+        if radius is not None and pos is not None and radius < 90:
             error_x = pos - IMG_CENTER_X
         else: error_x = 0
         print(f'errorP: {error_x}')
 
-        ang_speed = -error_x / IMG_CENTER_X * 0.8    # max ≈ 0.8 rad/s
+        ang_speed = -error_x / IMG_CENTER_X * 0.5    # max ≈ 0.8 rad/s
         if processing_image.is_set():
             processing_image.clear()
             processing_image.wait()
@@ -110,7 +110,7 @@ def pohyb(turtle):
     t = get_time()
     lin_speed = 0
     ang_speed = -pi/8
-    while get_time() - t < 8:
+    while get_time() - t < 8 and not StateofBumper.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
     min = 0.4
     back_0 = 0.2
@@ -135,6 +135,8 @@ def pohyb(turtle):
             print(f"Returned to origin (dist={dist:.3f} m), circle done")
             break
 
+    turtle.cmd_velocity(linear = 0, angular = 0)
+    time.sleep(2)
 
     #ending_stage
     print("looking for garage!")
@@ -169,6 +171,7 @@ def pohyb(turtle):
             processing_image.wait()
 
         
+    rate = Rate(20)
     park = ParkController(stop_dist=0.47, sound=True)
 
     while not StateofBumper.is_set():
@@ -232,8 +235,8 @@ def calibrate(turtle):
 def main():
     turtle = Turtlebot(rgb=True, depth=True, pc = True)
 
-    # ref = calibrate(turtle)
-    ref = [38, 120, 76]
+    ref = calibrate(turtle)
+    # ref = [48, 120, 77]
     print("Starting threads")
     # rate = Rate(10)
     t1 = threading.Thread(target=bumper, args=(turtle,))
