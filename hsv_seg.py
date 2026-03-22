@@ -120,8 +120,8 @@ def find_rectangles(image, ref_colour):
     maska = HSV_mask(image, ref_colour) 
     return find_two_largest_rectangles_in_mask(maska)
 
-def analyze_rectangles(mask):
-    rects = find_two_largest_rectangles_in_mask(mask)
+def find_garage_center(image, ref_colour):
+    rects = find_rectangles(image, ref_colour)
 
     # žádný obdélník
     if rects is None:
@@ -134,11 +134,10 @@ def analyze_rectangles(mask):
         return None
 
     # dva obdélníky → spočítáme průměr X souřadnic
-    (cx1, cy1, w1, h1, a1) = rects[0]
-    (cx2, cy2, w2, h2, a2) = rects[1]
+    x1 = rects[0][0]
+    x2 = rects[1][0]
 
-    avg_x = (cx1 + cx2) / 2.0
-    print(f"Vidím dva obdélníky, průměrné X = {avg_x:.2f}")
+    avg_x = (x1 + x2) / 2.0
+    print(f"X = {avg_x:.2f}")
 
     return avg_x
-

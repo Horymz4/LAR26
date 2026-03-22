@@ -4,8 +4,9 @@ import numpy as np
 import cv2 as cv
 from robolab_turtlebot import Turtlebot, Rate, get_time
 
-from hsv_seg import find_ball, find_rectangles
+from hsv_seg import find_ball, find_garage_center, find_rectangles
 from calibrate import get_green_ball_average_color_bgr
+from beep_beep import ParkController
 # from ezisop import go_to_origin
 #from kledisbest import make_square
 from imageio import imwrite 
@@ -71,6 +72,7 @@ def pohyb(turtle):
         if processing_image.is_set():
             processing_image.clear()
             processing_image.wait()   
+
     turtle.cmd_velocity(linear = 0, angular = 0)
     print("Ball centred")
     time.sleep(1)
@@ -139,6 +141,24 @@ def pohyb(turtle):
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()   
 
+        if processing_image.is_set():
+            processing_image.clear()
+            processing_image.wait()
+    
+    turtle.cmd_velocity(linear = 0, angular = 0)
+    time.sleep(1)
+
+    park = ParkController(stop_dist=0.47, sound=True)
+
+    while True:
+        done = park.step(turtle)
+
+        if done:
+            print("Zaparkováno!")
+            break
+
+        rate.sleep()
+
     # Stop robot
     turtle.cmd_velocity(linear=0, angular=0)
 
@@ -158,7 +178,7 @@ def obraz(turtle,ref_img):
                     vision_data["pos"] = pos
                     vision_data["radius"] = radius
             else:
-                avg_x = 
+                avg_x = find_garage_center(rgb, [100,86,134])
             processing_image.set()
             print(f'position: {pos} radius {radius}\n')
         
@@ -183,7 +203,7 @@ def calibrate(turtle):
 
 
 def main():
-    turtle = Turtlebot(rgb=True, depth=True)
+    turtle = Turtlebot(rgb=True, depth=True, pc = True)
 
     # ref = calibrate(turtle)
     ref = [67, 128, 105]
