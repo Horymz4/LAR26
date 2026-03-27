@@ -1,6 +1,6 @@
 import time
 import numpy as np
-from threading_variables import garage_stage, StateofBumper, outgarage_stage, see_garage, ending_stage
+from threading_variables import garage_stage, StateofBumper,odometry_stage, outgarage_stage, see_garage, ending_stage
 
 from robolab_turtlebot import get_time
 from utils import set_process_img,  P_reg_ball, P_reg_gar
@@ -53,7 +53,6 @@ def stage3(turtle,rate):
 def do_quater_spin(turtle,rate):
     print("Half circle maneuver start")
     
-    turtle.reset_odometry()
     t = get_time()
     lin_speed = linear_0
     ang_speed = angular_quater_spin
@@ -72,6 +71,7 @@ def go_around_the_ball(turtle,rate):
     tolerance = 0.2
     left_origin = False
 
+    turtle.reset_odometry()
     lin_speed = linear_around_the_ball      
     ang_speed = angular_around_the_ball
     
@@ -93,7 +93,7 @@ def go_around_the_ball(turtle,rate):
             break
         set_process_img()
         # TODO PROCESSING IMAGE SET ??
-
+    odometry_stage.set()
     print("go_around_the_ball konec")  
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     time.sleep(1) 

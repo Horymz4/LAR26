@@ -3,7 +3,7 @@ import threading
 from robolab_turtlebot import Turtlebot, Rate
 from stages import stage1, stage2, stage3, stage4, stage5
 from utils import bumper_cb, reasoning, ball_image, garage_image
-from threading_variables import StateofBumper, processing_image, outgarage_stage
+from threading_variables import StateofBumper, processing_image, odometry_stage
 from utils import calibrate
 
 
@@ -40,7 +40,7 @@ def obraz(turtle,ref_img):
             turtle.wait_for_rgb_image()
             rgb = turtle.get_rgb_image()
             # looking for ball ------------------------
-            if not outgarage_stage.is_set():                         
+            if not odometry_stage.is_set():                         
                 pos,radius = ball_image(rgb,ref_img)
             # looking for garage ----------------------
             else:                                                    
@@ -59,7 +59,7 @@ def main():
 
     # Calibration -------------------------------------
     ref = calibrate(turtle)
-    #ref = [31, 70, 54]
+    #ref = [26, 70, 54]
 
     # Threading ---------------------------------------
     print("Starting threads")
