@@ -39,7 +39,24 @@ def stage2(turtle,rate):
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     time.sleep(1)
+    go_forward_a_little(turtle,rate)
     print("Stage 2 konec")
+
+def go_forward_a_little(turtle,rate):
+    print("going a bit forward")
+
+    ang_speed = angular_0
+    lin_speed = linear_the_rest
+
+    t = get_time()
+    while not StateofBumper.is_set() and t - get_time() < 2:
+        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+        rate.sleep()
+        set_process_img()
+
+    turtle.cmd_velocity(linear = linear_0, angular = angular_0)
+    time.sleep(1)
+
 
 # Stage 3 ------------------------------------
 def stage3(turtle,rate):
