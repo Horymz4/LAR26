@@ -1,27 +1,24 @@
 import cv2 as cv
 import numpy as np
 
+# Dinstence of hue ----------------------------------
 def hue_distance(H, H_ref):
     H = H.astype(np.int16)
     diff = np.abs(H - int(H_ref))
     return np.minimum(diff, 180 - diff)
 
-def HSV_mask(image, ref_color):
+# Mask of same colored objects ----------------------
+def HSV_mask(image, ref_color, ball):
 
-    if isinstance(image, str):
-        img = cv.imread(image)
-    else:
-        img = image.astype(np.uint8)
-
-    img = img[100:, :]
+    img = image.astype(np.uint8)
+    if ball:
+        img = img[100:, :]
 
     img_hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     H, S, V = cv.split(img_hsv)
     hsv_ref = cv.cvtColor(np.uint8([[ref_color]]), cv.COLOR_BGR2HSV)
-
     H_ref = hsv_ref[0,0,0]
-    S_ref = hsv_ref[0,0,1]
-    V_ref = hsv_ref[0,0,2]
+
     # Color difference --------------------------------
     H_par = 40                                      
     S_par = 40
@@ -29,15 +26,12 @@ def HSV_mask(image, ref_color):
 
     mask = (hue_distance(H, H_ref) < H_par) & (S > S_par) & (V > V_par)
     mask = mask.astype(np.uint8) * 255
-    # cv.imshow("V", V)
-    # cv.imshow("H", H)
-    # cv.imshow("Mask", mask)
-    cv.waitKey(1)
-
-    return mask
     
-def find_ball_in_mask(mask):
-    contours, hierarchy = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+    return mask
+
+# Circles in mask -----------------------------------
+def find_ball_in_mask(mask, MIN_DIAMETER, MAX_DIAMETER):
+    contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
 
     circle = None
     best_score = 0
@@ -62,10 +56,21 @@ def find_ball_in_mask(mask):
     
     if circle is None:
         return None, None
+    
     (x, y), r = cv.minEnclosingCircle(circle)
+
+    if r < MIN_DIAMETER or r > MAX_DIAMETER:
+        print("Diameter out of bounds: ", r)
+        return None, None
 
     return (x, y), r
 
+# Find ball ----------------------------------------
+def find_ball(image, ref_colour, MIN_DIAMETER = 15, MAX_DIAMETER = 600):
+    maska = HSV_mask(image, ref_colour, True) 
+    return find_ball_in_mask(maska, MIN_DIAMETER, MAX_DIAMETER)
+
+# Normalize size of rectangle ----------------------
 def normalize_rect(rect):
     (cx, cy), (w, h), angle = rect
 
@@ -80,29 +85,37 @@ def normalize_rect(rect):
 
     return ((int(cx), int(cy)), (int(w), int(h)), angle)
 
+# Two largest rectangles in mask -------------------
 def find_two_largest_rectangles_in_mask(mask):
-    contours, hierarchy = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+    contours, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
     contours = [c for c in contours if cv.contourArea(c) >= 100]
     contours = sorted(contours, key=cv.contourArea, reverse=True)
+    
     rectangles = []
+    first_height = None
 
     for c in contours:
-        if(len(rectangles) == 2):
+        if len(rectangles) == 2:
             continue
 
         rect = cv.minAreaRect(c)
         rect = normalize_rect(rect)
 
         (cx, cy), (w, h), angle = rect
+        cx, cy, w, h = int(cx), int(cy), int(w), int(h)
 
-        cx, cy = int(cx), int(cy)
-        w, h = int(w), int(h)
+        if h < 40:
+            continue
 
-        box = cv.boxPoints(rect)
-        box = box.astype(int)
+        if first_height is not None:
+            if not (0.7 * first_height <= h <= 1.3 * first_height):
+                continue
 
         if(cv.contourArea(c) / (w*h) > 0.6):
             rectangles.append((cx, cy, w, h, angle))
+            if first_height is None:
+                first_height = h
+
     if len(rectangles) == 1:
         rectangles.append(None)
 
@@ -111,28 +124,24 @@ def find_two_largest_rectangles_in_mask(mask):
 
     return rectangles
 
-def find_ball(image, ref_colour):
-    maska = HSV_mask(image, ref_colour) 
-    return find_ball_in_mask(maska)
-
+# Find rectangles ----------------------------------
 def find_rectangles(image, ref_colour):
-    maska = HSV_mask(image, ref_colour) 
+    maska = HSV_mask(image, ref_colour, False) 
     return find_two_largest_rectangles_in_mask(maska)
 
+# Distance of point on depth camera ----------------
 def get_distance_at_pixel(turtle, x, y):
     pc = turtle.get_point_cloud()
     if pc is None:
         print("Point cloud není smuloch")
         return None
 
-    x = int(x)
-    y = int(y)
-
     h, w, _ = pc.shape
 
     if not (0 <= x < w and 0 <= y < h):
         print("Pixel je mimo obraz")
         return None
+    
     z = pc[y, x, 2]
 
     if not np.isfinite(z):
@@ -142,6 +151,7 @@ def get_distance_at_pixel(turtle, x, y):
     print("DistG = ", z)
     return float(z)
 
+# Returns center of garage -------------------------
 def find_garage_center(image, ref_colour, turtle):
     rects = find_rectangles(image, ref_colour)
     # No rectangle ------------------------------------
@@ -154,12 +164,11 @@ def find_garage_center(image, ref_colour, turtle):
         print("Vidím jeden obdélník")
         return None, None
 
-
     x1 = rects[0][0]
     x2 = rects[1][0]
     y = rects[0][1]
     # Center of garage in pixels ----------------------
-    avg_x = (x1 + x2) / 2.0                         
+    avg_x = (x1 + x2) // 2                       
     dist = get_distance_at_pixel(turtle, avg_x, y)
 
     print("X = ", avg_x)

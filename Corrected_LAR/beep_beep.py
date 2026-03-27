@@ -2,8 +2,6 @@ import time
 import numpy as np
 from robolab_turtlebot import Turtlebot, Rate
 
-
-
 # Distance calculator ---------------------------------
 def get_bottom_half_distance(pc):
     if pc is None:
@@ -18,8 +16,6 @@ def get_bottom_half_distance(pc):
         return None
 
     return float(np.mean(z[mask]))
-
-
 
 # Parking state ---------------------------------------
 class ParkController:
@@ -47,7 +43,7 @@ class ParkController:
             print("Depth None")
             return False
 
-        print("Average distance: m", dist)
+        print("Avg dist: ", dist)
 
         # Control of parking --------------------------
         if dist < self.stop_dist:
@@ -74,26 +70,8 @@ class ParkController:
         rate = Rate(20) # 20????
         while True:
             done = self.step(turtle)
-
             if done:
                 print("Zaparkováno!")
                 break
-
             rate.sleep()
         
-#  Main programme -------------------------------------
-
-if __name__ == '__main__':
-    turtle = Turtlebot(pc=True)
-    rate = Rate(20) # 20????
-
-    park = ParkController(stop_dist=0.47, sound=True)
-
-    while True:
-        done = park.step(turtle)
-
-        if done:
-            print("Zaparkováno!")
-            break
-
-        rate.sleep()

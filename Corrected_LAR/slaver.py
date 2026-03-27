@@ -21,11 +21,11 @@ def pohyb(turtle):
     print("Start pohybového vlákna")
     rate = Rate(10)
 
-    stage1(turtle,rate) # garage ----------------------
-    stage2(turtle,rate) # going to the ball -----------
-    stage3(turtle,rate) # going round the ball --------
-    stage4(turtle,rate) # garage ----------------------
-    stage5(turtle,rate) # parking ---------------------
+    if not StateofBumper.is_set(): stage1(turtle,rate) # garage ----------------------
+    if not StateofBumper.is_set(): stage2(turtle,rate) # going to the ball -----------
+    if not StateofBumper.is_set(): stage3(turtle,rate) # going round the ball --------
+    if not StateofBumper.is_set(): stage4(turtle,rate) # garage ----------------------
+    if not StateofBumper.is_set(): stage5(turtle,rate) # parking ---------------------
  
     print("Konec pohybového vlákna")
 
