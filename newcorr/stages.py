@@ -10,7 +10,7 @@ from constants import linear_0, angular_0, stop_distance, angular_spinning, angu
 def stage1(turtle, rate):
     time.sleep(1)
     find_opening(turtle,rate)
-    go_forward_a_little(turtle,rate)
+    go_forward_a_little(turtle,rate,8)
 
 def find_opening(turtle,rate):
     lin_speed = linear_0
@@ -54,17 +54,17 @@ def stage3(turtle,rate):
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     time.sleep(0.5)
-    go_forward_a_little(turtle,rate)
+    go_forward_a_little(turtle,rate,2)
     print("Stage 3 konec")
 
-def go_forward_a_little(turtle,rate):
+def go_forward_a_little(turtle,rate,how_long = 2):
     print("going a bit forward")
 
     ang_speed = angular_0
     lin_speed = linear_the_rest
 
     t = get_time()
-    while not StateofBumper.is_set() and get_time() - t < 2:
+    while not StateofBumper.is_set() and get_time() - t < how_long:
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         set_process_img()
