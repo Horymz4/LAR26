@@ -74,12 +74,12 @@ def garage_image(rgb,ref,turtle):
 def garage_wall_percentage(pc, dist = 0.7):
     if pc is None:
         return None
-
+    ratio = 1
     h = pc.shape[0]
     bottom = pc[h//2:, :, :]
     z = bottom[:, :, 2]
-
-    ratio = np.mean(z < dist)
+    if z is not None:
+        ratio = np.mean(z < dist)
     
     return ratio
 
