@@ -71,7 +71,7 @@ def obraz(turtle,ref_img):
 # Main ------------------------------------------------
 def main():
     # Turtle initalization ----------------------------
-    turtle = Turtlebot(rgb=True, depth=True, pc = True)
+    turtle = Turtlebot(rgb=True, pc=True)
 
     # Calibration -------------------------------------
     #ref = calibrate(turtle)
