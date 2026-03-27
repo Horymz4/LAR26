@@ -82,7 +82,7 @@ def garage_wall_percentage(pc, dist = 0.8):
     z = bottom[:, :, 2]
 
     ratio = np.mean(z < dist)
-
+    print(f'wall: {ratio}%')
     return ratio
 
 # Image processing util -------------------------------
