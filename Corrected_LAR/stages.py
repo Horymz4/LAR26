@@ -120,7 +120,7 @@ def looking_for_garage_spin(turtle,rate):
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     print("looking_for_garage_spin konec")
-    time.sleep(1)
+    time.sleep(2)
 
 def get_close_to_garage(turtle,rate):
     print("get_close_to_garage start")
@@ -136,7 +136,7 @@ def get_close_to_garage(turtle,rate):
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     print("get_close_to_garage konec")
-    time.sleep(1)
+    time.sleep(2)
 
 # Stage 5 ------------------------------------
 def stage5(turtle,rate):
