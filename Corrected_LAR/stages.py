@@ -130,7 +130,7 @@ def looking_for_garage_spin(turtle,rate):
     print("looking_for_garage_spin start")
 
     lin_speed = linear_0
-    ang_speed = angular_spinning
+    ang_speed = angular_spinning + 0.5
     while not StateofBumper.is_set() and not see_garage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()   
