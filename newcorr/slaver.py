@@ -47,18 +47,19 @@ def obraz(turtle,ref_img):
                 ratio = garage_wall_percentage(pc)
 
                 processing_image.set()
-                continue
  
-            turtle.wait_for_rgb_image()
-            rgb = turtle.get_rgb_image()
             # Stage 2, 3, 4
-            if not odometry_stage.is_set():
+            elif not odometry_stage.is_set():
 
+                turtle.wait_for_rgb_image()
+                rgb = turtle.get_rgb_image()
                 pos, radius = ball_image(rgb, ref_img)
                 avg_x = dist = None
  
             # Stage 5
             else:
+                turtle.wait_for_rgb_image()
+                rgb = turtle.get_rgb_image()
                 avg_x, dist = garage_image(rgb, [129, 71, 90], turtle)
                 pos = radius = None
  
