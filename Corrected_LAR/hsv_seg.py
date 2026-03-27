@@ -20,10 +20,14 @@ def HSV_mask(image, ref_color, ball):
     H_ref = hsv_ref[0,0,0]
 
     # Color difference --------------------------------
-    H_par = 40                                      
-    S_par = 40
-    V_par = 40
-
+    if ball:
+        H_par = 40                                      
+        S_par = 40
+        V_par = 40
+    else:
+        H_par = 20
+        S_par = 40
+        V_par = 40
     mask = (hue_distance(H, H_ref) < H_par) & (S > S_par) & (V > V_par)
     mask = mask.astype(np.uint8) * 255
     
