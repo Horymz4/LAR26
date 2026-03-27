@@ -19,7 +19,7 @@ def get_bottom_half_distance(pc):
 
 # Parking state ---------------------------------------
 class ParkController:
-    def __init__(self, stop_dist=0.47, sound=True):
+    def __init__(self, stop_dist=0.51, sound=True):
         self.stop_dist = stop_dist
         self.sound = sound
 
