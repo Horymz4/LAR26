@@ -82,7 +82,7 @@ def P_reg_ball():
         if vision_data["pos"] is not None:
             pos = vision_data["pos"][0]
             radius = vision_data["radius"]
-    if radius is not None and pos is not None and IMG_CENTER_X + 30 > pos[0] > IMG_CENTER_X - 30 and radius < 55:
+    if radius is not None and pos is not None and IMG_CENTER_X + 30 > pos > IMG_CENTER_X - 30 and radius < 55:
         error_x = pos - IMG_CENTER_X
     else: error_x = 0
     print(f'errorP: {error_x}')
