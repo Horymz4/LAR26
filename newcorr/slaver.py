@@ -44,7 +44,9 @@ def obraz(turtle,ref_img):
             # Stage 1
             if not exited_garage.is_set():
                 pc = turtle.get_point_cloud()
-                ratio = garage_wall_percentage(pc)
+                if pc: 
+                    ratio = garage_wall_percentage(pc)
+                else: continue
 
                 processing_image.set()
  
