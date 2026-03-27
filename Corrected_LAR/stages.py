@@ -143,13 +143,14 @@ def looking_for_garage_spin(turtle,rate):
 def get_close_to_garage(turtle,rate):
     print("get_close_to_garage start")
     
-    turtle.cmd_velocity(linear = 0, angular = 0)
+    turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     ang_speed = angular_0
     lin_speed = linear_the_rest
     while not StateofBumper.is_set() and not ending_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-
+        rate.sleep()
         ang_speed = P_reg_gar() 
+        set_process_img()
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     print("get_close_to_garage konec")

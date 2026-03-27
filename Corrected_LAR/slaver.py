@@ -26,7 +26,7 @@ def pohyb(turtle):
     if not StateofBumper.is_set(): stage3(turtle,rate) # going round the ball --------
     if not StateofBumper.is_set(): stage4(turtle,rate) # garage ----------------------
     if not StateofBumper.is_set(): stage5(turtle,rate) # parking ---------------------
- 
+    StateofBumper.set()
     print("Konec pohybového vlákna")
 
 # Image thread ----------------------------------------
