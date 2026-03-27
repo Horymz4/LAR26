@@ -58,8 +58,8 @@ def main():
     turtle = Turtlebot(rgb=True, depth=True, pc = True)
 
     # Calibration -------------------------------------
-    ref = calibrate(turtle)
-    #ref = [38, 120, 76]
+    #ref = calibrate(turtle)
+    ref = [31, 70, 54]
 
     # Threading ---------------------------------------
     print("Starting threads")

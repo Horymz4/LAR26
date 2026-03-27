@@ -3,7 +3,7 @@ import numpy as np
 
 # Linear velocity -------------------------------------
 linear_0 = 0
-linear_around_the_ball = 0.2
+linear_around_the_ball = 0.16
 linear_the_rest = 0.08
 
 # Angular velocity ------------------------------------
