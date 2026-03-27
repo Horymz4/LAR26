@@ -8,6 +8,7 @@ from beep_beep import ParkController
 from constants import linear_0, angular_0, stop_distance, angular_spinning, angular_around_the_ball, linear_around_the_ball, linear_the_rest, angular_quater_spin
 
 def stage1(turtle, rate):
+    time.sleep(1)
     find_opening(turtle,rate)
     go_forward_a_little(turtle,rate)
 
