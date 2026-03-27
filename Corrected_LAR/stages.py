@@ -38,7 +38,7 @@ def stage2(turtle,rate):
         set_process_img()
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
-    time.sleep(1)
+    time.sleep(0.5)
     go_forward_a_little(turtle,rate)
     print("Stage 2 konec")
 
