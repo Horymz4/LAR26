@@ -40,10 +40,10 @@ def calibrate(turtle):
 
 # Image reasoning and image utils ---------------------
 def reasoning(pos,radius,avg_x,dist):
-    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius  and IMG_CENTER_X + 30 > pos[0] > IMG_CENTER_X - 30:
+    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 5  and IMG_CENTER_X + 30 > pos[0] > IMG_CENTER_X - 30:
         garage_stage.set()
         print("SEE BALL")
-    if (not outgarage_stage.is_set()) and radius is not None and pos is not None and 80 > radius > 55:
+    if (not outgarage_stage.is_set()) and radius is not None and pos is not None and 60 > radius > 55:
         outgarage_stage.set()
         print("BALL CLOSE")
     if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X + 30 > avg_x > IMG_CENTER_X - 30:
