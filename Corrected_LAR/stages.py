@@ -53,6 +53,8 @@ def stage3(turtle,rate):
 def do_quater_spin(turtle,rate):
     print("Half circle maneuver start")
     
+    turtle.reset_odometry()
+
     t = get_time()
     lin_speed = linear_0
     ang_speed = angular_quater_spin
@@ -71,7 +73,6 @@ def go_around_the_ball(turtle,rate):
     tolerance = 0.2
     left_origin = False
 
-    turtle.reset_odometry()
     lin_speed = linear_around_the_ball      
     ang_speed = angular_around_the_ball
     
