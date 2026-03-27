@@ -4,7 +4,7 @@ from robolab_turtlebot import Turtlebot, Rate
 from stages import stage1, stage2, stage3, stage4, stage5
 from utils import bumper_cb, reasoning, ball_image, garage_image
 from threading_variables import StateofBumper, processing_image, outgarage_stage
-
+from utils import calibrate
 
 
 # Bumper thread ---------------------------------------
@@ -58,8 +58,8 @@ def main():
     turtle = Turtlebot(rgb=True, depth=True, pc = True)
 
     # Calibration -------------------------------------
-    # ref = calibrate(turtle)
-    ref = [38, 120, 76]
+    ref = calibrate(turtle)
+    #ref = [38, 120, 76]
 
     # Threading ---------------------------------------
     print("Starting threads")
