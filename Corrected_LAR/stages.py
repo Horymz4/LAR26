@@ -49,7 +49,7 @@ def go_forward_a_little(turtle,rate):
     lin_speed = linear_the_rest
 
     t = get_time()
-    while not StateofBumper.is_set() and t - get_time() < 2:
+    while not StateofBumper.is_set() and get_time() - t < 2:
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         set_process_img()
