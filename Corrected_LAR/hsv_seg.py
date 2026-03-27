@@ -66,7 +66,7 @@ def find_ball_in_mask(mask, MIN_DIAMETER, MAX_DIAMETER):
     return (x, y), r
 
 # Find ball ----------------------------------------
-def find_ball(image, ref_colour, MIN_DIAMETER = 15, MAX_DIAMETER = 600):
+def find_ball(image, ref_colour, MIN_DIAMETER = 5, MAX_DIAMETER = 70):
     maska = HSV_mask(image, ref_colour, True) 
     return find_ball_in_mask(maska, MIN_DIAMETER, MAX_DIAMETER)
 
@@ -108,7 +108,7 @@ def find_two_largest_rectangles_in_mask(mask):
             continue
 
         if first_height is not None:
-            if not (0.7 * first_height <= h <= 1.3 * first_height):
+            if not (0.85 * first_height <= h <= 1.15 * first_height):
                 continue
 
         if(cv.contourArea(c) / (w*h) > 0.6):
