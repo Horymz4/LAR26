@@ -45,7 +45,7 @@ def obraz(turtle,ref_img):
                 pos,radius = ball_image(rgb,ref_img)
             # looking for garage ----------------------
             else:                                                    
-                avg_x, dist = garage_image(rgb, [131,87,75], turtle)
+                avg_x, dist = garage_image(rgb, [129,71,90], turtle)
 
             processing_image.set()
             reasoning(pos,radius,avg_x,dist)
