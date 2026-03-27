@@ -39,6 +39,7 @@ def obraz(turtle,ref_img):
         if not processing_image.is_set():
             turtle.wait_for_rgb_image()
             rgb = turtle.get_rgb_image()
+
             # looking for ball ------------------------
             if not odometry_stage.is_set():                         
                 pos,radius = ball_image(rgb,ref_img)
@@ -58,8 +59,8 @@ def main():
     turtle = Turtlebot(rgb=True, depth=True, pc = True)
 
     # Calibration -------------------------------------
-    ref = calibrate(turtle)
-    #ref = [26, 70, 54]
+    #ref = calibrate(turtle)
+    ref = [47, 96, 76]
 
     # Threading ---------------------------------------
     print("Starting threads")
