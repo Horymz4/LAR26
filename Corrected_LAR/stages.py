@@ -147,9 +147,10 @@ def get_close_to_garage(turtle,rate):
     ang_speed = angular_0
     lin_speed = linear_the_rest
     while not StateofBumper.is_set() and not ending_stage.is_set():
+        ang_speed = P_reg_gar() 
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
-        ang_speed = P_reg_gar() 
+        
         set_process_img()
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
