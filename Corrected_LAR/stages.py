@@ -87,7 +87,7 @@ def go_around_the_ball(turtle,rate):
     print("go_around_the_ball start")   
 
     min_dist = 0.4
-    tolerance = 0.2
+    tolerance = 0.1
     left_origin = False
 
     lin_speed = linear_around_the_ball      
