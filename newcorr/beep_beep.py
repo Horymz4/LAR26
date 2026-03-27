@@ -17,18 +17,6 @@ def get_bottom_half_distance(pc):
 
     return float(np.mean(z[mask]))
 
-# to see if we are in garage
-def garage_wall_percentage(pc, dist = 0.8):
-    if pc is None:
-        return None
-
-    h = pc.shape[0]
-    bottom = pc[h//2:, :, :]
-    z = bottom[:, :, 2]
-
-    ratio = np.mean(z < dist)
-
-    return ratio
 
 # Parking state ---------------------------------------
 class ParkController:

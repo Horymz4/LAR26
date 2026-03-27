@@ -7,11 +7,25 @@ from utils import set_process_img,  P_reg_ball, P_reg_gar
 from beep_beep import ParkController
 from constants import linear_0, angular_0, stop_distance, angular_spinning, angular_around_the_ball, linear_around_the_ball, linear_the_rest, angular_quater_spin
 
+def stage1(turtle, rate):
+    find_opening(turtle,rate)
+    go_forward_a_little(turtle,rate)
+
+def find_opening(turtle,rate):
+
+    lin_speed = linear_0
+    ang_speed = angular_spinning
+    while not StateofBumper.is_set() and not exited_garage:
+        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+        rate.sleep()
+        set_process_img()
 
 
-# Stage 1 ------------------------------------
-def stage1(turtle,rate):
-    print("Stage 1 start")
+    turtle.cmd_velocity(linear_0, angular = angular_0)
+    time.sleep(1)
+# Stage 2 ------------------------------------
+def stage2(turtle,rate):
+    print("Stage 2 start")
 
     lin_speed = linear_0
     ang_speed = angular_spinning
@@ -22,13 +36,13 @@ def stage1(turtle,rate):
 
 
     turtle.cmd_velocity(linear_0, angular = angular_0)
-    print("Stage 1 konec")
+    print("Stage 2 konec")
     time.sleep(1)
     
 
-# Stage 2 ------------------------------------
-def stage2(turtle,rate):
-    print("Stage 2 start")
+# Stage 3 ------------------------------------
+def stage3(turtle,rate):
+    print("Stage 3 start")
 
     ang_speed = angular_0
     lin_speed = linear_the_rest
@@ -41,7 +55,7 @@ def stage2(turtle,rate):
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     time.sleep(0.5)
     go_forward_a_little(turtle,rate)
-    print("Stage 2 konec")
+    print("Stage 3 konec")
 
 def go_forward_a_little(turtle,rate):
     print("going a bit forward")
@@ -59,14 +73,14 @@ def go_forward_a_little(turtle,rate):
     time.sleep(1)
 
 
-# Stage 3 ------------------------------------
-def stage3(turtle,rate):
-    print("Stage 3 start")
+# Stage 4 ------------------------------------
+def stage4(turtle,rate):
+    print("Stage 4 start")
 
     do_quater_spin(turtle,rate )
     go_around_the_ball(turtle,rate)
 
-    print("Stage 3 konec")
+    print("Stage 4 konec")
 
 def do_quater_spin(turtle,rate):
     print("Half circle maneuver start")
@@ -118,14 +132,14 @@ def go_around_the_ball(turtle,rate):
     time.sleep(1) 
 
 
-# Stage 4 ------------------------------------
-def stage4(turtle,rate):
-    print("Stage 4 start")
+# Stage 5 ------------------------------------
+def stage5(turtle,rate):
+    print("Stage 5 start")
 
     looking_for_garage_spin(turtle,rate)
     get_close_to_garage(turtle,rate)
 
-    print("Stage 4 konec")
+    print("Stage 5 konec")
 
 def looking_for_garage_spin(turtle,rate):
     print("looking_for_garage_spin start")
@@ -156,9 +170,9 @@ def get_close_to_garage(turtle,rate):
     print("get_close_to_garage konec")
     time.sleep(2)
 
-# Stage 5 ------------------------------------
-def stage5(turtle,rate):
-    print("Stage 5 start")
+# Stage 6 ------------------------------------
+def stage6(turtle,rate):
+    print("Stage 6 start")
 
     park = ParkController(stop_dist = stop_distance, sound = True)
     while not StateofBumper.is_set():
@@ -169,5 +183,5 @@ def stage5(turtle,rate):
         rate.sleep()
 
     turtle.cmd_velocity(linear=linear_0, angular=angular_0)
-    print("Stage 5 konec")
+    print("Stage 6 konec")
     time.sleep(1)
