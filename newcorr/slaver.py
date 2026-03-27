@@ -36,7 +36,7 @@ def obraz(turtle,ref_img):
     print("Start obrazového vlákna")
  
     pos = (0,0)
-    radius = avg_x = dist = 0
+    radius = avg_x = dist = ratio = 0
  
     while not StateofBumper.is_set():
         if not processing_image.is_set():
@@ -56,14 +56,14 @@ def obraz(turtle,ref_img):
                 pos, radius = ball_image(rgb, ref_img)
                 avg_x = dist = None
  
+                processing_image.set()
             # Stage 5
             else:
                 turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
                 avg_x, dist = garage_image(rgb, [129, 71, 90], turtle)
                 pos = radius = None
- 
-            processing_image.set()
+                processing_image.set()
             reasoning(pos, radius, avg_x, dist, ratio)
 
     print("Konec obrazového vlákna")
