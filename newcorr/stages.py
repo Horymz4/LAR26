@@ -1,6 +1,6 @@
 import time
 import numpy as np
-from threading_variables import garage_stage, StateofBumper,odometry_stage, outgarage_stage, see_garage, ending_stage
+from threading_variables import garage_stage, StateofBumper,odometry_stage, outgarage_stage, see_garage, ending_stage, exited_garage
 
 from robolab_turtlebot import get_time
 from utils import set_process_img,  P_reg_ball, P_reg_gar

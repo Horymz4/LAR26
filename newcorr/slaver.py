@@ -4,7 +4,7 @@ from robolab_turtlebot import Turtlebot, Rate
 from stages import stage1, stage2, stage3, stage4, stage5, stage6
 from utils import bumper_cb, reasoning, ball_image, garage_image
 from threading_variables import StateofBumper, processing_image, odometry_stage, exited_garage
-from utils import calibrate, get_wall_percentage
+from utils import calibrate, garage_wall_percentage
 
 
 # Bumper thread ---------------------------------------
@@ -44,7 +44,7 @@ def obraz(turtle,ref_img):
             # Stage 1
             if not exited_garage.is_set():
                 pc = turtle.get_point_cloud()
-                ratio = get_wall_percentage(pc)
+                ratio = garage_wall_percentage(pc)
 
                 processing_image.set()
                 continue
