@@ -15,7 +15,7 @@ def stage1(turtle, rate):
 def find_opening(turtle,rate):
     lin_speed = linear_0
     ang_speed = angular_spinning
-    while not StateofBumper.is_set() and not exited_garage:
+    while not StateofBumper.is_set() and not exited_garage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         set_process_img()
