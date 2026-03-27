@@ -1,7 +1,5 @@
 import threading
 
-from numpy._core.multiarray import get_handler_version
-
 from robolab_turtlebot import Turtlebot, Rate
 from stages import stage1, stage2, stage3, stage4, stage5, stage6x;
 from utils import bumper_cb, reasoning, ball_image, garage_image
