@@ -78,9 +78,9 @@ def garage_wall_percentage(pc, dist = 0.7):
     h = pc.shape[0]
     bottom = pc[h//2:, :, :]
     z = bottom[:, :, 2]
-    if z is not None and dist is not None:
+    if z is not None:
         ratio = np.mean(z < dist)
-    
+        print(f'wall%: {ratio}')
     return ratio
 
 # Image processing util -------------------------------
