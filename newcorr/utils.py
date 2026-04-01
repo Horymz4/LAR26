@@ -70,17 +70,36 @@ def garage_image(rgb,ref,turtle):
         vision_data["dist"] = dist
     return avg_x, dist
 
-# to see if we are in garage
-def garage_wall_percentage(pc, dist = 0.7):
+# def garage_wall_percentage(pc, dist = 0.7):
+#     if pc is None:
+#         return None
+#     ratio = 1
+#     h = pc.shape[0]
+#     bottom = pc[h//2:, :, :]
+#     z = bottom[:, :, 2]
+#     print(f'wall%: {z}')
+#     if z is not None:
+#         ratio = np.mean(z < dist)
+#     return ratio
+
+# # to see if we are in garage
+def garage_wall_percentage(pc, dist=0.7):
     if pc is None:
         return None
-    ratio = 1
+
     h = pc.shape[0]
     bottom = pc[h//2:, :, :]
     z = bottom[:, :, 2]
-    print(f'wall%: {z}')
-    if z is not None:
-        ratio = np.mean(z < dist)
+
+    # Filter out invalid depth values (NaN, inf, and non-positive)
+    valid_mask = np.isfinite(z) & (z > 0)
+
+    if not np.any(valid_mask):
+        return None  # No valid depth data at all
+
+    valid_z = z[valid_mask]
+    ratio = np.mean(valid_z < dist)
+
     return ratio
 
 # Image processing util -------------------------------
