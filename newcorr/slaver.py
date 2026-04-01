@@ -1,4 +1,4 @@
-import threading
+import threading, time
 
 from robolab_turtlebot import Turtlebot, Rate
 from stages import stage1, stage2, stage3, stage4, stage5, stage6
@@ -75,6 +75,7 @@ def obraz(turtle,ref_img):
 def main():
     # Turtle initalization ----------------------------
     turtle = Turtlebot(rgb=True, pc=True)
+    time.sleep(1)
 
     # Calibration -------------------------------------
     #ref = calibrate(turtle)
