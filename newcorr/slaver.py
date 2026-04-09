@@ -78,10 +78,17 @@ def main():
     time.sleep(1)
 
     # Calibration -------------------------------------
-    if len(sys.argv) > 1 and sys.argv[1]: ref_green = sys.argv[1] 
-    else: ref_green = [52, 108, 80]   
-    if len(sys.argv) > 2 and sys.argv[2]: ref_purple = sys.argv[2] 
-    else: ref_purple = [129, 71, 90]
+    if len(sys.argv) > 1 and sys.argv[1]:
+        raw = sys.argv[1]
+        ref_green = [int(x) for x in raw.strip("[]").split(",")]
+    else: 
+        ref_green = [52, 108, 80] 
+
+    if len(sys.argv) > 2 and sys.argv[2]: 
+        raw = sys.argv[2] 
+        ref_purple = [int(x) for x in raw.strip("[]").split(",")]
+    else:
+        ref_purple = [129, 71, 90]
 
     # Threading ---------------------------------------
     print("Starting threads")
