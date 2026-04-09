@@ -146,28 +146,28 @@ def return_to_axis(turtle,rate, odometry):
 
     if x > 0: ang = -np.pi/2
     else: ang = np.pi/2
-
     lin_speed = linear_0
     ang_speed =- angular_spinning
-    while not StateofBumper.is_set() and (ang - 0.02 > odometry[2] or odometry[2]< ang + 0.02):
+
+    x_curr,y_curr,a_curr = turtle.get_odometry()
+    while not StateofBumper.is_set() and (ang - 0.02 > a_curr  or a_curr < ang + 0.02):
+        x_curr,y_curr,a_curr = turtle.get_odometry()
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         set_process_img()
-        print(odometry)
 
     turtle.cmd_velocity(linear_0, angular = angular_0)
     time.sleep(0.5)
-    print(odometry,ang)
+    print(x_curr,y_curr,a_curr)
     lin_speed = linear_the_rest
     ang_speed = angular_0
-    while not StateofBumper.is_set() and (-0.05 > x or x > 0.05) :
+    while not StateofBumper.is_set() and (-0.05 > x_curr or x_curr > 0.05) :
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         set_process_img()
-        print(odometry)
+        print(x_curr,y_curr,a_curr)
     print("returned to axis")
-
-    print(odometry)
+    print(x_curr,y_curr,a_curr)
 # Stage 5 ------------------------------------
 def stage5(turtle,rate):
     print("Stage 5 start")
