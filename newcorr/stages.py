@@ -87,6 +87,7 @@ def stage4(turtle,rate):
     go_around_the_ball(turtle,rate,odometry[0] ,odometry[1])
 
     odometry = turtle.get_odometry()
+    print(f'odometry before axis {odometry}')
     return_to_axis(turtle,rate,odometry)
 
     print("Stage 4 konec")
@@ -156,7 +157,7 @@ def return_to_axis(turtle,rate, odometry):
 
     turtle.cmd_velocity(linear_0, angular = angular_0)
     time.sleep(0.5)
-
+    print(odometry)
     lin_speed = linear_the_rest
     ang_speed = angular_0
     while not StateofBumper.is_set() and -0.05 > x > 0.05 :
@@ -166,7 +167,7 @@ def return_to_axis(turtle,rate, odometry):
         print(odometry)
     print("returned to axis")
 
-
+    print(odometry)
 # Stage 5 ------------------------------------
 def stage5(turtle,rate):
     print("Stage 5 start")
