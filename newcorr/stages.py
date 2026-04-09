@@ -144,8 +144,8 @@ def go_around_the_ball(turtle,rate,x_odo,y_odo):
 def return_to_axis(turtle,rate, odometry):
     x = odometry[1]
 
-    if x > 0: ang = np.pi/2
-    else: ang = -np.pi/2
+    if x > 0: ang = -np.pi/2
+    else: ang = np.pi/2
     lin_speed = linear_0
     ang_speed =- angular_spinning
 
