@@ -150,7 +150,7 @@ def return_to_axis(turtle,rate, odometry):
     ang_speed = np.sign(ang) * angular_spinning
 
     x_curr,y_curr,a_curr = turtle.get_odometry()
-    while not StateofBumper.is_set() and abs(a_curr - ang) < 0.02:
+    while not StateofBumper.is_set() and abs(a_curr - ang) > 0.02:
         x_curr,y_curr,a_curr = turtle.get_odometry()
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
@@ -200,7 +200,7 @@ def get_close_to_garage(turtle,rate):
     print("get_close_to_garage start")
     
     ang_speed = angular_0
-    lin_speed = linear_the_rest
+    lin_speed = linear_the_rest +0.12
     while not StateofBumper.is_set() and not ending_stage.is_set():
         ang_speed = P_reg_gar() 
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
