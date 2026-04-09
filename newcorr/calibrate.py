@@ -1,6 +1,8 @@
 import cv2 as cv
 import numpy as np
 
+import time
+from robolab_turtlebot import Turtlebot
 # Returns average color on mask -----------------
 def average_color_on_mask(image, mask):
 
@@ -84,4 +86,11 @@ def get_green_ball_average_color_bgr(img):
     avg_bgr = cv.cvtColor(avg_hsv_img, cv.COLOR_HSV2BGR)[0,0]
     print(avg_bgr)  
     return tuple(int(x) for x in avg_bgr)
+
+if __name__ == '__main__':
+    turtle = Turtlebot(rgb=True, pc=True)
+    time.sleep(1)
+    rgb = turtle.get_rgb_image()
+    print(get_green_ball_average_color_bgr(rgb))
+
 
