@@ -143,12 +143,8 @@ def go_around_the_ball(turtle,rate,x_odo,y_odo,a_curr):
     time.sleep(1) 
 
 def return_to_axis(turtle,rate, odometry):
-    y = odometry[1]
-    
     x_curr,y_curr,a_curr = turtle.get_odometry()
 
-    if y > 0: ang = -np.pi/2
-    else: ang = np.pi/2
     turtle.cmd_velocity(linear_0, angular = angular_0)
     time.sleep(0.5)
     print("mid",x_curr,y_curr,a_curr)
