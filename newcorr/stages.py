@@ -125,14 +125,14 @@ def go_around_the_ball(turtle,rate,x_odo,y_odo):
         x = x - x_odo
         y = y - y_odo
         dist = np.sqrt(x**2 + y**2)
-        print(odometry,dist,left_origin)
+        # print(odometry,dist,left_origin)
 
         if not left_origin and dist > min_dist:
             left_origin = True
             print("Left origin zone")
 
         if left_origin and dist < tolerance:
-            # print("Returned to origin with tolerance ", tolerance)
+            print("Returned to origin with tolerance ", tolerance)
             break
         set_process_img()
     
