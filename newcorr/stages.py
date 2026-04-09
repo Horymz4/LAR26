@@ -147,7 +147,7 @@ def return_to_axis(turtle,rate, odometry):
     if y > 0: ang = -np.pi/2
     else: ang = np.pi/2
     lin_speed = linear_0
-    ang_speed = sign(ang) * angular_spinning
+    ang_speed = np.sign(ang) * angular_spinning
 
     x_curr,y_curr,a_curr = turtle.get_odometry()
     while not StateofBumper.is_set() and (ang - 0.02 > a_curr  or a_curr < ang + 0.02):
