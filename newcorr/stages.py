@@ -58,7 +58,7 @@ def stage3(turtle,rate):
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     time.sleep(0.5)
-    go_forward_a_little(turtle,rate, 2.5)
+    go_forward_a_little(turtle,rate, 3.5)
     print("Stage 3 konec")
 
 def go_forward_a_little(turtle,rate,how_long):
@@ -150,7 +150,7 @@ def return_to_axis(turtle,rate, odometry):
     ang_speed = np.sign(ang) * angular_spinning
 
     x_curr,y_curr,a_curr = turtle.get_odometry()
-    while not StateofBumper.is_set() and abs(a_curr - ang) > 0.02:
+    while not StateofBumper.is_set() and abs(a_curr - ang) > 0.08:
         x_curr,y_curr,a_curr = turtle.get_odometry()
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
