@@ -12,6 +12,8 @@ def stage1(turtle, rate):
     find_opening(turtle,rate)
     go_forward_a_little(turtle,rate,8)
 
+    turtle.reset_odometry()
+
 def find_opening(turtle,rate):
     lin_speed = linear_0
     ang_speed = angular_spinning
@@ -23,6 +25,8 @@ def find_opening(turtle,rate):
     print("Opening found")
     turtle.cmd_velocity(linear_0, angular = angular_0)
     time.sleep(1)
+
+    
 # Stage 2 ------------------------------------
 def stage2(turtle,rate):
     print("Stage 2 start")
@@ -77,16 +81,19 @@ def go_forward_a_little(turtle,rate,how_long = 2):
 def stage4(turtle,rate):
     print("Stage 4 start")
 
+    odometry = turtle.get_odometry()
+
     do_quater_spin(turtle,rate )
-    go_around_the_ball(turtle,rate)
+    go_around_the_ball(turtle,rate,odometry[0] ,odometry[1])
+
+    odometry = turtle.get_odometry()
+    return_to_axis(turtle,rate,odometry)
 
     print("Stage 4 konec")
 
 def do_quater_spin(turtle,rate):
     print("Half circle maneuver start")
     
-    turtle.reset_odometry()
-
     t = get_time()
     lin_speed = linear_0
     ang_speed = angular_quater_spin
@@ -98,7 +105,7 @@ def do_quater_spin(turtle,rate):
     print("Half circle maneuver konec")
     time.sleep(1)
 
-def go_around_the_ball(turtle,rate):
+def go_around_the_ball(turtle,rate,x_odo,y_odo):
     print("go_around_the_ball start")   
 
     min_dist = 0.4
@@ -114,6 +121,8 @@ def go_around_the_ball(turtle,rate):
         rate.sleep()
 
         x, y = odometry[0], odometry[1]
+        x = x - x_odo
+        y = y - y_odo
         dist = np.sqrt(x**2 + y**2)
         print(odometry,dist,left_origin)
 
@@ -125,11 +134,37 @@ def go_around_the_ball(turtle,rate):
             print("Returned to origin with tolerance ", tolerance)
             break
         set_process_img()
-        # TODO PROCESSING IMAGE SET ??
+    
     odometry_stage.set()
     print("go_around_the_ball konec")  
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     time.sleep(1) 
+
+def return_to_axis(turtle,rate, odometry):
+    x = odometry[0]
+
+    if x > 0: ang = -np.pi/2
+    else: ang = np.pi/2
+
+    lin_speed = linear_0
+    ang_speed = angular_spinning
+    while not StateofBumper.is_set() and ang+0.02 >  odometry[2] > ang - 0.02:
+        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+        rate.sleep()
+        set_process_img()
+        print(odometry)
+
+    turtle.cmd_velocity(linear_0, angular = angular_0)
+    time.sleep(0.5)
+
+    lin_speed = linear_the_rest
+    ang_speed = angular_0
+    while not StateofBumper.is_set() and -0.05 > x > 0.05 :
+        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+        rate.sleep()
+        set_process_img()
+        print(odometry)
+    print("returned to axis")
 
 
 # Stage 5 ------------------------------------
