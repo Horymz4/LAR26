@@ -1,4 +1,4 @@
-import threading, time
+import threading, time, sys
 
 from robolab_turtlebot import Turtlebot, Rate
 from stages import stage1, stage2, stage3, stage4, stage5, stage6
@@ -32,7 +32,7 @@ def pohyb(turtle):
     print("Konec pohyboveho vlakna")
 
 # Image thread ----------------------------------------
-def obraz(turtle,ref_img):
+def obraz(turtle,ref_green, ref_purple):
     print("Start obrazového vlákna")
  
     pos = (0,0)
@@ -55,7 +55,7 @@ def obraz(turtle,ref_img):
 
                 turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
-                pos, radius = ball_image(rgb, ref_img)
+                pos, radius = ball_image(rgb, ref_green)
                 avg_x = dist = None
  
                 processing_image.set()
@@ -63,7 +63,7 @@ def obraz(turtle,ref_img):
             else:
                 turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
-                avg_x, dist = garage_image(rgb, [129, 71, 90], turtle)
+                avg_x, dist = garage_image(rgb, ref_purple, turtle)
                 pos = radius = None
                 processing_image.set()
             reasoning(pos, radius, avg_x, dist, ratio)
@@ -78,14 +78,16 @@ def main():
     time.sleep(1)
 
     # Calibration -------------------------------------
-    #ref = calibrate(turtle)
-    ref = [47, 96, 76]
+    if len(sys.argv) > 1 and sys.argv[1]: ref_green = sys.argv[1] 
+    else: ref_green = [47, 96, 76]   
+    if len(sys.argv) > 2 and sys.argv[2]: ref_purple = sys.argv[2] 
+    else: ref_purple = [129, 71, 90]
 
     # Threading ---------------------------------------
     print("Starting threads")
 
     t1 = threading.Thread(target=bumper, args=(turtle,))
-    t2 = threading.Thread(target=obraz, args=(turtle,ref))
+    t2 = threading.Thread(target=obraz, args=(turtle, ref_green, ref_purple))
     t3 = threading.Thread(target=pohyb, args=(turtle,))
 
     thread_arr = [t1,t2,t3]
