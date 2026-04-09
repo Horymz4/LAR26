@@ -132,7 +132,7 @@ def go_around_the_ball(turtle,rate,x_odo,y_odo):
             print("Left origin zone")
 
         if left_origin and dist < tolerance:
-            print("Returned to origin with tolerance ", tolerance)
+            # print("Returned to origin with tolerance ", tolerance)
             break
         set_process_img()
     
