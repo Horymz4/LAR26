@@ -130,7 +130,7 @@ def go_around_the_ball(turtle,rate,x_odo,y_odo,a_curr):
         x = x - x_odo
         y = y - y_odo
         dist = np.sqrt(x**2 + y**2)
-        # print(odometry,dist,left_origin)
+        print(odometry,dist,left_origin)
 
         if not left_origin and dist > min_dist:
             left_origin = True
@@ -154,7 +154,7 @@ def return_to_axis(turtle,rate, odometry):
     print("mid",x_curr,y_curr,a_curr)
     lin_speed = linear_the_rest
     ang_speed = angular_0
-    while not StateofBumper.is_set() and abs(a_curr - ang > 0.08):
+    while not StateofBumper.is_set() and (-0.05 > y_curr or y_curr > 0.05):
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
 
         x_curr,y_curr,a_curr = turtle.get_odometry()
