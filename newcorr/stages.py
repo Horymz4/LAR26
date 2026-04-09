@@ -149,7 +149,7 @@ def return_to_axis(turtle,rate, odometry):
 
     lin_speed = linear_0
     ang_speed = angular_spinning
-    while not StateofBumper.is_set() and ang - 0.02 >  odometry[2] > ang + 0.02:
+    while not StateofBumper.is_set() and ang - 0.02<   odometry[2] < ang + 0.02:
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         set_process_img()
@@ -160,7 +160,7 @@ def return_to_axis(turtle,rate, odometry):
     print(odometry)
     lin_speed = linear_the_rest
     ang_speed = angular_0
-    while not StateofBumper.is_set() and -0.05 > x > 0.05 :
+    while not StateofBumper.is_set() and -0.05 < x < 0.05 :
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         set_process_img()
