@@ -32,7 +32,7 @@ def stage2(turtle,rate):
     print("Stage 2 start")
 
     lin_speed = linear_0
-    ang_speed = angular_spinning
+    ang_speed =- angular_spinning
     while not StateofBumper.is_set() and not garage_stage.is_set():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
@@ -58,10 +58,10 @@ def stage3(turtle,rate):
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     time.sleep(0.5)
-    go_forward_a_little(turtle,rate,2)
+    go_forward_a_little(turtle,rate, 2.5)
     print("Stage 3 konec")
 
-def go_forward_a_little(turtle,rate,how_long = 2):
+def go_forward_a_little(turtle,rate,how_long):
     print("going a bit forward")
 
     ang_speed = angular_0
