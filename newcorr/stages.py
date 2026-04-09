@@ -148,7 +148,7 @@ def return_to_axis(turtle,rate, odometry):
 
     lin_speed = linear_0
     ang_speed = angular_spinning
-    while not StateofBumper.is_set() and ang+0.02 >  odometry[2] > ang - 0.02:
+    while not StateofBumper.is_set() and ang - 0.02 >  odometry[2] > ang + 0.02:
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         set_process_img()
@@ -188,7 +188,7 @@ def looking_for_garage_spin(turtle,rate):
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     print("looking_for_garage_spin konec")
-    time.sleep(2)
+    time.sleep(1)
 
 def get_close_to_garage(turtle,rate):
     print("get_close_to_garage start")
@@ -198,12 +198,12 @@ def get_close_to_garage(turtle,rate):
     while not StateofBumper.is_set() and not ending_stage.is_set():
         ang_speed = P_reg_gar() 
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+        rate.sleep()   
         set_process_img()
 
-        rate.sleep()   
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     print("get_close_to_garage konec")
-    time.sleep(2)
+    time.sleep(1)
 
 # Stage 6 ------------------------------------
 def stage6(turtle,rate):
