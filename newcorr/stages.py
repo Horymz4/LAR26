@@ -142,23 +142,25 @@ def go_around_the_ball(turtle,rate,x_odo,y_odo):
     time.sleep(1) 
 
 def return_to_axis(turtle,rate, odometry):
-    x = odometry[1]
+    y = odometry[1]
 
-    if x > 0: ang = -np.pi/2
+    if y > 0: ang = -np.pi/2
     else: ang = np.pi/2
     lin_speed = linear_0
-    ang_speed =- angular_spinning
+    ang_speed = sign(ang) * angular_spinning
 
     x_curr,y_curr,a_curr = turtle.get_odometry()
     while not StateofBumper.is_set() and (ang - 0.02 > a_curr  or a_curr < ang + 0.02):
         x_curr,y_curr,a_curr = turtle.get_odometry()
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
+        print("ang",x_curr,y_curr,a_curr)
+
         set_process_img()
 
     turtle.cmd_velocity(linear_0, angular = angular_0)
     time.sleep(0.5)
-    print(x_curr,y_curr,a_curr)
+    print("mid",x_curr,y_curr,a_curr)
     lin_speed = linear_the_rest
     ang_speed = angular_0
     while not StateofBumper.is_set() and (-0.05 > y_curr or y_curr > 0.05) :
@@ -167,7 +169,7 @@ def return_to_axis(turtle,rate, odometry):
         x_curr,y_curr,a_curr = turtle.get_odometry()
         rate.sleep()
         set_process_img()
-        print(x_curr,y_curr,a_curr)
+        print("y",x_curr,y_curr,a_curr)
     print("returned to axis")
     print(x_curr,y_curr,a_curr)
 # Stage 5 ------------------------------------
