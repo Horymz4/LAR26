@@ -138,10 +138,14 @@ def go_around_the_ball(turtle,rate,y_odo):
     )
 
 
-def cond_y(turtle, tolerance):
+def cond_y(turtle, backwards):
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print("y",x_curr,y_curr,a_curr)
-    return abs(y_curr) > tolerance
+    a_curr = backwards * a_curr
+    if a_curr > 0:
+        return y_curr > 0
+    else:
+        return y_curr < 0
 
 def return_to_axis(turtle,rate):
     
@@ -153,7 +157,7 @@ def return_to_axis(turtle,rate):
     move_until(
     turtle, rate,
     speed *linear_the_rest, angular_0,
-    lambda: cond_y(turtle, 0.03),
+    lambda: cond_y(turtle, speed),
     text="return_to_axis"
     )
 
@@ -179,7 +183,7 @@ def stage5(turtle,rate):
     print("Stage 5 konec")
 
 def turn_to_garage(turtle, rate):
-    m = 1 if centered else -1
+    m = direction
     t = get_time()
 
     move_until(
