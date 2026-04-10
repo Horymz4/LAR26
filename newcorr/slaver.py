@@ -48,7 +48,7 @@ def obraz(turtle,ref_green, ref_purple):
                 pc = turtle.get_point_cloud()
                 if pc is not None: 
                     ratio = garage_wall_percentage(pc)
-                else: continue
+                
 
                 processing_image.set()
  
