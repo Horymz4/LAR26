@@ -13,6 +13,6 @@ angular_around_the_ball = np.pi/9
 angular_quater_spin = -np.pi/8
 
 # Other -----------------------------------------------
-stop_distance = 0.42
+stop_distance = 0.4
 IMG_CENTER_X = 334
 IMG_CENTER_Y = 223

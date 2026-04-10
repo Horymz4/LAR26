@@ -165,7 +165,7 @@ def stage5(turtle,rate):
     
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print(x_curr,y_curr,a_curr)
-    if False: 
+    if x_curr < 0.2: 
         print("too close to starting point!!")
         turn_to_garage(turtle,rate)
         see_garage.set()
@@ -193,7 +193,7 @@ def looking_for_garage_spin(turtle,rate):
 
     move_until(
     turtle, rate,
-    linear_0, (-0.3+angular_spinning)*m,
+    linear_0, (-0.1+angular_spinning)*m,
     condition_fn=lambda: not see_garage.is_set(),
     text="looking_for_garage_spin"
     )

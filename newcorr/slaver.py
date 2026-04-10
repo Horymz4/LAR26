@@ -21,10 +21,10 @@ def pohyb(turtle):
     print("Start pohyboveho vlakna")
     rate = Rate(10)
  
-    # if not StateofBumper.is_set(): stage1(turtle, rate)  # find opening, exit
-    # if not StateofBumper.is_set(): stage2(turtle, rate)  # spin to find ball
-    # if not StateofBumper.is_set(): stage3(turtle, rate)  # drive to ball
-    # if not StateofBumper.is_set(): stage4(turtle, rate)  # circumnavigate
+    if not StateofBumper.is_set(): stage1(turtle, rate)  # find opening, exit
+    if not StateofBumper.is_set(): stage2(turtle, rate)  # spin to find ball
+    if not StateofBumper.is_set(): stage3(turtle, rate)  # drive to ball
+    if not StateofBumper.is_set(): stage4(turtle, rate)  # circumnavigate
     if not StateofBumper.is_set(): stage5(turtle, rate)  # find + approach garage
     if not StateofBumper.is_set(): stage6(turtle, rate)  # park
  
@@ -41,8 +41,6 @@ def obraz(turtle,ref_green, ref_purple):
  
     while not StateofBumper.is_set():
         if not processing_image.is_set():
-                
-            odometry_stage.set()
                 
             # Stage 1
             if not exited_garage.is_set():
