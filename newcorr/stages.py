@@ -203,10 +203,10 @@ def get_close_to_garage(turtle,rate):
 
     move_until(
     turtle, rate,
-    linear_the_rest + 0.04, angular_0,
+    linear_the_rest , angular_0,
     condition_fn=lambda: not ending_stage.is_set(),
     text="get_close_to_garage",
-    # ang_speed_reg=P_reg_gar
+    ang_speed_reg=P_reg_gar
     image_processing=False
     )
     
