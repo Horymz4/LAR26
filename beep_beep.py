@@ -1,5 +1,6 @@
 import time
 import numpy as np
+from newcorr.utils import set_process_img
 from robolab_turtlebot import Turtlebot, Rate
 
 
@@ -25,7 +26,7 @@ def get_bottom_half_distance(pc):
 #  Parkovací stav
 # -----------------------------
 class ParkController:
-    def __init__(self, stop_dist=0.47, sound=True):
+    def __init__(self, stop_dist=0.5, sound=True):
         self.stop_dist = stop_dist
         self.sound = sound
 
@@ -49,12 +50,12 @@ class ParkController:
             return False
 
         print(f"Average distance: {dist:.2f} m")
-
+    
         # --- kontrola zaparkování ---
         if dist < self.stop_dist:
             turtle.cmd_velocity(linear=0.0)
             return True
-
+        set_process_img()
         # --- pípání ---
         if self.sound and self.END_BEEP <= dist <= self.START_BEEP:
             scale = (self.START_BEEP - dist) / (self.START_BEEP - self.END_BEEP)

@@ -170,11 +170,11 @@ def stage5(turtle,rate):
     print("Stage 5 konec")
 
 def looking_for_garage_spin(turtle,rate):
+    m = -1 if centered else 1
     
-    global direction
     move_until(
     turtle, rate,
-    linear_0, angular_spinning*direction,
+    linear_0, angular_spinning*m,
     condition_fn=lambda: not see_garage.is_set(),
     text="looking_for_garage_spin"
     )

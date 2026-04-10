@@ -14,7 +14,7 @@ while(True):
     input()
     rgb = turtle.get_rgb_image()
     
-    filename = f'image + {i} + .png'
+    filename = f'image{i}.png'
     i += 1
     
     print(f'Image saved as {filename}')
