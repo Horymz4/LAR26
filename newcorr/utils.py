@@ -120,7 +120,7 @@ def P_reg_ball_spinning(stable):
             radius = vision_data["radius"]
     if radius is not None and pos is not None and IMG_CENTER_X + 110 > pos > IMG_CENTER_X - 110 and radius < 55:
         error_x = pos - IMG_CENTER_X
-    else: error_x = stable
+    else: return stable
     print(f'errorP: {error_x}')
     return ((-error_x / IMG_CENTER_X) * stable)  
 
