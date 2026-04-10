@@ -1,5 +1,6 @@
 from threading_variables import Button_press, StateofBumper, processing_image, exited_garage, garage_stage, outgarage_stage, see_garage, ending_stage, vision_data, vision_lock
 from calibrate import get_green_ball_average_color_bgr
+
 from hsv_seg import find_ball, find_garage_center
 from constants import IMG_CENTER_X
 import numpy as np
@@ -40,13 +41,17 @@ def calibrate(turtle):
 
 # Image reasoning and image utils ---------------------
 def reasoning(pos,radius,avg_x,dist, ratio):
-    if (not exited_garage.is_set()) and ratio is not None and  ratio < 0.45:
+    if (not exited_garage.is_set()):
+    # if (not exited_garage.is_set()) and ratio is not None and  ratio < 0.45:
         exited_garage.set()
-    if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 5  and IMG_CENTER_X + 30 > pos[0] > IMG_CENTER_X - 30:
+    if (not garage_stage.is_set()):
+    # if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 5  and IMG_CENTER_X + 30 > pos[0] > IMG_CENTER_X - 30:
         garage_stage.set()
         print("SEE BALL")
-    if (not outgarage_stage.is_set()) and radius is not None and pos is not None and IMG_CENTER_X + 100 > pos[0] > IMG_CENTER_X - 100 and 60 > radius > 55:
+    if (not outgarage_stage.is_set()):
+    # if (not outgarage_stage.is_set()) and radius is not None and pos is not None and IMG_CENTER_X + 100 > pos[0] > IMG_CENTER_X - 100 and 60 > radius > 55:
         outgarage_stage.set()
+        odometry_stage.set()
         print("BALL CLOSE")
     if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X + 30 > avg_x > IMG_CENTER_X - 30:
         see_garage.set()
@@ -130,4 +135,4 @@ def P_reg_gar():
         else: 
             return 0
     print(f'errorP: {error_x}')
-    return ((-error_x / IMG_CENTER_X) * 1.1) 
+    return ((-error_x / IMG_CENTER_X) * 0.8) 
