@@ -193,7 +193,7 @@ def looking_for_garage_spin(turtle,rate):
 
     move_until(
     turtle, rate,
-    linear_0, (-0.2+angular_spinning)*m,
+    linear_0, angular_spinning*m,
     condition_fn=lambda: not see_garage.is_set(),
     text="looking_for_garage_spin"
     )
