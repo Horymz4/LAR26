@@ -67,7 +67,7 @@ class ParkController:
                 self.last_beep = now
 
         # Forward movement ----------------------------
-        turtle.cmd_velocity(linear=0.1)
+        turtle.cmd_velocity(linear=0.1,angular = 0)
         return False
     
     def park(self, turtle):
