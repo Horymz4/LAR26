@@ -74,11 +74,9 @@ def go_forward_a_little(turtle,rate,how_long):
     move_until(
         turtle, rate,
         linear_the_rest, angular_0,
-        condition_fn=cond_time(t, how_long),
+        lambda: cond_time(t, how_long),
         text="going a bit forward"
     )
-
-
 
 # Stage 4 ------------------------------------
 def stage4(turtle,rate):
@@ -102,7 +100,7 @@ def do_quater_spin(turtle, rate, y_odo):
     move_until(
     turtle, rate,
     linear_0, m*angular_quater_spin,
-    condition_fn=cond_time(t, 8),
+    lambda: cond_time(t, 8),
     text="Half corcle maneuver",
     )
 
@@ -126,14 +124,13 @@ def go_around_the_ball(turtle,rate,y_odo):
     move_until(
     turtle, rate,
     linear_around_the_ball, m*angular_around_the_ball,
-    condition_fn=cond_angle(turtle, ang, tolerance, t),
+    lambda: cond_angle(turtle, ang, tolerance, t),
     text="go_around_the_ball",
     time_sleep=1.5
     )
 
 
 def cond_y(turtle, tolerance):
-    odometry = turtle.get_odometry() 
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print("y",x_curr,y_curr,a_curr)
     return abs(y_curr) > tolerance
@@ -146,7 +143,7 @@ def return_to_axis(turtle,rate):
     move_until(
     turtle, rate,
     linear_the_rest, angular_0,
-    condition_fn=cond_y(turtle, 0.05),
+    lambda: (turtle, 0.05),
     text="return_to_axis"
     )
 
