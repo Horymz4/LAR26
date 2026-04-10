@@ -34,6 +34,7 @@ def pohyb(turtle):
 # Image thread ----------------------------------------
 def obraz(turtle,ref_green, ref_purple):
     print("Start obrazového vlákna")
+    time.sleep(1)
  
     pos = (0,0)
     radius = avg_x = dist = 0
