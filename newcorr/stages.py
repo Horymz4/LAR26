@@ -3,7 +3,7 @@ import numpy as np
 from threading_variables import garage_stage, StateofBumper,odometry_stage, outgarage_stage, see_garage, ending_stage, exited_garage
 
 from robolab_turtlebot import get_time
-from utils import set_process_img,  P_reg_ball, P_reg_gar
+from utils import set_process_img,  P_reg_ball, P_reg_gar, P_reg_ball_spinning
 from beep_beep import ParkController
 from constants import linear_0, angular_0, stop_distance, angular_spinning, angular_around_the_ball, linear_around_the_ball, linear_the_rest, angular_quater_spin
 
@@ -50,7 +50,7 @@ def stage2(turtle,rate):
         linear_0,-angular_spinning,
         lambda: not garage_stage.is_set(),
         "Stage 2",
-        ang_speed_reg=lambda:P_reg_ball_spin(-angular_spinning)
+        ang_speed_reg=lambda:P_reg_ball_spinning(-angular_spinning)
     )
    
 
