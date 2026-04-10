@@ -13,6 +13,7 @@ centered = False
 def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_sleep = 0.1, ang_speed_reg=None, image_processing=True):
     print(text + " start")
     while not StateofBumper.is_set() and condition_fn():
+        if text == "looking_for_garage_spin": print(ang_speed)
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         if image_processing:
@@ -166,7 +167,7 @@ def stage5(turtle,rate):
     
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print(x_curr,y_curr,a_curr)
-    if np.sqrt(y_curr**2 + x_curr**2) < 0.10: 
+    if x_curr < 0.25: 
         print("too close to starting point!!")
         turn_to_garage(turtle,rate)
         see_garage.set()
