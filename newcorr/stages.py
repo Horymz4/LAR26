@@ -8,6 +8,7 @@ from beep_beep import ParkController
 from constants import linear_0, angular_0, stop_distance, angular_spinning, angular_around_the_ball, linear_around_the_ball, linear_the_rest, angular_quater_spin
 
 direction = 1
+centered = False
 
 def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_sleep = 1.0, ang_speed_reg=None, image_processing=True):
     print(text + " start")
@@ -27,7 +28,7 @@ def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_slee
 def stage1(turtle, rate):
     time.sleep(0.5)
     find_opening(turtle,rate)
-    go_forward_a_little(turtle,rate,8)
+    go_forward_a_little(turtle,rate,7)
 
     turtle.reset_odometry()
 
@@ -96,11 +97,13 @@ def stage4(turtle,rate):
     print("Stage 4 konec")
 
 def do_quater_spin(turtle, rate, y_odo):
+    global direction, centered
+
     t = get_time()
     m = -1 if y_odo > 0 else 1
-
+    direction = m
     if abs(y_odo) < 0.25: 
-        m = -m
+        centered = True
     move_until(
     turtle, rate,
     linear_0, m*angular_quater_spin,
@@ -118,24 +121,21 @@ def go_around_the_ball(turtle,rate,y_odo):
     print("go_around_the_ball start")   
 
     tolerance = 0.08
-    m = -1 if y_odo > 0 else 1
-    ang = m * np.pi/2
-    if abs(y_odo) < 0.25: 
-        # ang = -ang
-        m = -m
+    ang = direction * np.pi/2
+    if centered: 
+        ang = -ang
+
         print("ball is too centered")
     t = get_time()
 
 
     move_until(
     turtle, rate,
-    linear_around_the_ball, m*angular_around_the_ball,
+    linear_around_the_ball, direction*angular_around_the_ball,
     lambda: cond_angle(turtle, ang, tolerance, t),
     text="go_around_the_ball",
     time_sleep=1.5
     )
-    global direction
-    direction = m
 
 
 def cond_y(turtle, tolerance):
@@ -147,10 +147,12 @@ def return_to_axis(turtle,rate):
     
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print("mid",x_curr,y_curr,a_curr)
+    speed = 1
+    if centered: speed = -1
 
     move_until(
     turtle, rate,
-    linear_the_rest, angular_0,
+    speed *linear_the_rest, angular_0,
     lambda: cond_y(turtle, 0.1),
     text="return_to_axis"
     )
