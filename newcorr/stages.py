@@ -134,13 +134,11 @@ def go_around_the_ball(turtle,rate,y_odo):
     global direction
     direction = m
 
-    
-
 
 def cond_y(turtle, tolerance):
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print("y",x_curr,y_curr,a_curr)
-    return abs(y_curr) > tolerance
+    return -direction* y_curr > tolerance
 
 def return_to_axis(turtle,rate):
     
@@ -168,6 +166,7 @@ def stage5(turtle,rate):
 
 def looking_for_garage_spin(turtle,rate):
     
+    global direction
     move_until(
     turtle, rate,
     linear_0, -(angular_spinning + 0.6)*direction,
