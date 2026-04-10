@@ -56,7 +56,7 @@ def stage3(turtle,rate):
     move_until(
         turtle, rate,
         linear_the_rest, angular_0,
-        condition_fn=lambda: not garage_stage.is_set(),
+        condition_fn=lambda: not outgarage_stage.is_set(),
         text="Stage 3",
         time_sleep=0.5,
         ang_speed_reg=P_reg_ball
