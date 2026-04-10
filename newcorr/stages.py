@@ -142,7 +142,7 @@ def cond_y(turtle, backwards):
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print("y",x_curr,y_curr,a_curr)
     a_curr = backwards * a_curr
-    if a_curr > 0:
+    if a_curr < 0:
         return y_curr > 0
     else:
         return y_curr < 0
