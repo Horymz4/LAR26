@@ -68,11 +68,11 @@ def ball_image(rgb, ref_img):
     return pos,radius
 
 def garage_image(rgb,ref,turtle):
-    avg_x, dist = find_garage_center(rgb, ref, turtle)
+    avg_x = find_garage_center(rgb, ref, turtle)
     with vision_lock:
         vision_data["avg_x"] = avg_x
-        vision_data["dist"] = dist
-    return avg_x, dist
+        # vision_data["dist"] = dist
+    return avg_x
 
 # def garage_wall_percentage(pc, dist = 0.7):
 #     if pc is None8

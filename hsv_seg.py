@@ -149,12 +149,12 @@ def find_garage_center(image, ref_colour, turtle):
     # žádný obdélník
     if rects is None:
         print("Nevidím žádný obdélník")
-        return None, None
+        return None
 
     # jeden obdélník
     if rects[1] is None:
         print("Vidím jeden obdélník")
-        return None, None
+        return None
 
     # dva obdélníky → spočítáme průměr X souřadnic
     x1 = rects[0][0]
@@ -167,4 +167,4 @@ def find_garage_center(image, ref_colour, turtle):
 
     print(f"X = {avg_x:.2f}")
 
-    return avg_x, dist
+    return avg_x
