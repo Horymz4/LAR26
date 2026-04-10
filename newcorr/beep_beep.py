@@ -12,7 +12,7 @@ def get_bottom_half_distance(pc):
     bottom = pc[h//2:, :, :]
     z = bottom[:, :, 2]
 
-    mask = np.isfinite(z) & (z > 0)
+    mask = np.isfinite(z) & (z >= 0)
     if np.count_nonzero(mask) == 0:
         return None
     with vision_lock:
@@ -38,14 +38,14 @@ class ParkController:
         # Handles one step of parking -----------------
         # True = parked, False = continue -------------
         
-        pc = turtle.get_point_cloud()
+        # pc = turtle.get_point_cloud()
         dist = vision_data["g_dist"]
 
         if dist is None:
-            print("Depth None")
+            # print("Depth None")
             return False
 
-        print("Avg dist: ", dist)
+        # print("Avg dist: ", dist)
 
         # Control of parking --------------------------
         if dist < self.stop_dist:
