@@ -7,6 +7,21 @@ from utils import set_process_img,  P_reg_ball, P_reg_gar
 from beep_beep import ParkController
 from constants import linear_0, angular_0, stop_distance, angular_spinning, angular_around_the_ball, linear_around_the_ball, linear_the_rest, angular_quater_spin
 
+def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_sleep = 1.0, ang_speed_reg=None, image_processing=True):
+    print(text + " start")
+    while not StateofBumper.is_set() and condition_fn():
+        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
+        rate.sleep()
+        if image_processing:
+            set_process_img()
+        if ang_speed_reg is not None:
+            ang_speed = ang_speed_reg()
+    turtle.cmd_velocity(linear = linear_0, angular = angular_0)
+    print(text + " end")
+    time.sleep(time_sleep)
+
+
+# Stage 1 ------------------------------------
 def stage1(turtle, rate):
     time.sleep(0.5)
     find_opening(turtle,rate)
@@ -14,67 +29,55 @@ def stage1(turtle, rate):
 
     turtle.reset_odometry()
 
-def find_opening(turtle,rate):
-    lin_speed = linear_0
-    ang_speed = angular_spinning
-    while not StateofBumper.is_set() and not exited_garage.is_set():
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        rate.sleep()
-        set_process_img()
+def find_opening(turtle, rate):
 
-    print("Opening found")
-    turtle.cmd_velocity(linear_0, angular = angular_0)
-    time.sleep(1)
+    move_until(
+        turtle, rate,
+        linear_0, angular_spinning,
+        lambda: not exited_garage.is_set(),
+        "Find opening"
+    )
 
     
 # Stage 2 ------------------------------------
 def stage2(turtle,rate):
-    print("Stage 2 start")
 
-    lin_speed = linear_0
-    ang_speed =- angular_spinning
-    while not StateofBumper.is_set() and not garage_stage.is_set():
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        rate.sleep()
-        set_process_img()
-
-
-    turtle.cmd_velocity(linear_0, angular = angular_0)
-    print("Stage 2 konec")
-    time.sleep(1)
-    
+    move_until(
+        turtle, rate,
+        linear_0, -angular_spinning,
+        lambda: not garage_stage.is_set(),
+        "Stage 2"
+    )
+   
 
 # Stage 3 ------------------------------------
 def stage3(turtle,rate):
-    print("Stage 3 start")
 
-    ang_speed = angular_0
-    lin_speed = linear_the_rest
-    while not StateofBumper.is_set() and not outgarage_stage.is_set():
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        rate.sleep()
-        ang_speed = P_reg_ball()
-        set_process_img()
+    move_until(
+        turtle, rate,
+        linear_the_rest, angular_0,
+        condition_fn=lambda: not garage_stage.is_set(),
+        text="Stage 3",
+        time_sleep=0.5,
+        ang_speed_reg=P_reg_ball
+    )
+    
+    go_forward_a_little(turtle,rate, 2.5)
 
-    turtle.cmd_velocity(linear = linear_0, angular = angular_0)
-    time.sleep(0.5)
-    go_forward_a_little(turtle,rate, 4)
-    print("Stage 3 konec")
+def cond_time(t, how_long):
+    return get_time() - t < how_long
+
 
 def go_forward_a_little(turtle,rate,how_long):
-    print("going a bit forward")
-
-    ang_speed = angular_0
-    lin_speed = linear_the_rest
 
     t = get_time()
-    while not StateofBumper.is_set() and get_time() - t < how_long:
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        rate.sleep()
-        set_process_img()
+    move_until(
+        turtle, rate,
+        linear_the_rest, angular_0,
+        condition_fn=cond_time(t, how_long),
+        text="going a bit forward"
+    )
 
-    turtle.cmd_velocity(linear = linear_0, angular = angular_0)
-    time.sleep(1)
 
 
 # Stage 4 ------------------------------------
@@ -83,84 +86,73 @@ def stage4(turtle,rate):
 
     odometry = turtle.get_odometry()
 
-    do_quater_spin(turtle,rate, odometry[1] )
-    go_around_the_ball(turtle,rate,odometry[0] ,odometry[1], odometry[2])
+    do_quater_spin(turtle,rate, odometry[1])
+    go_around_the_ball(turtle,rate,odometry[1])
 
     odometry = turtle.get_odometry()
     print(f'odometry before axis {odometry}')
-    return_to_axis(turtle,rate,odometry)
+    return_to_axis(turtle,rate)
 
     print("Stage 4 konec")
 
-def do_quater_spin(turtle,rate,y_odo):
-    print("Half circle maneuver start")
-    
+def do_quater_spin(turtle, rate, y_odo):
     t = get_time()
-    lin_speed = linear_0
-    ang_speed = np.sign(y_odo) *angular_quater_spin
-    while get_time() - t < 8 and not StateofBumper.is_set():
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        rate.sleep()
+    m = 1 if y_odo > 0 else -1
 
-    turtle.cmd_velocity(linear = linear_0, angular = angular_0)
-    print("Half circle maneuver konec")
-    time.sleep(1)
+    move_until(
+    turtle, rate,
+    linear_0, m*angular_quater_spin,
+    condition_fn=cond_time(t, 8),
+    text="Half corcle maneuver",
+    )
 
-def go_around_the_ball(turtle,rate,x_odo,y_odo,a_curr):
+def cond_angle(turtle, ang, tolerance, t):
+    odometry = turtle.get_odometry() 
+    a_curr = odometry[2]
+    return abs(a_curr - ang) > tolerance and cond_time(t, 2)
+
+
+def go_around_the_ball(turtle,rate,y_odo):
     print("go_around_the_ball start")   
 
-    min_dist = 0.4
-    tolerance = 0.1
-    left_origin = False
-    
-    m = np.sign(y_odo)
+    tolerance = 0.08
+    m = 1 if y_odo > 0 else -1
+    ang = -m * np.pi/2
+    if abs(y_odo) < 0.5: 
+        ang = -ang
+    t = get_time()
 
-    lin_speed = linear_around_the_ball      
-    ang_speed = m*angular_around_the_ball
-    
-    if y_odo > 0: ang = -np.pi/2
-    else: ang = np.pi/2
 
-    while not StateofBumper.is_set() and abs(a_curr - ang) > 0.08:
-        odometry = turtle.get_odometry() 
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        rate.sleep()
+    move_until(
+    turtle, rate,
+    linear_around_the_ball, m*angular_around_the_ball,
+    condition_fn=cond_angle(turtle, ang, tolerance, t),
+    text="go_around_the_ball",
+    time_sleep=1.5
+    )
 
-        x, y = odometry[0], odometry[1]
-        x = x - x_odo
-        y = y - y_odo
-        dist = np.sqrt(x**2 + y**2)
-        print(odometry,dist,left_origin)
 
-        if not left_origin and dist > min_dist:
-            left_origin = True
-            print("Left origin zone")
-
-        set_process_img()
-    
-    print("go_around_the_ball konec")  
-    turtle.cmd_velocity(linear = linear_0, angular = angular_0)
-    time.sleep(1) 
-
-def return_to_axis(turtle,rate, odometry):
+def cond_y(turtle, tolerance):
+    odometry = turtle.get_odometry() 
     x_curr,y_curr,a_curr = turtle.get_odometry()
+    print("y",x_curr,y_curr,a_curr)
+    return abs(y_curr) > tolerance
 
-    turtle.cmd_velocity(linear_0, angular = angular_0)
-    time.sleep(0.5)
+def return_to_axis(turtle,rate):
+    
+    x_curr,y_curr,a_curr = turtle.get_odometry()
     print("mid",x_curr,y_curr,a_curr)
-    lin_speed = linear_the_rest
-    ang_speed = angular_0
-    while not StateofBumper.is_set() and (-0.05 > y_curr or y_curr > 0.05):
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
 
-        x_curr,y_curr,a_curr = turtle.get_odometry()
-        rate.sleep()
-        set_process_img()
-        print("y",x_curr,y_curr,a_curr)
-    print("returned to axis")
+    move_until(
+    turtle, rate,
+    linear_the_rest, angular_0,
+    condition_fn=cond_y(turtle, 0.05),
+    text="return_to_axis"
+    )
+
     print(x_curr,y_curr,a_curr)
-
     odometry_stage.set()
+
 # Stage 5 ------------------------------------
 def stage5(turtle,rate):
     print("Stage 5 start")
@@ -171,33 +163,25 @@ def stage5(turtle,rate):
     print("Stage 5 konec")
 
 def looking_for_garage_spin(turtle,rate):
-    print("looking_for_garage_spin start")
 
-    lin_speed = linear_0
-    ang_speed = -(angular_spinning + 0.6)
-    while not StateofBumper.is_set() and not see_garage.is_set():
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        rate.sleep()   
-        set_process_img()
+    move_until(
+    turtle, rate,
+    linear_0, -(angular_spinning + 0.6),
+    condition_fn=lambda: not see_garage.is_set(),
+    text="looking_for_garage_spin"
+    )
 
-    turtle.cmd_velocity(linear = linear_0, angular = angular_0)
-    print("looking_for_garage_spin konec")
-    time.sleep(1)
 
 def get_close_to_garage(turtle,rate):
-    print("get_close_to_garage start")
-    
-    ang_speed = angular_0
-    lin_speed = linear_the_rest +0.12
-    while not StateofBumper.is_set() and not ending_stage.is_set():
-        ang_speed = P_reg_gar() 
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        rate.sleep()   
-        set_process_img()
 
-    turtle.cmd_velocity(linear = linear_0, angular = angular_0)
-    print("get_close_to_garage konec")
-    time.sleep(1)
+    move_until(
+    turtle, rate,
+    linear_the_rest +0.12, angular_0,
+    condition_fn=lambda: not see_garage.is_set(),
+    text="get_close_to_garage",
+    ang_speed_reg=P_reg_gar
+    )
+    
 
 # Stage 6 ------------------------------------
 def stage6(turtle,rate):
