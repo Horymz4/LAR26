@@ -69,7 +69,8 @@ def obraz(turtle,ref_green, ref_purple):
 
             # Stage 6
             else:
-                get_bottom_half_distance(turtle)
+                pc = turtle.get_point_cloud()
+                get_bottom_half_distance(pc)
                 processing_image.set()
 
 
