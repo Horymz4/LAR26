@@ -36,7 +36,7 @@ def find_opening(turtle, rate):
 
     move_until(
         turtle, rate,
-        linear_0, angular_spinning,
+        linear_0, angular_spinning*0.5,
         lambda: not exited_garage.is_set(),
         "Find opening"
     )
