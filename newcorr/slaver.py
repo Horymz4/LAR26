@@ -94,7 +94,7 @@ def main():
         raw = sys.argv[2] 
         ref_purple = [int(x) for x in raw.strip("[]").split(",")]
     else:
-        ref_purple = [129, 71, 90]
+        ref_purple = [93, 58, 76]
 
     # Threading ---------------------------------------
     print("Starting threads")
