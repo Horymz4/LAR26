@@ -134,4 +134,4 @@ def P_reg_gar():
         else: 
             return 0
     print(f'errorP: {error_x}')
-    return ((-error_x / IMG_CENTER_X) * 1.05) 
+    return ((-error_x / IMG_CENTER_X) * 1.3) 
