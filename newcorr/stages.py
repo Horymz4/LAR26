@@ -13,7 +13,6 @@ centered = False
 def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_sleep = 0.1, ang_speed_reg=None, image_processing=True):
     print(text + " start")
     while not StateofBumper.is_set() and condition_fn():
-        if text == "looking_for_garage_spin": print(ang_speed)
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
         if image_processing:
@@ -205,7 +204,7 @@ def get_close_to_garage(turtle,rate):
 
     move_until(
     turtle, rate,
-    linear_the_rest, angular_0,
+    linear_the_rest + 0.05, angular_0,
     condition_fn=lambda: not ending_stage.is_set(),
     text="get_close_to_garage",
     ang_speed_reg=P_reg_gar
@@ -223,7 +222,7 @@ def stage6(turtle,rate):
             print("Zaparkováno!")
             break
         rate.sleep()
-        # set_process_img()
+        set_process_img()
 
     turtle.cmd_velocity(linear=linear_0, angular=angular_0)
     print("Stage 6 konec")

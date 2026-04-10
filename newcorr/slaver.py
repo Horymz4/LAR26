@@ -53,7 +53,7 @@ def obraz(turtle,ref_green, ref_purple):
             # Stage 2, 3, 4
             elif not odometry_stage.is_set():
 
-                # turtle.wait_for_rgb_image()
+                turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
                 pos, radius = ball_image(rgb, ref_green)
                 avg_x = dist = None
@@ -66,11 +66,11 @@ def obraz(turtle,ref_green, ref_purple):
                 avg_x, dist = garage_image(rgb, ref_purple, turtle)
                 pos = radius = None
                 processing_image.set()
-           
+
+            # Stage 6
             else:
-                pc = turtle.get_point_cloud()
-                get_bottom_half_distance(pc)
-                # processing_image.set()
+                get_bottom_half_distance(turtle)
+                processing_image.set()
 
 
             reasoning(pos, radius, avg_x, dist, ratio)
