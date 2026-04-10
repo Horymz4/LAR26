@@ -193,7 +193,7 @@ def looking_for_garage_spin(turtle,rate):
 
     move_until(
     turtle, rate,
-    linear_0, (-0.2+angular_spinning)*m,
+    linear_0, (-0.3+angular_spinning)*m,
     condition_fn=lambda: not see_garage.is_set(),
     text="looking_for_garage_spin"
     )
@@ -206,7 +206,7 @@ def get_close_to_garage(turtle,rate):
     linear_the_rest , angular_0,
     condition_fn=lambda: not ending_stage.is_set(),
     text="get_close_to_garage",
-    ang_speed_reg=P_reg_gar
+    ang_speed_reg=P_reg_gar,
     image_processing=False
     )
     
