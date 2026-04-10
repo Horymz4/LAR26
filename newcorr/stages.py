@@ -109,7 +109,7 @@ def do_quater_spin(turtle, rate, y_odo):
 def cond_angle(turtle, ang, tolerance, t):
     odometry = turtle.get_odometry() 
     a_curr = odometry[2]
-    return abs(a_curr - ang) > tolerance and not cond_time(t, 2)
+    return abs(a_curr - ang) > tolerance or cond_time(t, 2)
 
 
 def go_around_the_ball(turtle,rate,y_odo):
