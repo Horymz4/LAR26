@@ -58,7 +58,7 @@ def stage3(turtle,rate):
 
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     time.sleep(0.5)
-    go_forward_a_little(turtle,rate, 4.2)
+    go_forward_a_little(turtle,rate, 4)
     print("Stage 3 konec")
 
 def go_forward_a_little(turtle,rate,how_long):
