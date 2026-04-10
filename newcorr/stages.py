@@ -197,6 +197,7 @@ def stage6(turtle,rate):
             print("Zaparkováno!")
             break
         rate.sleep()
+        set_process_img()
 
     turtle.cmd_velocity(linear=linear_0, angular=angular_0)
     print("Stage 6 konec")
