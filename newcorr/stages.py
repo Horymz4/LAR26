@@ -107,7 +107,7 @@ def do_quater_spin(turtle, rate, y_odo):
 def cond_angle(turtle, ang, tolerance, t):
     odometry = turtle.get_odometry() 
     a_curr = odometry[2]
-    return abs(a_curr - ang) > tolerance or cond_time(t, 2)
+    return abs(a_curr - ang) > tolerance or cond_time(t, 8)
 
 
 def go_around_the_ball(turtle,rate,y_odo):
@@ -115,7 +115,7 @@ def go_around_the_ball(turtle,rate,y_odo):
 
     tolerance = 0.08
     m = -1 if y_odo > 0 else 1
-    ang = -m * np.pi/2
+    ang = m * np.pi/2
     if abs(y_odo) < 0.5: 
         ang = -ang
         print("ball is too centered")

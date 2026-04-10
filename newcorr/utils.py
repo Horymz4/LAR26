@@ -92,7 +92,7 @@ def garage_wall_percentage(pc, dist=0.7):
     z = bottom[:, :, 2]
     
     # Filter out invalid depth values (NaN, inf, and non-positive)
-    valid_mask = np.isfinite(z) & (z > 0)
+    valid_mask = np.isfinite(z) & (z >= 0)
     # print(f"NaN: {np.isnan(z).sum()}, Inf: {np.isinf(z).sum()}, Zero: {(z == 0).sum()}, Valid: {valid_mask.sum()}")
     if not np.any(valid_mask):
         return None  # No valid depth data at all

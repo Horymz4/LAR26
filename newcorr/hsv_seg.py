@@ -21,7 +21,7 @@ def HSV_mask(image, ref_color, ball):
 
     # Color difference --------------------------------
     if ball:
-        H_par = 40                                      
+        H_par = 20
         S_par = 40
         V_par = 40
     else:
