@@ -134,7 +134,7 @@ def go_around_the_ball(turtle,rate,y_odo):
     linear_around_the_ball, direction*angular_around_the_ball,
     lambda: cond_angle(turtle, ang, tolerance, t),
     text="go_around_the_ball",
-    time_sleep=1.5
+    time_sleep=0.5
     )
 
 
@@ -163,15 +163,35 @@ def return_to_axis(turtle,rate):
 # Stage 5 ------------------------------------
 def stage5(turtle,rate):
     print("Stage 5 start")
+    
+    x_curr,y_curr,a_curr = turtle.get_odometry()
+    print(x_curr,y_curr,a_curr)
+    if y_curr < 10: 
+        print("too close to starting point!!")
+        turn_to_garage(turtle,rate)
+        see_garage.set()
+        ending_stage.set()
 
-    looking_for_garage_spin(turtle,rate)
-    get_close_to_garage(turtle,rate)
+    else:
+        looking_for_garage_spin(turtle,rate)
+        get_close_to_garage(turtle,rate)
 
     print("Stage 5 konec")
+def turn_to_garage(turtle, rate):
+    m = -1 if centered else 1
+    t = get_time()
+    move_until(
+    turtle, rate,
+    linear_0, angular_spinning*m,
+    condition_fn=lambda: cond_time(t, 6),
+    text="sping towards garage"
+    )
+
+
 
 def looking_for_garage_spin(turtle,rate):
     m = -1 if centered else 1
-    
+
     move_until(
     turtle, rate,
     linear_0, angular_spinning*m,

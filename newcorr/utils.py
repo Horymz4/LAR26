@@ -71,7 +71,7 @@ def garage_image(rgb,ref,turtle):
     return avg_x, dist
 
 # def garage_wall_percentage(pc, dist = 0.7):
-#     if pc is None:
+#     if pc is None8
 #         return None
 #     ratio = 1
 #     h = pc.shape[0]
