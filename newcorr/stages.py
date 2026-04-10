@@ -18,7 +18,7 @@ def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_slee
         rate.sleep()
         if image_processing:
             set_process_img()
-        elif ang_speed_reg is not None:
+        if ang_speed_reg is not None:
             ang_speed = ang_speed_reg()
             print(f' regulator:{ang_speed_reg}')
 
