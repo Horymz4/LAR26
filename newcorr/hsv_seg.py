@@ -161,12 +161,12 @@ def find_garage_center(image, ref_colour, turtle):
     # No rectangle ------------------------------------
     if rects is None:                            
         print("Nevidím žádný obdélník")
-        return None, None
+        return None
     
     # One rectangle -----------------------------------
     if rects[1] is None:                           
         print("Vidím jeden obdélník")
-        return None, None
+        return None
 
     x1 = rects[0][0]
     x2 = rects[1][0]
