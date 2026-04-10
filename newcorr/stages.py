@@ -28,7 +28,7 @@ def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_slee
 def stage1(turtle, rate):
     time.sleep(0.5)
     find_opening(turtle,rate)
-    go_forward_a_little(turtle,rate,7)
+    go_forward_a_little(turtle,rate,5.5)
 
     turtle.reset_odometry()
 
@@ -165,7 +165,7 @@ def stage5(turtle,rate):
     
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print(x_curr,y_curr,a_curr)
-    if x_curr < 0.2: 
+    if np.sqrt(x_curr**2 + y_curr**2) < 0.45: 
         print("too close to starting point!!")
         turn_to_garage(turtle,rate)
         see_garage.set()
