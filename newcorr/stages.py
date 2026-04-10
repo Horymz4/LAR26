@@ -50,7 +50,8 @@ def stage2(turtle,rate):
         turtle, rate,
         linear_0, -angular_spinning,
         lambda: not garage_stage.is_set(),
-        "Stage 2"
+        "Stage 2",
+        ang_speed_reg=P_reg_ball()
     )
    
 
@@ -66,7 +67,7 @@ def stage3(turtle,rate):
         ang_speed_reg=P_reg_ball
     )
     
-    go_forward_a_little(turtle,rate, 3.5)
+    go_forward_a_little(turtle,rate, 2.5)
 
 def cond_time(t, how_long):
     return get_time() - t < how_long
