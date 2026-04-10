@@ -1,6 +1,5 @@
 import time
 import numpy as np
-from numpy._core.numeric import sqrt
 from threading_variables import garage_stage, StateofBumper,odometry_stage, outgarage_stage, see_garage, ending_stage, exited_garage
 
 from robolab_turtlebot import get_time
@@ -167,7 +166,7 @@ def stage5(turtle,rate):
     
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print(x_curr,y_curr,a_curr)
-    if sqrt(y_curr**2 + x_curr**2) < 0.10: 
+    if np.sqrt(y_curr**2 + x_curr**2) < 0.10: 
         print("too close to starting point!!")
         turn_to_garage(turtle,rate)
         see_garage.set()
