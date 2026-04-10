@@ -165,7 +165,7 @@ def stage5(turtle,rate):
     
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print(x_curr,y_curr,a_curr)
-    if x_curr < 0.25: 
+    if False: 
         print("too close to starting point!!")
         turn_to_garage(turtle,rate)
         see_garage.set()
