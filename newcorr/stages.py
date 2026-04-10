@@ -7,6 +7,8 @@ from utils import set_process_img,  P_reg_ball, P_reg_gar
 from beep_beep import ParkController
 from constants import linear_0, angular_0, stop_distance, angular_spinning, angular_around_the_ball, linear_around_the_ball, linear_the_rest, angular_quater_spin
 
+direction = 1
+
 def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_sleep = 1.0, ang_speed_reg=None, image_processing=True):
     print(text + " start")
     while not StateofBumper.is_set() and condition_fn():
@@ -129,6 +131,10 @@ def go_around_the_ball(turtle,rate,y_odo):
     text="go_around_the_ball",
     time_sleep=1.5
     )
+    global direction
+    direction = m
+
+    
 
 
 def cond_y(turtle, tolerance):
@@ -161,10 +167,10 @@ def stage5(turtle,rate):
     print("Stage 5 konec")
 
 def looking_for_garage_spin(turtle,rate):
-
+    
     move_until(
     turtle, rate,
-    linear_0, -(angular_spinning + 0.6),
+    linear_0, -(angular_spinning + 0.6)*direction,
     condition_fn=lambda: not see_garage.is_set(),
     text="looking_for_garage_spin"
     )
