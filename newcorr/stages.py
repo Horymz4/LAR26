@@ -153,7 +153,7 @@ def return_to_axis(turtle,rate):
     move_until(
     turtle, rate,
     speed *linear_the_rest, angular_0,
-    lambda: cond_y(turtle, 0.1),
+    lambda: cond_y(turtle, 0.05),
     text="return_to_axis"
     )
 
