@@ -99,7 +99,7 @@ def do_quater_spin(turtle, rate, y_odo):
     t = get_time()
     m = -1 if y_odo > 0 else 1
 
-    if abs(y_odo) < 0.5: 
+    if abs(y_odo) < 0.25: 
         m = -m
     move_until(
     turtle, rate,
@@ -141,7 +141,7 @@ def go_around_the_ball(turtle,rate,y_odo):
 def cond_y(turtle, tolerance):
     x_curr,y_curr,a_curr = turtle.get_odometry()
     print("y",x_curr,y_curr,a_curr)
-    return -direction* y_curr > tolerance
+    return abs(y_curr) > tolerance
 
 def return_to_axis(turtle,rate):
     
@@ -151,7 +151,7 @@ def return_to_axis(turtle,rate):
     move_until(
     turtle, rate,
     linear_the_rest, angular_0,
-    lambda: cond_y(turtle, 0.05),
+    lambda: cond_y(turtle, 0.1),
     text="return_to_axis"
     )
 
@@ -182,7 +182,7 @@ def get_close_to_garage(turtle,rate):
 
     move_until(
     turtle, rate,
-    linear_the_rest +0.12, angular_0,
+    linear_the_rest, angular_0,
     condition_fn=lambda: not ending_stage.is_set(),
     text="get_close_to_garage",
     ang_speed_reg=P_reg_gar
