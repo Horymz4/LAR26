@@ -169,7 +169,7 @@ def looking_for_garage_spin(turtle,rate):
     global direction
     move_until(
     turtle, rate,
-    linear_0, angular_spinning*direction,
+    linear_0, -angular_spinning*direction,
     condition_fn=lambda: not see_garage.is_set(),
     text="looking_for_garage_spin"
     )
