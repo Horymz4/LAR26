@@ -12,5 +12,5 @@ ending_stage = threading.Event()
 processing_image = threading.Event()
 
 # Data from camera ------------------------------------
-vision_data = {"pos":None, "radius":None, "avg_x":None, "dist":None}
+vision_data = {"pos":None, "radius":None, "avg_x":None, "dist":None, "g_dist":None}
 vision_lock = threading.Lock()

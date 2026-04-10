@@ -3,9 +3,9 @@ import threading, time, sys
 from robolab_turtlebot import Turtlebot, Rate
 from stages import stage1, stage2, stage3, stage4, stage5, stage6
 from utils import bumper_cb, reasoning, ball_image, garage_image
-from threading_variables import StateofBumper, processing_image, odometry_stage, exited_garage
+from threading_variables import StateofBumper, processing_image, odometry_stage, exited_garage, ending_stage
 from utils import calibrate, garage_wall_percentage
-
+from beep_beep import get_bottom_half_distance
 
 # Bumper thread ---------------------------------------
 def bumper(turtle):
@@ -53,21 +53,27 @@ def obraz(turtle,ref_green, ref_purple):
             # Stage 2, 3, 4
             elif not odometry_stage.is_set():
 
-                turtle.wait_for_rgb_image()
+                # turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
                 pos, radius = ball_image(rgb, ref_green)
                 avg_x = dist = None
  
                 processing_image.set()
             # Stage 5
-            else:
-                turtle.wait_for_rgb_image()
+            elif not ending_stage.is_set():
+                # turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
                 avg_x, dist = garage_image(rgb, ref_purple, turtle)
                 pos = radius = None
                 processing_image.set()
-            reasoning(pos, radius, avg_x, dist, ratio)
+           
+            else:
+                pc = turtle.get_point_cloud()
+                get_bottom_half_distance(pc)
+                processing_image.set()
 
+
+            reasoning(pos, radius, avg_x, dist, ratio)
     print("Konec obrazového vlákna")
 
 

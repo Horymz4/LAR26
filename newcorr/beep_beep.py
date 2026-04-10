@@ -1,6 +1,7 @@
 import time
 import numpy as np
 from robolab_turtlebot import Turtlebot, Rate
+from threading_variables import vision_lock,vision_data
 
 # Distance calculator ---------------------------------
 def get_bottom_half_distance(pc):
@@ -14,8 +15,8 @@ def get_bottom_half_distance(pc):
     mask = np.isfinite(z) & (z > 0)
     if np.count_nonzero(mask) == 0:
         return None
-
-    return float(np.mean(z[mask]))
+    with vision_lock:
+        vision_data["g_dist"] = float(np.mean(z[mask]))
 
 
 # Parking state ---------------------------------------
@@ -38,7 +39,7 @@ class ParkController:
         # True = parked, False = continue -------------
         
         pc = turtle.get_point_cloud()
-        dist = get_bottom_half_distance(pc)
+        dist = vision_data["g_dist"]
 
         if dist is None:
             print("Depth None")
