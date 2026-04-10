@@ -184,7 +184,7 @@ def turn_to_garage(turtle, rate):
     move_until(
     turtle, rate,
     linear_0, angular_spinning*m,
-    condition_fn=lambda: cond_time(t, 8),
+    condition_fn=lambda: cond_time(t, 13),
     text="sping towards garage"
     )
 

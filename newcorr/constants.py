@@ -8,7 +8,7 @@ linear_the_rest = 0.08
 
 # Angular velocity ------------------------------------
 angular_0 = 0
-angular_spinning = np.pi/12
+angular_spinning = -np.pi/12
 angular_around_the_ball = np.pi/9
 angular_quater_spin = -np.pi/8
 
