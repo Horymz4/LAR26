@@ -95,7 +95,7 @@ def stage4(turtle,rate):
 
 def do_quater_spin(turtle, rate, y_odo):
     t = get_time()
-    m = 1 if y_odo > 0 else -1
+    m = -1 if y_odo > 0 else 1
 
     move_until(
     turtle, rate,
@@ -114,7 +114,7 @@ def go_around_the_ball(turtle,rate,y_odo):
     print("go_around_the_ball start")   
 
     tolerance = 0.08
-    m = 1 if y_odo > 0 else -1
+    m = -1 if y_odo > 0 else 1
     ang = -m * np.pi/2
     if abs(y_odo) < 0.5: 
         ang = -ang
