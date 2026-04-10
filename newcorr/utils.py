@@ -112,7 +112,7 @@ def set_process_img():
 
 # P regulators - both return angular speed ------------
 
-def P_reg_ball():
+def P_reg_ball(err=0):
     radius = pos = None
     with vision_lock:
         if vision_data["pos"] is not None:
@@ -120,7 +120,7 @@ def P_reg_ball():
             radius = vision_data["radius"]
     if radius is not None and pos is not None and IMG_CENTER_X + 110 > pos > IMG_CENTER_X - 110 and radius < 55:
         error_x = pos - IMG_CENTER_X
-    else: error_x = 0
+    else: error_x = err
     print(f'errorP: {error_x}')
     return ((-error_x / IMG_CENTER_X) * 1.05) 
 

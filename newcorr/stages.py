@@ -18,8 +18,8 @@ def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_slee
         rate.sleep()
         if image_processing:
             set_process_img()
-        if ang_speed_reg is not None:
-            ang_speed = ang_speed - ang_speed_reg()
+        elif ang_speed_reg is not None:
+            ang_speed = ang_speed_reg()
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     print(text + " end")
     time.sleep(time_sleep)
@@ -51,7 +51,7 @@ def stage2(turtle,rate):
         linear_0, -angular_spinning-1,
         lambda: not garage_stage.is_set(),
         "Stage 2",
-        ang_speed_reg=P_reg_ball,
+        ang_speed_reg=lambda:P_reg_ball(err=(-np.pi/12))
     )
    
 
