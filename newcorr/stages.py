@@ -12,6 +12,7 @@ centered = False
 
 def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_sleep = 0.1, ang_speed_reg=None, image_processing=True):
     print(text + " start")
+    
     while not StateofBumper.is_set() and condition_fn():
         turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
         rate.sleep()
@@ -33,7 +34,7 @@ def stage1(turtle, rate):
     turtle.reset_odometry()
 
 def find_opening(turtle, rate):
-
+    turtle.cmd_velocity(linear = linear_0, angular = np.pi/6)
     move_until(
         turtle, rate,
         linear_0, angular_spinning*0.5,
