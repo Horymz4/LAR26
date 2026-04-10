@@ -61,7 +61,7 @@ def obraz(turtle,ref_green, ref_purple):
                 processing_image.set()
             # Stage 5
             elif not ending_stage.is_set():
-                # turtle.wait_for_rgb_image()
+                turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
                 avg_x, dist = garage_image(rgb, ref_purple, turtle)
                 pos = radius = None
@@ -70,7 +70,7 @@ def obraz(turtle,ref_green, ref_purple):
             else:
                 pc = turtle.get_point_cloud()
                 get_bottom_half_distance(pc)
-                processing_image.set()
+                # processing_image.set()
 
 
             reasoning(pos, radius, avg_x, dist, ratio)
