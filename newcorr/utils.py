@@ -41,7 +41,7 @@ def calibrate(turtle):
 
 # Image reasoning and image utils ---------------------
 def reasoning(pos,radius,avg_x,dist, ratio):
-    if (not exited_garage.is_set()) and ratio is not None and  ratio < 0.45:
+    if (not exited_garage.is_set()) and ratio is not None and  ratio == 0:
         exited_garage.set()
     if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 5  and IMG_CENTER_X + 30 > pos[0] > IMG_CENTER_X - 30:
         garage_stage.set()
@@ -85,7 +85,7 @@ def garage_image(rgb,ref,turtle):
 #     return ratio
 
 # # to see if we are in garage
-def garage_wall_percentage(pc, dist=0.7):
+def garage_wall_percentage(pc, dist=0.3):
     if pc is None:
         return None
 

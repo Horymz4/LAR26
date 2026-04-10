@@ -107,7 +107,7 @@ def do_quater_spin(turtle, rate, y_odo):
     move_until(
     turtle, rate,
     linear_0, m*angular_quater_spin,
-    lambda: cond_time(t, 8),
+    lambda: cond_time(t, 10),
     text="Half corcle maneuver",
     )
 
