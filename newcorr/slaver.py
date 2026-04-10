@@ -42,6 +42,8 @@ def obraz(turtle,ref_green, ref_purple):
     while not StateofBumper.is_set():
         if not processing_image.is_set():
                 
+                odometry_stage.set()
+                
             # Stage 1
             if not exited_garage.is_set():
                 pc = turtle.get_point_cloud()
