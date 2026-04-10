@@ -118,8 +118,7 @@ def cond_angle(turtle, ang, tolerance, t):
 
 
 def go_around_the_ball(turtle,rate,y_odo):
-    print("go_around_the_ball start")   
-
+   
     tolerance = 0.08
     ang = direction * np.pi/2
     if centered: 
@@ -179,13 +178,13 @@ def stage5(turtle,rate):
     print("Stage 5 konec")
 
 def turn_to_garage(turtle, rate):
-    m = -1 if centered else 1
+    m = 1 if centered else -1
     t = get_time()
 
     move_until(
     turtle, rate,
     linear_0, angular_spinning*m,
-    condition_fn=lambda: cond_time(t, 6),
+    condition_fn=lambda: cond_time(t, 8),
     text="sping towards garage"
     )
 
