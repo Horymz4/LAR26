@@ -118,6 +118,7 @@ def go_around_the_ball(turtle,rate,y_odo):
     ang = -m * np.pi/2
     if abs(y_odo) < 0.5: 
         ang = -ang
+        print("ball is too centered")
     t = get_time()
 
 
