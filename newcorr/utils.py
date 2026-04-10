@@ -119,10 +119,10 @@ def P_reg_ball_spinning(stable):
             pos = vision_data["pos"][0]
             radius = vision_data["radius"]
     speed = stable*2
-    if radius is not None and pos is not None and pos > IMG_CENTER_X:
-        speed = -stable
-    elif radius is not None and pos is not None and pos < IMG_CENTER_X:
-        speed = stable
+    if radius is not None and pos is not None and pos > IMG_CENTER_X-10:
+        speed = -stable/2
+    elif radius is not None and pos is not None and pos < IMG_CENTER_X+10:
+        speed = stable/2
     return speed
 
 def P_reg_ball():
