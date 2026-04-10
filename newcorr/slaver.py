@@ -66,7 +66,7 @@ def obraz(turtle,ref_green, ref_purple):
             elif not ending_stage.is_set():
                 turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
-                avg_x, dist = garage_image(rgb, ref_purple, turtle)
+                avg_x = garage_image(rgb, ref_purple, turtle)
                 pos = radius = None
                 processing_image.set()
 

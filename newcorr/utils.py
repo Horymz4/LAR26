@@ -55,7 +55,7 @@ def reasoning(pos,radius,avg_x,dist, ratio):
     if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X + 30 > avg_x > IMG_CENTER_X - 30:
         see_garage.set()
         print("SEE GARAGE")
-    if (not ending_stage.is_set()) and dist is not None and see_garage.is_set() and dist < 1.12:
+    if (not ending_stage.is_set()) and see_garage.is_set() and avg_x is None:
         ending_stage.set()
         print("PARKING")
 
@@ -134,4 +134,4 @@ def P_reg_gar():
         else: 
             return 0
     print(f'errorP: {error_x}')
-    return ((-error_x / IMG_CENTER_X) * 1.3) 
+    return ((-error_x / IMG_CENTER_X) * 1.) 
