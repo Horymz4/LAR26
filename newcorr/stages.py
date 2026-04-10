@@ -48,10 +48,10 @@ def stage2(turtle,rate):
 
     move_until(
         turtle, rate,
-        linear_0, -angular_spinning-1,
+        linear_0, -angular_spinning,
         lambda: not garage_stage.is_set(),
         "Stage 2",
-        ang_speed_reg=lambda:P_reg_ball(err=(-np.pi/12))
+        ang_speed_reg=lambda:P_reg_ball(-angular_spinning)
     )
    
 
