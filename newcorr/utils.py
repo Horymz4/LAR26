@@ -51,7 +51,6 @@ def reasoning(pos,radius,avg_x,dist, ratio):
     if (not outgarage_stage.is_set()):
     # if (not outgarage_stage.is_set()) and radius is not None and pos is not None and IMG_CENTER_X + 100 > pos[0] > IMG_CENTER_X - 100 and 60 > radius > 55:
         outgarage_stage.set()
-        odometry_stage.set()
         print("BALL CLOSE")
     if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X + 30 > avg_x > IMG_CENTER_X - 30:
         see_garage.set()
