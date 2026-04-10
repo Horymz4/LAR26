@@ -62,7 +62,7 @@ def stage3(turtle,rate):
         ang_speed_reg=P_reg_ball
     )
     
-    go_forward_a_little(turtle,rate, 2.5)
+    go_forward_a_little(turtle,rate, 4)
 
 def cond_time(t, how_long):
     return get_time() - t < how_long
@@ -109,7 +109,7 @@ def do_quater_spin(turtle, rate, y_odo):
 def cond_angle(turtle, ang, tolerance, t):
     odometry = turtle.get_odometry() 
     a_curr = odometry[2]
-    return abs(a_curr - ang) > tolerance and cond_time(t, 2)
+    return abs(a_curr - ang) > tolerance and not cond_time(t, 2)
 
 
 def go_around_the_ball(turtle,rate,y_odo):
