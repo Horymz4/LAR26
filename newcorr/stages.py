@@ -99,6 +99,8 @@ def do_quater_spin(turtle, rate, y_odo):
     t = get_time()
     m = -1 if y_odo > 0 else 1
 
+    if abs(y_odo) < 0.5: 
+        m = -m
     move_until(
     turtle, rate,
     linear_0, m*angular_quater_spin,
@@ -119,8 +121,8 @@ def go_around_the_ball(turtle,rate,y_odo):
     m = -1 if y_odo > 0 else 1
     ang = m * np.pi/2
     if abs(y_odo) < 0.5: 
-        # ang = -ang
-        m = -m
+        ang = -ang
+        # m = -m
         print("ball is too centered")
     t = get_time()
 
