@@ -39,7 +39,9 @@ class ParkController:
         # True = parked, False = continue -------------
         
         # pc = turtle.get_point_cloud()
-        dist = vision_data["g_dist"]
+        dist = None
+        with vision_lock:
+            dist = vision_data["g_dist"]
 
         if dist is None:
             # print("Depth None")

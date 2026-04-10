@@ -123,10 +123,11 @@ def P_reg_ball():
     return ((-error_x / IMG_CENTER_X) * 0.8) 
 
 def P_reg_gar():
-    if vision_data["avg_x"] is not None:
-        avg_x = vision_data["avg_x"]
-        error_x = avg_x - IMG_CENTER_X
-    else: 
+    with vision_lock:
+        if vision_data["avg_x"] is not None:
+            avg_x = vision_data["avg_x"]
+            error_x = avg_x - IMG_CENTER_X
+        else: 
             return 0
     print(f'errorP: {error_x}')
     return ((-error_x / IMG_CENTER_X) * 1.3) 

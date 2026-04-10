@@ -36,7 +36,8 @@ def obraz(turtle,ref_green, ref_purple):
     print("Start obrazového vlákna")
  
     pos = (0,0)
-    radius = avg_x = dist = ratio = 0
+    radius = avg_x = dist = 0
+    ratio = None
  
     while not StateofBumper.is_set():
         if not processing_image.is_set():
