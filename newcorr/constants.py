@@ -14,5 +14,5 @@ angular_quater_spin = -np.pi/8
 
 # Other -----------------------------------------------
 stop_distance = 0.44
-IMG_CENTER_X = 360
+IMG_CENTER_X = 334
 IMG_CENTER_Y = 223
