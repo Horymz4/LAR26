@@ -122,8 +122,7 @@ def P_reg_ball_spinning(stable):
             radius = vision_data["radius"]
     speed = stable*2
 
-    if radius is not None: HYSTERESIS = 900//(radius+0.1)
-    else: HYSTERESIS = 20
+    HYSTERESIS = 30
     print(f'hystereze: {HYSTERESIS}')
     if radius is not None and pos is not None and pos > IMG_CENTER_X+HYSTERESIS:
         speed = -stable/2
