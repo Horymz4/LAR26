@@ -70,7 +70,7 @@ def stage3(turtle,rate):
         ang_speed_reg=P_reg_ball
     )
     
-    go_forward_a_little(turtle,rate, 2)
+    go_forward_a_little(turtle,rate, 4)
 
 def cond_time(t, how_long):
     return get_time() - t < how_long
