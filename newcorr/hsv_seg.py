@@ -171,10 +171,11 @@ def find_garage_center(image, ref_colour, turtle):
     x1 = rects[0][0]
     x2 = rects[1][0]
     y = rects[0][1]
+    h = rects[0][3]
     # Center of garage in pixels ----------------------
     avg_x = (x1 + x2) // 2                       
     # dist = get_distance_at_pixel(turtle, avg_x, y)
 
     print("X = ", avg_x)
 
-    return avg_x
+    return avg_x, h

@@ -40,7 +40,7 @@ def calibrate(turtle):
     return ref_image
 
 # Image reasoning and image utils ---------------------
-def reasoning(pos,radius,avg_x,dist, ratio):
+def reasoning(pos,radius,avg_x,height, ratio):
     THRESHOLD = 40
     if (not exited_garage.is_set()) and ratio is not None and  ratio < 0.15:
         exited_garage.set()
@@ -55,7 +55,7 @@ def reasoning(pos,radius,avg_x,dist, ratio):
     if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X + THRESHOLD > avg_x > IMG_CENTER_X - THRESHOLD:
         see_garage.set()
         print("SEE GARAGE")
-    if (not ending_stage.is_set()) and see_garage.is_set() and avg_x is None:
+    if (not ending_stage.is_set()) and see_garage.is_set() and height > 300:
         ending_stage.set()
         print("PARKING")
 
@@ -68,11 +68,11 @@ def ball_image(rgb, ref_img):
     return pos,radius
 
 def garage_image(rgb,ref,turtle):
-    avg_x = find_garage_center(rgb, ref, turtle)
+    avg_x,h = find_garage_center(rgb, ref, turtle)
     with vision_lock:
         vision_data["avg_x"] = avg_x
         # vision_data["dist"] = dist
-    return avg_x
+    return avg_x,h
 
 # def garage_wall_percentage(pc, dist = 0.7):
 #     if pc is None8

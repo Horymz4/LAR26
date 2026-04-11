@@ -65,7 +65,7 @@ def obraz(turtle,ref_green, ref_purple):
             elif not ending_stage.is_set():
                 turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
-                avg_x = garage_image(rgb, ref_purple, turtle)
+                avg_x,h = garage_image(rgb, ref_purple, turtle)
                 pos = radius = None
                 processing_image.set()
 
@@ -76,7 +76,7 @@ def obraz(turtle,ref_green, ref_purple):
                 processing_image.set()
 
 
-            reasoning(pos, radius, avg_x, dist, ratio)
+            reasoning(pos, radius, avg_x, h, ratio)
     print("Konec obrazového vlákna")
 
 
