@@ -202,7 +202,8 @@ def looking_for_garage_spin(turtle,rate):
     turtle, rate,
     linear_0, (-0.1+angular_spinning)*m,
     condition_fn=lambda: not see_garage.is_set(),
-    text="looking_for_garage_spin"
+    text="looking_for_garage_spin",
+    ang_speed_reg=lambda: P_reg_ball_spinning((-0.1+angular_spinning)*m)
     )
 
 
