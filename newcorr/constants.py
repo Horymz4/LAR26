@@ -3,7 +3,7 @@ import numpy as np
 
 # Linear velocity -------------------------------------
 linear_0 = 0
-linear_around_the_ball = 0.13
+linear_around_the_ball = 0.12
 linear_the_rest = 0.1
 
 # Angular velocity ------------------------------------
@@ -14,5 +14,5 @@ angular_quater_spin = -np.pi/8
 
 # Other -----------------------------------------------
 stop_distance = 0.44
-IMG_CENTER_X = 334
-IMG_CENTER_Y = 223
+IMG_CENTER_X = 320 #334
+IMG_CENTER_Y = 240 #223
