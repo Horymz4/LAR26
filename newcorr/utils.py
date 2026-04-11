@@ -143,7 +143,7 @@ def P_reg_garage_spinning(stable):
         speed = -abs(speed/3)
     elif avg_x is not None and avg_x < IMG_CENTER_X+HYSTERESIS:
         speed = abs(speed/3)
-    elif avg_x is not None and avg_x >= IMG_CENTER_X-HYSTERESIS and avg_x <= IMG_CENTER_X+HYSTERESIS:
+    else:
         speed = None
 
     print(f'speed: {speed} avg_x: {avg_x}')
