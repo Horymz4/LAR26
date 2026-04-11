@@ -19,7 +19,9 @@ def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_slee
         if image_processing:
             set_process_img()
         if ang_speed_reg is not None:
-            ang_speed = ang_speed_reg()
+            speed = ang_speed_reg()
+            if speed is not None:
+                ang_speed = speed
 
         if text =="Stage 2": print(ang_speed)
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
