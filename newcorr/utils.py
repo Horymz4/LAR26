@@ -129,7 +129,7 @@ def P_reg_ball_spinning(stable):
         speed = speed/3
     elif radius is not None and pos is not None and pos >= IMG_CENTER_X-HYSTERESIS and pos <= IMG_CENTER_X+HYSTERESIS:
         speed = None
-    print(f'speed: {speed}')
+    print(f'speed: {speed} pos: {pos}')
     return speed
 
 def P_reg_garage_spinning(stable):
@@ -164,14 +164,12 @@ def P_reg_ball():
     return ((-error_x / IMG_CENTER_X) * kP)  
 
 def P_reg_gar():
-    kP = 2.8
+    kP = 1.
     with vision_lock:
         if vision_data["avg_x"] is not None:
             avg_x = vision_data["avg_x"]
             error_x = avg_x - IMG_CENTER_X 
         else: 
             return 0
-    if error_x < 10:
-        kP = 6
     print(f'errorP: {error_x}')
     return ((-error_x / IMG_CENTER_X) * kP) 
