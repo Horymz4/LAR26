@@ -167,7 +167,7 @@ def P_reg_gar():
     with vision_lock:
         if vision_data["avg_x"] is not None:
             avg_x = vision_data["avg_x"]
-            error_x = avg_x - (IMG_CENTER_X -10)
+            error_x = avg_x - IMG_CENTER_X 
         else: 
             return 0
     print(f'errorP: {error_x}')
