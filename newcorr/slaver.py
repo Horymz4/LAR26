@@ -38,7 +38,7 @@ def obraz(turtle,ref_green, ref_purple):
  
     pos = (0,0)
     radius = avg_x = dist = 0
-    ratio = 0
+    ratio = None
  
     while not StateofBumper.is_set():
         if not processing_image.is_set():
@@ -97,7 +97,7 @@ def main():
         raw = sys.argv[2] 
         ref_purple = [int(x) for x in raw.strip("[]").split(",")]
     else:
-        ref_purple = [93, 58, 76]
+        ref_purple = [76, 58, 93]
 
     # Threading ---------------------------------------
     print("Starting threads")
