@@ -41,7 +41,7 @@ def calibrate(turtle):
 
 # Image reasoning and image utils ---------------------
 def reasoning(pos,radius,avg_x,dist, ratio):
-    THRESHOLD = 600/radius
+    THRESHOLD = 600//(radius+0.1)
     if (not exited_garage.is_set()) and ratio is not None and  ratio < 0.15:
         exited_garage.set()
     if (not garage_stage.is_set()) and radius is not None and pos is not None and 150 > radius > 5  and IMG_CENTER_X + THRESHOLD > pos[0] > IMG_CENTER_X - THRESHOLD:
