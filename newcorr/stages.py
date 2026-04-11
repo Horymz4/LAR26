@@ -198,7 +198,7 @@ def turn_to_garage(turtle, rate):
     )
 
 def looking_for_garage_spin(turtle,rate):
-    m = direction
+    m = -direction if centered else direction
 
     move_until(
     turtle, rate,
