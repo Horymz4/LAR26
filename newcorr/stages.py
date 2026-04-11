@@ -18,7 +18,7 @@ def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_slee
             set_process_img()
         if ang_speed_reg is not None:
             reg_speed = ang_speed_reg()
-            if speed is not None:
+            if reg_speed is not None:
                 speed = reg_speed
         turtle.cmd_velocity(linear = lin_speed, angular = speed)
         rate.sleep()
