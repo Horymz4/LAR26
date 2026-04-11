@@ -124,9 +124,9 @@ def P_reg_ball_spinning(stable):
 
     HYSTERESIS = 30
     if radius is not None and pos is not None and pos > IMG_CENTER_X+HYSTERESIS:
-        speed = -stable
+        speed = -speed/3
     elif radius is not None and pos is not None and pos < IMG_CENTER_X-HYSTERESIS:
-        speed = stable/2
+        speed = speed/3
     elif radius is not None and pos is not None and pos >= IMG_CENTER_X-HYSTERESIS and pos <= IMG_CENTER_X+HYSTERESIS:
         speed = None
     print(f'speed: {speed}')
