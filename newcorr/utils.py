@@ -158,7 +158,7 @@ def P_reg_ball():
         error_x = pos - IMG_CENTER_X
     else: error_x = 0
     print(f'errorP: {error_x}')
-    return ((-error_x / IMG_CENTER_X) * 3)  
+    return ((-error_x / IMG_CENTER_X) * 5)  
 
 def P_reg_gar():
     with vision_lock:
