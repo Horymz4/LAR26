@@ -38,7 +38,7 @@ def obraz(turtle,ref_green, ref_purple):
  
     pos = (0,0)
     radius = avg_x = dist = 0
-    ratio = None
+    ratio = 0
  
     while not StateofBumper.is_set():
         if not processing_image.is_set():
