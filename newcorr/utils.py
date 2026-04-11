@@ -55,7 +55,7 @@ def reasoning(pos,radius,avg_x,height, ratio):
     if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X + THRESHOLD > avg_x > IMG_CENTER_X - THRESHOLD:
         see_garage.set()
         print("SEE GARAGE")
-    if (not ending_stage.is_set()) and see_garage.is_set() and height > 340:
+    if (not ending_stage.is_set()) and see_garage.is_set() and height > 390:
         ending_stage.set()
         print("PARKING")
 

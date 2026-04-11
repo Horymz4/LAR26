@@ -12,7 +12,7 @@ def get_bottom_half_distance(pc):
     bottom = pc[h//2:, :, :]
     z = bottom[:, :, 2]
 
-    mask = (z is not None) & np.isfinite(z) & (z >= 0)
+    mask = np.isfinite(z) & (z >= 0)
     if np.count_nonzero(mask) == 0:
         return None
     with vision_lock:
