@@ -149,6 +149,7 @@ def P_reg_garage_spinning(stable):
 
 
 def P_reg_ball():
+    kP = 2.8
     radius = pos = None
     with vision_lock:
         if vision_data["pos"] is not None:
@@ -158,7 +159,9 @@ def P_reg_ball():
         error_x = pos - IMG_CENTER_X
     else: error_x = 0
     print(f'errorP: {error_x}')
-    return ((-error_x / IMG_CENTER_X) * 2.8)  
+    if error_x < 10:
+        kP = 6
+    return ((-error_x / IMG_CENTER_X) * kP)  
 
 def P_reg_gar():
     with vision_lock:
