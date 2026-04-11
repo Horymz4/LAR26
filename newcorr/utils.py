@@ -41,8 +41,7 @@ def calibrate(turtle):
 
 # Image reasoning and image utils ---------------------
 def reasoning(pos,radius,avg_x,dist, ratio):
-    if radius is not None: THRESHOLD = 600//(radius+0.1) 
-    else: THRESHOLD = 30
+    THRESHOLD = 40
     if (not exited_garage.is_set()) and ratio is not None and  ratio < 0.15:
         exited_garage.set()
 
@@ -53,7 +52,7 @@ def reasoning(pos,radius,avg_x,dist, ratio):
     if (not outgarage_stage.is_set()) and radius is not None and pos is not None and IMG_CENTER_X + 100 > pos[0] > IMG_CENTER_X - 100 and 60 > radius > 55:
         outgarage_stage.set()
         print("BALL CLOSE")
-    if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X + 30 > avg_x > IMG_CENTER_X - 30:
+    if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X + THRESHOLD > avg_x > IMG_CENTER_X - THRESHOLD:
         see_garage.set()
         print("SEE GARAGE")
     if (not ending_stage.is_set()) and see_garage.is_set() and avg_x is None:
@@ -116,13 +115,15 @@ def set_process_img():
 # P regulators - all return angular speed ------------
 
 def P_reg_ball_spinning(stable):
-    HYSTERESIS = 25
     radius = pos = None
     with vision_lock:
         if vision_data["pos"] is not None:
             pos = vision_data["pos"][0]
             radius = vision_data["radius"]
     speed = stable*2
+
+    if radius is not None: HYSTERESIS = 900//(radius+0.1)
+    else: HYSTERESIS = 20
     if radius is not None and pos is not None and pos > IMG_CENTER_X+HYSTERESIS:
         speed = -stable/2
     elif radius is not None and pos is not None and pos < IMG_CENTER_X-HYSTERESIS:
