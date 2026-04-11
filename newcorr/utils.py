@@ -140,7 +140,7 @@ def P_reg_garage_spinning(stable):
             avg_x = vision_data["avg_x"]
     speed = stable*2
     if avg_x is not None and avg_x > IMG_CENTER_X+HYSTERESIS:
-        speed = -stable/2
+        speed = -stable
     elif avg_x is not None and avg_x < IMG_CENTER_X+HYSTERESIS:
         speed = stable/2
     elif avg_x is not None and avg_x >= IMG_CENTER_X-HYSTERESIS and avg_x <= IMG_CENTER_X+HYSTERESIS:
