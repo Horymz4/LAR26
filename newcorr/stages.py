@@ -198,11 +198,11 @@ def turn_to_garage(turtle, rate):
     )
 
 def looking_for_garage_spin(turtle,rate):
-    m = -direction if centered else direction
+    m = -1 if centered else 1
 
     move_until(
     turtle, rate,
-    linear_0, (-0.1+angular_spinning)*m,
+    linear_0, (-0.1+angular_spinning)*m*direction,
     condition_fn=lambda: not see_garage.is_set(),
     text="looking_for_garage_spin",
     ang_speed_reg=lambda: P_reg_garage_spinning((-0.1+angular_spinning)*m)
