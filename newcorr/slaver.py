@@ -37,7 +37,7 @@ def obraz(turtle,ref_green, ref_purple):
     time.sleep(1)
  
     pos = (0,0)
-    radius = avg_x = dist = 0
+    radius = avg_x = h = 0
     ratio = None
  
     while not StateofBumper.is_set():
@@ -58,14 +58,14 @@ def obraz(turtle,ref_green, ref_purple):
                 turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
                 pos, radius = ball_image(rgb, ref_green)
-                avg_x = dist = None
+                avg_x = None
  
                 processing_image.set()
             # Stage 5
             elif not ending_stage.is_set():
                 turtle.wait_for_rgb_image()
                 rgb = turtle.get_rgb_image()
-                avg_x,h = garage_image(rgb, ref_purple, turtle)
+                avg_x, h = garage_image(rgb, ref_purple, turtle)
                 pos = radius = None
                 processing_image.set()
 
