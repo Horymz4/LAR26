@@ -12,17 +12,16 @@ centered = False
 
 def move_until(turtle, rate, lin_speed, ang_speed, condition_fn, text, time_sleep = 0.1, ang_speed_reg=None, image_processing=True):
     print(text + " start")
-    
+    speed=ang_speed
     while not StateofBumper.is_set() and condition_fn():
-        turtle.cmd_velocity(linear = lin_speed, angular = ang_speed)
-        rate.sleep()
         if image_processing:
             set_process_img()
         if ang_speed_reg is not None:
-            speed = ang_speed_reg()
             if speed is not None:
-                ang_speed = speed
-
+                speed = ang_speed_reg()
+        turtle.cmd_velocity(linear = lin_speed, angular = speed)
+        rate.sleep()
+        
         if text =="Stage 2": print(ang_speed)
     turtle.cmd_velocity(linear = linear_0, angular = angular_0)
     print(text + " end")
