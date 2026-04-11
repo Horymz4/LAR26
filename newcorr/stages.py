@@ -3,7 +3,7 @@ import numpy as np
 from threading_variables import garage_stage, StateofBumper,odometry_stage, outgarage_stage, see_garage, ending_stage, exited_garage
 
 from robolab_turtlebot import get_time
-from utils import set_process_img,  P_reg_ball, P_reg_gar, P_reg_ball_spinning
+from utils import P_reg_garage_spinning, set_process_img,  P_reg_ball, P_reg_gar, P_reg_ball_spinning
 from beep_beep import ParkController
 from constants import linear_0, angular_0, stop_distance, angular_spinning, angular_around_the_ball, linear_around_the_ball, linear_the_rest, angular_quater_spin
 
@@ -205,7 +205,7 @@ def looking_for_garage_spin(turtle,rate):
     linear_0, (-0.1+angular_spinning)*m,
     condition_fn=lambda: not see_garage.is_set(),
     text="looking_for_garage_spin",
-    ang_speed_reg=lambda: P_reg_ball_spinning((-0.1+angular_spinning)*m)
+    ang_speed_reg=lambda: P_reg_garage_spinning((-0.1+angular_spinning)*m)
     )
 
 

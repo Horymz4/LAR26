@@ -110,22 +110,39 @@ def set_process_img():
         processing_image.clear()
         processing_image.wait()
 
-# P regulators - both return angular speed ------------
+# P regulators - all return angular speed ------------
 
 def P_reg_ball_spinning(stable):
+    HYSTERESIS = 25
     radius = pos = None
     with vision_lock:
         if vision_data["pos"] is not None:
             pos = vision_data["pos"][0]
             radius = vision_data["radius"]
     speed = stable*2
-    if radius is not None and pos is not None and pos > IMG_CENTER_X+10:
+    if radius is not None and pos is not None and pos > IMG_CENTER_X+HYSTERESIS:
         speed = -stable/2
-    elif radius is not None and pos is not None and pos < IMG_CENTER_X-10:
+    elif radius is not None and pos is not None and pos < IMG_CENTER_X-HYSTERESIS:
         speed = stable/2
-    elif radius is not None and pos is not None and pos >= IMG_CENTER_X-10 and pos <= IMG_CENTER_X+10:
+    elif radius is not None and pos is not None and pos >= IMG_CENTER_X-HYSTERESIS and pos <= IMG_CENTER_X+HYSTERESIS:
         speed = None
     return speed
+
+def P_reg_garage_spinning(stable):
+    HYSTERESIS = 25
+    avg_x = None
+    with vision_lock:
+        if vision_data["avg_x"] is not None:
+            avg_x = vision_data["avg_x"]
+    speed = stable*2
+    if avg_x is not None and avg_x > IMG_CENTER_X+HYSTERESIS:
+        speed = -stable/2
+    elif avg_x is not None and avg_x < IMG_CENTER_X+HYSTERESIS:
+        speed = stable/2
+    elif avg_x is not None and avg_x >= IMG_CENTER_X-HYSTERESIS and avg_x <= IMG_CENTER_X+HYSTERESIS:
+        speed = None
+    return speed
+
 
 def P_reg_ball():
     radius = pos = None
