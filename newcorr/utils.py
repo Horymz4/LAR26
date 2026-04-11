@@ -49,7 +49,7 @@ def reasoning(pos,radius,avg_x,dist, ratio):
         garage_stage.set()
         print("SEE BALL")
 
-    if (not outgarage_stage.is_set()) and radius is not None and pos is not None and IMG_CENTER_X + 100 > pos[0] > IMG_CENTER_X - 100 and 60 > radius > 55:
+    if (not outgarage_stage.is_set()) and radius is not None and pos is not None and IMG_CENTER_X + 100 > pos[0] > IMG_CENTER_X - 100 and 60 > radius > 54:
         outgarage_stage.set()
         print("BALL CLOSE")
     if (not see_garage.is_set()) and avg_x is not None and IMG_CENTER_X + THRESHOLD > avg_x > IMG_CENTER_X - THRESHOLD:
