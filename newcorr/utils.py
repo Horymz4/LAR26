@@ -123,13 +123,13 @@ def P_reg_ball_spinning(stable):
     speed = stable*2
 
     HYSTERESIS = 30
-    print(f'hystereze: {HYSTERESIS}')
     if radius is not None and pos is not None and pos > IMG_CENTER_X+HYSTERESIS:
         speed = -stable/2
     elif radius is not None and pos is not None and pos < IMG_CENTER_X-HYSTERESIS:
         speed = stable/2
     elif radius is not None and pos is not None and pos >= IMG_CENTER_X-HYSTERESIS and pos <= IMG_CENTER_X+HYSTERESIS:
         speed = None
+    print(f'speed: {speed}')
     return speed
 
 def P_reg_garage_spinning(stable):
