@@ -120,7 +120,7 @@ def find_two_largest_rectangles_in_mask(mask):
             if not (0.85 * first_height <= h <= 1.15 * first_height):
                 continue
 
-        if (cv.contourArea(c) / (w*h) > 0.6):
+        if (cv.contourArea(c) / (w * h) > 0.6):
             rectangles.append((cx, cy, w, h, angle))
             if first_height is None:
                 first_height = h

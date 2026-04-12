@@ -1,23 +1,23 @@
 import time
 import numpy as np
 from threading_variables import (
-        garage_stage, StateofBumper,
-        odometry_stage, outgarage_stage,
-        see_garage, ending_stage,
-        exited_garage,
+    garage_stage, StateofBumper,
+    odometry_stage, outgarage_stage,
+    see_garage, ending_stage,
+    exited_garage,
 )
 from robolab_turtlebot import get_time
 from utils import (
-        P_reg_garage_spinning, set_process_img,
-        P_reg_ball, P_reg_gar,
-        P_reg_ball_spinning,
+    P_reg_garage_spinning, set_process_img,
+    P_reg_ball, P_reg_gar,
+    P_reg_ball_spinning,
 )
 from beep_beep import ParkController
 from constants import (
-        linear_0, angular_0,
-        stop_distance, angular_spinning,
-        angular_around_the_ball, linear_around_the_ball,
-        linear_the_rest, angular_quater_spin
+    linear_0, angular_0,
+    stop_distance, angular_spinning,
+    angular_around_the_ball, linear_around_the_ball,
+    linear_the_rest, angular_quater_spin
 )
 
 direction = 1
@@ -30,7 +30,7 @@ def move_until(
         condition_fn, text,
         time_sleep=0.1, ang_speed_reg=None,
         image_processing=True
-        ):
+):
 
     print(text + " start")
     speed = ang_speed
@@ -63,7 +63,7 @@ def stage1(turtle, rate):
 def find_opening(turtle, rate):
     move_until(
         turtle, rate,
-        linear_0, angular_spinning*0.5,
+        linear_0, angular_spinning * 0.5,
         lambda: not exited_garage.is_set(),
         "Find opening"
     )
@@ -138,7 +138,7 @@ def do_quater_spin(turtle, rate, y_odo):
         centered = True
     move_until(
         turtle, rate,
-        linear_0, m*angular_quater_spin,
+        linear_0, m * angular_quater_spin,
         lambda: cond_time(t, 9),
         text="Half corcle maneuver",
     )
@@ -153,7 +153,7 @@ def cond_angle(turtle, ang, tolerance, t):
 def go_around_the_ball(turtle, rate):
 
     tolerance = 0.08
-    ang = direction * np.pi/2
+    ang = direction * np.pi / 2
     if centered:
         ang = -ang
 
@@ -162,7 +162,7 @@ def go_around_the_ball(turtle, rate):
 
     move_until(
         turtle, rate,
-        linear_around_the_ball, direction*angular_around_the_ball,
+        linear_around_the_ball, direction * angular_around_the_ball,
         lambda: cond_angle(turtle, ang, tolerance, t),
         text="go_around_the_ball",
         time_sleep=0.5
@@ -223,7 +223,7 @@ def turn_to_garage(turtle, rate):
 
     move_until(
         turtle, rate,
-        linear_0, angular_spinning*m*direction,
+        linear_0, angular_spinning * m * direction,
         condition_fn=lambda: cond_angle(turtle, np.pi, 0.1, t),
         text="sping towards garage"
     )
@@ -234,12 +234,12 @@ def looking_for_garage_spin(turtle, rate):
 
     move_until(
         turtle, rate,
-        linear_0, (-0.1+angular_spinning)*m*direction,
+        linear_0, (-0.1 + angular_spinning) * m * direction,
         condition_fn=lambda: not see_garage.is_set(),
         text="looking_for_garage_spin",
         ang_speed_reg=lambda: P_reg_garage_spinning(
             (-0.1 + angular_spinning) * m * direction
-            )
+        )
     )
 
 

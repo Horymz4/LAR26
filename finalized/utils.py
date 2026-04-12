@@ -1,9 +1,9 @@
 from threading_variables import (
-        Button_press, StateofBumper,
-        processing_image, exited_garage,
-        garage_stage, outgarage_stage,
-        see_garage, ending_stage,
-        vision_data, vision_lock
+    Button_press, StateofBumper,
+    processing_image, exited_garage,
+    garage_stage, outgarage_stage,
+    see_garage, ending_stage,
+    vision_data, vision_lock
 )
 from calibrate import get_green_ball_average_color_bgr
 from hsv_seg import find_ball, find_garage_center
@@ -99,20 +99,7 @@ def garage_image(rgb, ref, turtle):
     avg_x, h = find_garage_center(rgb, ref, turtle)
     with vision_lock:
         vision_data["avg_x"] = avg_x
-        # vision_data["dist"] = dist
     return avg_x, h
-
-# def garage_wall_percentage(pc, dist = 0.7):
-#     if pc is None8
-#         return None
-#     ratio = 1
-#     h = pc.shape[0]
-#     bottom = pc[h//2:, :, :]
-#     z = bottom[:, :, 2]
-#     print(f'wall%: {z}')
-#     if z is not None:
-#         ratio = np.mean(z < dist)
-#     return ratio
 
 
 # to see if we are in garage
@@ -121,13 +108,13 @@ def garage_wall_percentage(pc, dist=0.3):
         return None
 
     h = pc.shape[0]
-    bottom = pc[h//2:, :, :]
+    bottom = pc[h // 2:, :, :]
     z = bottom[:, :, 2]
 
     # Filter out invalid depth values (NaN, inf, and non-positive)
     valid_mask = np.isfinite(z) & (z >= 0)
     if not np.any(valid_mask):
-        return None  # No valid depth data at all
+        return None
 
     valid_z = z[valid_mask]
     ratio = np.mean(valid_z < dist)
@@ -149,15 +136,15 @@ def P_reg_ball_spinning(stable):
         if vision_data["pos"] is not None:
             pos = vision_data["pos"][0]
             radius = vision_data["radius"]
-    speed = stable*2
+    speed = stable * 2
 
     HYSTERESIS = 30
     if radius is not None and pos is not None and \
-            pos > IMG_CENTER_X+HYSTERESIS:
-        speed = -speed/3
+            pos > IMG_CENTER_X + HYSTERESIS:
+        speed = -speed / 3
     elif radius is not None and pos is not None and \
-            pos < IMG_CENTER_X-HYSTERESIS:
-        speed = speed/3
+            pos < IMG_CENTER_X - HYSTERESIS:
+        speed = speed / 3
     else:
         speed = None
     print(f'speed: {speed} pos: {pos}')
@@ -170,11 +157,11 @@ def P_reg_garage_spinning(stable):
     with vision_lock:
         if vision_data["avg_x"] is not None:
             avg_x = vision_data["avg_x"]
-    speed = stable*2
-    if avg_x is not None and avg_x > IMG_CENTER_X+HYSTERESIS:
-        speed = -abs(speed/3)
-    elif avg_x is not None and avg_x < IMG_CENTER_X+HYSTERESIS:
-        speed = abs(speed/3)
+    speed = stable * 2
+    if avg_x is not None and avg_x > IMG_CENTER_X + HYSTERESIS:
+        speed = -abs(speed / 3)
+    elif avg_x is not None and avg_x < IMG_CENTER_X - HYSTERESIS:
+        speed = abs(speed / 3)
     else:
         speed = None
 

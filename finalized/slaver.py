@@ -6,9 +6,9 @@ from robolab_turtlebot import Turtlebot, Rate
 from stages import stage1, stage2, stage3, stage4, stage5, stage6
 from utils import bumper_cb, reasoning, ball_image, garage_image
 from threading_variables import (
-        StateofBumper, processing_image,
-        odometry_stage, exited_garage,
-        ending_stage,
+    StateofBumper, processing_image,
+    odometry_stage, exited_garage,
+    ending_stage,
 )
 
 from utils import garage_wall_percentage

@@ -10,7 +10,7 @@ def get_bottom_half_distance(pc):
         return None
 
     h = pc.shape[0]
-    bottom = pc[h//2:, :, :]
+    bottom = pc[h // 2:, :, :]
     z = bottom[:, :, 2]
 
     mask = np.isfinite(z) & (z >= 0)
@@ -53,16 +53,13 @@ class ParkController:
 
         # Beeping -------------------------------------
         if self.sound and self.END_BEEP <= dist <= self.START_BEEP:
-            scale = (
-                    (self.START_BEEP - dist)
-                    / (self.START_BEEP - self.END_BEEP)
-                    )
+
+            delta_beep = self.START_BEEP - self.END_BEEP
+            scale = (self.START_BEEP - dist) / delta_beep
             scale = np.clip(scale, 0.0, 1.0)
 
-            interval = self.MIN_INTERVAL + (
-                    (1 - scale)
-                    * (self.MAX_INTERVAL - self.MIN_INTERVAL)
-                    )
+            interval_range = self.MAX_INTERVAL - self.MIN_INTERVAL
+            interval = self.MIN_INTERVAL + (1 - scale) * interval_range
 
             now = time.time()
             if now - self.last_beep >= interval:
