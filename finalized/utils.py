@@ -5,7 +5,6 @@ from threading_variables import (
     see_garage, ending_stage,
     vision_data, vision_lock
 )
-from calibrate import get_green_ball_average_color_bgr
 from hsv_seg import find_ball, find_garage_center
 from constants import IMG_CENTER_X
 import numpy as np
@@ -28,25 +27,6 @@ def button_cb(msg):
     if msg.state == 1:
         Button_press.set()
     print(state)
-
-
-# Calibration -----------------------------------------
-def calibrate(turtle):
-    print("Start kalibrace")
-
-    turtle.register_button_event_cb(button_cb)
-    Button_press.wait()
-    Button_press.clear()
-
-    turtle.wait_for_rgb_image()
-    rgb = turtle.get_rgb_image()
-    ref_image = get_green_ball_average_color_bgr(rgb)
-
-    turtle.register_button_event_cb(button_cb)
-    Button_press.wait()
-
-    print("Konec kalibrace")
-    return ref_image
 
 
 # Image reasoning and image utils ---------------------
