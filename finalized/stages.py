@@ -174,9 +174,9 @@ def cond_y(turtle, backwards):
     print("y", x_curr, y_curr, a_curr)
     a_curr = backwards * a_curr
     if a_curr < 0:
-        return y_curr > 0
+        return y_curr > 0.05
     else:
-        return y_curr < 0
+        return y_curr < -0.05
 
 
 def return_to_axis(turtle, rate):
