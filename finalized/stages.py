@@ -174,9 +174,9 @@ def cond_y(turtle, backwards):
     print("y", x_curr, y_curr, a_curr)
     a_curr = backwards * a_curr
     if a_curr < 0:
-        return y_curr > 0.05
+        return y_curr > 0.06
     else:
-        return y_curr < -0.05
+        return y_curr < -0.02
 
 
 def return_to_axis(turtle, rate):
@@ -226,7 +226,7 @@ def turn_to_garage(turtle, rate):
     move_until(
         turtle, rate,
         linear_0, angular_spinning * m * direction,
-        condition_fn=lambda: cond_angle(turtle, np.pi, 0.1, t),
+        condition_fn=lambda: cond_angle(turtle, np.pi, 0.05, t),
         text="sping towards garage"
     )
 
