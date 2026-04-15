@@ -211,7 +211,6 @@ def stage5(turtle, rate):
         ending_stage.set()
         turn_to_garage(turtle, rate)
 
-
     else:
         looking_for_garage_spin(turtle, rate)
         get_close_to_garage(turtle, rate)
