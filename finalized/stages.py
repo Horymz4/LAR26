@@ -204,6 +204,7 @@ def stage5(turtle, rate):
 
     x_curr, y_curr, a_curr = turtle.get_odometry()
     print(x_curr, y_curr, a_curr)
+    print(f'Vzdalenost od resetu odemetrie {np.sqrt(x_curr**2 + y_curr**2)}')
     if np.sqrt(x_curr**2 + y_curr**2) < 0.45:
         print("too close to starting point!!")
         turn_to_garage(turtle, rate)
